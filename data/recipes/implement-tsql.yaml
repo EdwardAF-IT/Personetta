@@ -1,0 +1,17 @@
+name: implement-tsql
+description: >
+  Implement T-SQL for SQL Server — queries, stored procedures, functions, and
+  migration scripts — with emphasis on correctness, set-based performance,
+  security (parameterization), and maintainability.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/database-specialist
+  - language-specific/tsql/tsql-developer
+
+mixins:
+  - readability-focused
+  - security-aware
+  - performance-focused
+  - maintainability-focused
+  - language-specific/tsql/tsql-formatting-standards

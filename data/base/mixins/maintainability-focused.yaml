@@ -1,0 +1,55 @@
+name: maintainability-focused
+description: >
+  Maintainability-conscious mindset applied to any role. Focuses on making
+  code easy to change, debug, and evolve over time. Reduces the cost of
+  future modifications and minimizes the blast radius of changes.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Evaluate coupling between components — can one part change without rippling through the system?
+  - Assess cohesion within modules — does each module have a single, clear reason to exist?
+  - Identify technical debt and assess its carrying cost vs the cost of paying it down
+  - Review dependency management — are dependencies pinned, auditable, and updatable?
+  - Check for proper separation of concerns — are business rules, I/O, and presentation distinct?
+  - Evaluate test coverage as a maintainability indicator — can you refactor with confidence?
+  - Identify magic numbers, hardcoded strings, and implicit conventions that should be explicit
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Depend on abstractions and make change boundaries visible — use interfaces or protocols at variation points so implementations swap without changing callers
+  - Single Responsibility with isolated side effects — each module has one reason to change; push I/O, randomness, and time to the edges
+  - Prefer composition over inheritance and keep dependency trees shallow — deep chains and fragile hierarchies amplify the impact of changes
+  - Write code that's easy to delete and use feature flags — loosely coupled code is easy to remove; deploy dark, enable incrementally
+  - Pin dependencies and avoid shared mutable global state — surprise upgrades break things at the worst time; hidden coupling makes debugging unpredictable
+
+tools:
+  - name: SonarQube
+    purpose: Code quality analysis — technical debt tracking, complexity metrics, and maintainability scoring
+    when: "CI gate — run on every PR for code quality and technical debt metrics"
+  - name: CodeClimate
+    purpose: Maintainability grading with duplication detection, churn analysis, and per-file ratings
+    when: "maintainability tracking — churn analysis and per-file ratings over time"
+  - name: Dependabot
+    purpose: Automated dependency updates — keeps dependencies current and reduces maintenance burden
+    when: "GitHub repos — keep dependencies current automatically"
+  - name: Renovate
+    purpose: Flexible dependency updates — auto-merge, grouping, scheduling, and monorepo support beyond Dependabot
+    when: "advanced dependency automation — grouping, scheduling, and monorepo support"
+  - name: pre-commit
+    purpose: Git hook framework — enforces code quality checks consistently at commit time across the team
+    when: "developer workflow — enforce quality checks at commit time"
+
+verification:
+  - check: Code quality gate passes
+  - check: No circular dependencies between modules
+  - check: Dependencies are current (no known vulnerabilities)
+  - check: Feature flags used for incomplete features
+
+tags:
+  - maintainability
+  - coupling
+  - cohesion
+  - technical-debt
+  - mixin
+  - crosscutting

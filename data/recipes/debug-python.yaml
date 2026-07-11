@@ -1,0 +1,15 @@
+name: debug-python
+description: >
+  Diagnose and fix defects in Python backend code — reproduce the failure, read
+  the traceback to the first failing frame, isolate the root cause, apply the
+  smallest correct fix, and leave a regression test behind.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - readability-focused
+  - maintainability-focused
+  - language-specific/python/python-formatting-standards

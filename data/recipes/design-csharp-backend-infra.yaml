@@ -1,0 +1,15 @@
+name: design-csharp-backend-infra
+description: >
+  Architect a C# serverless API with supporting infrastructure — service
+  boundaries, DI structure, IaC strategy, pipeline design, and security
+  posture. Used for holy-cheese-azdo-tools overall architecture.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/backend-developer
+  - base/layer/infrastructure-engineer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - security-aware
+  - extensibility-focused

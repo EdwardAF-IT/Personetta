@@ -1,0 +1,69 @@
+# Provisions: optional, non-persona capabilities installed alongside roles.
+#
+# Each provision lists `targets` (any installed tools) and is applied by the
+# strategy registered for its `kind`. Everything ships DISABLED — a deploy-dark
+# default so nothing touches your tools until you opt in with
+# `personetta provision enable <name>` then `personetta provision apply`.
+#
+# `targets` is a LIST. A tool that cannot host a given kind is reported as
+# `unsupported` (with a reason) rather than hardcoded out — see the capability
+# registry in src/generator/provisions/capabilities.py.
+version: 1
+
+provisions:
+  # Item 1 — live model / context / cost visibility in the status bar.
+  status-line:
+    kind: tool-setting
+    enabled: false
+    targets: [claude]            # Only Claude exposes a statusLine command setting.
+    settings:
+      statusLine:
+        type: command
+        command: "bun x ccusage statusline"
+        padding: 0
+
+  # Item 6 — cross-session persistent memory (token-economy boost).
+  claude-mem:
+    kind: plugin
+    enabled: false
+    targets: [claude]
+    install:
+      marketplace: thedotmack/claude-mem
+      plugin: claude-mem
+      interactive: false         # Personetta drives the install non-interactively.
+    policy:
+      sensitive_repos: deny       # Governance hook: refuse where policy forbids.
+
+  # Item 7 — keep large tool/CLI output out of context (token-economy).
+  context-mode:
+    kind: plugin
+    enabled: false
+    targets: [claude]
+    install:
+      marketplace: mksglu/context-mode
+      plugin: context-mode@context-mode
+      interactive: false
+
+  # Item 2 — delegate cheap work to cheaper model tiers (token-economy).
+  coordinator-delegation:
+    kind: behavior
+    enabled: false
+    targets: [claude]
+    options:
+      max_delegation_depth: 1     # In-session delegation cap (no recursion).
+      depth_marker:
+        kind: env
+        name: FAB_DELEGATION_DEPTH
+      executor_model: haiku
+      implementer_model: sonnet
+
+# Named groups installed together, in a defined order, with shared overrides.
+bundles:
+  # Item 7, Option B — the token-economy stack with a tested-compatible order.
+  economy:
+    description: "Token-economy stack with a tested-compatible hook order."
+    members: [coordinator-delegation, context-mode, claude-mem]
+    install_order: [coordinator-delegation, context-mode, claude-mem]
+    overrides:
+      context-mode: {}
+    enabled: false

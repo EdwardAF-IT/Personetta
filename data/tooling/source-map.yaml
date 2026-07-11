@@ -1,0 +1,3 @@
+# Map display names (keys; normalized with trim + casefold) to registry IDs for Tier 2 checks.
+# Only tools with an entry here are queried against PyPI / GitHub.
+mappings: {}

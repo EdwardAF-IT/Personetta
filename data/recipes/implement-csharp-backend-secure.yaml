@@ -1,0 +1,15 @@
+name: implement-csharp-backend-secure
+description: >
+  Implement C# backend APIs (Azure Functions, ASP.NET) with security
+  awareness — input validation, auth, secrets handling, and injection
+  prevention. Used for holy-cheese-azdo-tools Azure Functions development.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/backend-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - security-aware
+  - extensibility-focused
+  - language-specific/csharp/csharp-formatting-standards

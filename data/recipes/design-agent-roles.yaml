@@ -1,0 +1,14 @@
+name: design-agent-roles
+description: >
+  Design AI agent personas and role taxonomies — decompose behavior into composable
+  single-responsibility roles, define boundaries, choose model tiers, and plan how
+  roles compose — with focus on extensibility and maintainability. Applies to
+  personetta recipes, Claude subagents, editor rules, and system prompts.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/agent-systems-engineer
+
+mixins:
+  - extensibility-focused
+  - maintainability-focused

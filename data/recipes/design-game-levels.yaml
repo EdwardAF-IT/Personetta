@@ -1,0 +1,9 @@
+name: design-game-levels
+description: >
+  Design individual levels, maps, wave compositions, and spatial layouts.
+  Includes systems designer for balance validation to ensure levels are beatable
+  and well-paced across all difficulty modes.
+
+compose:
+  - base/lifecycle/level-designer
+  - base/lifecycle/systems-designer

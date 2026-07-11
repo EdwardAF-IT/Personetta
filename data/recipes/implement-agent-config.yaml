@@ -1,0 +1,16 @@
+name: implement-agent-config
+description: >
+  Author agent and persona definition files — schema-governed role and prompt
+  configs that must both read as sound persona design and validate and compose
+  correctly. The composition of agent-systems design and configuration authoring.
+  Used for authoring personetta recipes and base roles, Claude subagents, and
+  similar agent definition files.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/agent-systems-engineer
+  - base/layer/configuration-author
+
+mixins:
+  - readability-focused
+  - maintainability-focused

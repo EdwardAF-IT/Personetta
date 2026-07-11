@@ -1,0 +1,15 @@
+name: design-python-backend-perf
+description: >
+  Architect a Python system where performance is a first-class concern —
+  data pipeline design, parallelism strategy, algorithmic complexity
+  decisions, and extensible configuration. Used for swgoh-team-optimizer
+  graph-driven architecture.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - performance-focused
+  - extensibility-focused

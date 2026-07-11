@@ -1,0 +1,15 @@
+name: debug-csharp
+description: >
+  Diagnose and fix defects in C# backend code — reproduce the failure, read the
+  exception and stack trace to the first failing frame, isolate the root cause,
+  apply the smallest correct fix, and add a regression test.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/backend-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - readability-focused
+  - maintainability-focused
+  - language-specific/csharp/csharp-formatting-standards

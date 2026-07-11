@@ -1,0 +1,15 @@
+name: implement-powershell-infra
+description: >
+  Write PowerShell infrastructure scripts — deployment automation, build
+  scripts, environment management, and pipeline helpers. Covers module
+  structure, parameter validation, and idempotent operations.
+  Used for holy-cheese-azdo-tools ops scripts and modules.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-developer
+
+mixins:
+  - maintainability-focused
+  - language-specific/powershell/powershell-formatting-standards

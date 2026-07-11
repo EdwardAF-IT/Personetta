@@ -1,0 +1,17 @@
+name: design-powershell
+description: >
+  Architect PowerShell infrastructure systems with focus on extensibility,
+  maintainability, performance, and scalability. Design deployment automation,
+  module structure, pipeline patterns, and operational strategies.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-developer
+
+mixins:
+  - extensibility-focused
+  - maintainability-focused
+  - performance-focused
+  - scalability-focused
+  - language-specific/powershell/powershell-formatting-standards

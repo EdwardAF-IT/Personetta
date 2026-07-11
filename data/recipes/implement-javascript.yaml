@@ -1,0 +1,17 @@
+name: implement-javascript
+description: >
+  Implement JavaScript/TypeScript backend code (Node.js services, APIs, CLIs)
+  with emphasis on readability, security, performance, and maintainability.
+  Write idiomatic modern JavaScript following ES module and async best practices.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/backend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - readability-focused
+  - security-aware
+  - performance-focused
+  - maintainability-focused
+  - language-specific/javascript/javascript-formatting-standards

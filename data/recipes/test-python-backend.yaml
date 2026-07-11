@@ -1,0 +1,10 @@
+name: test-python-backend
+description: >
+  Write pytest tests for Python backend code — unit tests, integration
+  tests, fixtures, deterministic seeding, and coverage strategy.
+  Used for swgoh-team-optimizer test suite.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/backend-developer
+  - language-specific/python/python-developer

@@ -1,0 +1,11 @@
+name: edit-copyedit
+description: >
+  Copyedit and proofread existing prose — tighten for clarity and concision, fix
+  grammar and consistency, vary rhythm, and enforce a style guide — without
+  changing the author's meaning or voice or inventing new claims.
+
+compose:
+  - base/lifecycle/content-writer
+
+mixins:
+  - readability-focused

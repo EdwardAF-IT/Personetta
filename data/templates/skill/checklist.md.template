@@ -1,0 +1,30 @@
+# Execution Checklist
+
+Use this checklist to verify completion and quality of the workflow.
+
+## Verification Items
+
+${verification_items}
+
+## Using This Checklist
+
+**Before you start**:
+- Review the checklist to understand what "done" means
+- Note any items that require tool setup or access
+
+**During execution**:
+- Check off items as you complete them
+- Flag any items you skip with a reason
+
+**Before finishing**:
+- Ensure all applicable items are checked
+- Document any deviations or skipped items
+- Run any automated verification commands
+
+## Completion Criteria
+
+Work is considered complete when:
+- All applicable checklist items are verified
+- All automated checks pass (tests, linters, etc.)
+- Documentation reflects any deviations
+- Output meets the stated acceptance criteria

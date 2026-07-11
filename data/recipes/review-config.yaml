@@ -1,0 +1,13 @@
+name: review-config
+description: >
+  Review configuration and spec files (IaC, manifests, schemas, CI workflows) for
+  schema conformance, idempotency, security (inlined secrets, least privilege),
+  and minimal, reviewable diffs. Identify issues and suggest concrete fixes.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/configuration-author
+
+mixins:
+  - security-aware
+  - maintainability-focused

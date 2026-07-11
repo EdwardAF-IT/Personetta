@@ -1,0 +1,17 @@
+name: design-javascript-frontend
+description: >
+  Architect JavaScript/TypeScript frontend applications — component structure,
+  state management, routing, and rendering strategy — with focus on extensibility,
+  maintainability, performance, and scalability.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/frontend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - extensibility-focused
+  - maintainability-focused
+  - performance-focused
+  - scalability-focused
+  - language-specific/javascript/javascript-formatting-standards

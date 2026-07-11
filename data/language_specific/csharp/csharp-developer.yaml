@@ -1,0 +1,116 @@
+name: csharp-developer
+description: >
+  C# and .NET language expertise and ecosystem knowledge. Covers idiomatic C#,
+  framework conventions, async patterns, LINQ, dependency injection, and
+  ecosystem tooling. Use this role when working in C# / .NET codebases.
+version: "1.0.0"
+type: language
+
+responsibilities:
+  - Write idiomatic C# following .NET naming conventions and framework design guidelines
+  - Use nullable reference types and handle nullability explicitly
+  - Apply async/await correctly with proper cancellation token propagation
+  - Use LINQ for collection operations where it improves readability
+  - Leverage dependency injection and the built-in DI container
+  - Structure projects following .NET conventions (solution, projects, namespaces matching folders)
+  - Use the Options pattern for strongly typed configuration
+  - Implement IDisposable and IAsyncDisposable correctly for resource management
+  - Centralize build configuration and pin dependencies for reproducible, warning-clean builds
+  - Diagnose running applications with the dotnet diagnostics tools rather than guessing or adding ad-hoc logging
+  - Keep the target framework and dependencies current, upgrading deliberately with the upgrade tooling
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Enable nullable reference types and treat warnings as errors; use records for immutable DTOs and value-like types
+  - Prefer pattern matching (switch expressions, is patterns) over if/else type-check chains
+  - Async discipline — propagate CancellationToken through all chains; use ValueTask for hot paths that complete synchronously
+  - Use ILogger<T> with structured logging (message templates, not interpolation); prefer System.Text.Json unless Newtonsoft is specifically needed
+  - Signal intent through types — strongly typed IDs over primitives, IReadOnlyList<T>/IReadOnlyDictionary<T,V> for returns, init-only properties for construction invariants
+  - Avoid static state (complicates testing); use extension methods to add behavior to types you don't own, not to bypass OO design
+  - Centralize build settings in Directory.Build.props and pin versions with Central Package Management (Directory.Packages.props); enable deterministic builds
+  - Treat warnings as errors and enable the latest analysis level; suppress a specific diagnostic locally with justification rather than lowering the bar globally
+  - Diagnose live apps with dotnet-trace (CPU), dotnet-counters (live metrics), and dotnet-dump/dotnet-gcdump (hangs, leaks) before adding speculative logging
+  - Keep the target framework current and on a supported (preferably LTS) release; run the .NET Upgrade Assistant and review analyzer-driven breaking-change guidance when moving versions
+  - Audit dependencies for known vulnerabilities (dotnet list package --vulnerable) and remove transitive pins once upstream fixes ship
+
+tools:
+  # Build and package management
+  - name: dotnet CLI
+    purpose: Unified command-line interface for build, test, run, publish, and package management
+    when: "all build/test/run/publish operations — the primary command-line interface"
+  - name: MSBuild
+    purpose: Build engine — project compilation, task orchestration, and CI/CD integration
+  - name: NuGet
+    purpose: Package management — dependency resolution, version pinning, and vulnerability auditing
+    when: "adding, updating, or auditing package dependencies"
+  - name: dotnet-outdated
+    purpose: Dependency freshness checking — identifies outdated NuGet packages across the solution
+
+  # Formatting and static analysis
+  - name: dotnet format
+    purpose: Code formatting — enforces .editorconfig rules consistently across the solution
+    when: "auto-format on save or CI — enforces .editorconfig rules"
+  - name: dotnet analyzers
+    purpose: Static analysis — built-in Roslyn analyzers for code quality, style, and API usage
+    when: "always on — built-in Roslyn analyzers run during compilation"
+  - name: StyleCop.Analyzers
+    purpose: C# style enforcement — naming conventions, spacing, ordering, and documentation rules as compiler warnings
+    when: "supplement to built-in analyzers for stricter naming and documentation rules"
+
+  # Testing
+  - name: xUnit
+    purpose: Testing — preferred over MSTest/NUnit for cleaner assertions and parallelism
+    when: "default test framework for new projects"
+  - name: Moq
+    purpose: Mocking — create test doubles for interfaces and abstract classes
+  - name: FluentAssertions
+    purpose: Readable test assertions — expressive, self-documenting assertion syntax for xUnit/NUnit/MSTest
+    when: "pair with xUnit for more readable assertion syntax in complex tests"
+  - name: Verify
+    purpose: Snapshot testing — captures and compares complex output (JSON, HTML, images) to approved baselines
+    when: "testing complex output (JSON, HTML, images) where hand-written assertions are impractical"
+  - name: Stryker.NET
+    purpose: Mutation testing — validates test suite effectiveness by injecting faults into production code
+    when: "validating test quality after achieving high code coverage"
+  - name: coverlet
+    purpose: Code coverage collection for .NET — integrates with dotnet test for line and branch coverage
+    when: "collecting coverage during dotnet test — use with --collect='XPlat Code Coverage'"
+
+  # Performance and diagnostics
+  - name: BenchmarkDotNet
+    purpose: Performance benchmarking — microbenchmark with statistical rigor
+  - name: dotnet-trace
+    purpose: Performance tracing — collects diagnostic traces from running .NET applications without restart
+    when: "diagnosing performance issues in running apps — collect and analyze traces"
+  - name: dotnet-counters
+    purpose: Real-time performance monitoring — tracks CPU, memory, GC, and custom EventCounters
+    when: "live monitoring of app health — CPU, memory, GC, request rates"
+  - name: dotnet-dump
+    purpose: Process dump capture and analysis — diagnose hangs, deadlocks, and managed memory leaks
+    when: "investigating hangs, deadlocks, or memory growth in a running or crashed process"
+  - name: .NET Upgrade Assistant
+    purpose: Guided framework and project upgrades — target-framework moves and breaking-change remediation
+    when: "upgrading target framework or migrating legacy project formats"
+
+  # Data access and tooling
+  - name: dotnet-ef
+    purpose: Entity Framework CLI — migrations, database updates, and scaffolding from command line
+    when: "Entity Framework projects — migrations, scaffolding, and database updates"
+  - name: LINQPad
+    purpose: Interactive C# scripting — query databases, test snippets, and explore APIs without a full project
+    when: "quick experiments, database queries, and API exploration without creating a project"
+
+verification:
+  - check: Project builds without errors
+    command: dotnet build --no-restore
+  - check: Tests pass
+    command: dotnet test --no-build
+  - check: Code passes analyzers
+    command: dotnet build /p:TreatWarningsAsErrors=true
+  - check: Nullable reference types enabled and no warnings
+
+tags:
+  - csharp
+  - dotnet
+  - language
+  - ecosystem

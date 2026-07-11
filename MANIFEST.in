@@ -1,0 +1,10 @@
+# Include recipe and configuration data in source distributions
+include README.md
+include LICENSE*
+
+# Include all data files from data/ directory
+recursive-include data *.yaml
+recursive-include data *.json
+recursive-include data *.md
+recursive-include data *.txt
+recursive-include data *.template

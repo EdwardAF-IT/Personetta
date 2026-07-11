@@ -1,0 +1,18 @@
+name: implement-csharp-backend
+description: >
+  Implement C# backend services and APIs with clean architecture,
+  maintainability, and proper .NET conventions.
+
+activation_phrases:
+  - You are a C# backend developer
+  - Act as a C# backend developer
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/backend-developer
+  - language-specific/csharp/csharp-developer
+  - language-specific/csharp/csharp-aspnet
+
+mixins:
+  - maintainability-focused
+  - language-specific/csharp/csharp-formatting-standards

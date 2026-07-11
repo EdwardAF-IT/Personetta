@@ -1,0 +1,9 @@
+name: write-career-materials
+description: >
+  Write and tailor career documents — résumés, cover letters, LinkedIn profiles,
+  elevator pitches, and bios. Leads with concrete, supportable accomplishments,
+  tailors the same history to different audiences, and respects strict length and
+  formatting constraints without fabricating facts.
+
+compose:
+  - base/lifecycle/content-writer

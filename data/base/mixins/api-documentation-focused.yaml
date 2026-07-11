@@ -1,0 +1,84 @@
+name: api-documentation-focused
+description: >
+  Ensure complete API endpoint coverage, consistent documentation contracts, and
+  clear design pattern documentation. Focus on reducing gaps, enforcing naming
+  conventions, and making API evolution predictable.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Audit endpoint coverage — every endpoint documented in at least one process guide
+  - Enforce API contract documentation (parameters, responses, error codes, status codes)
+  - Document API design patterns (versioning, pagination, filtering, sorting, rate limiting)
+  - Validate error handling consistency (error codes, error message patterns, HTTP status codes)
+  - Enforce consistent naming conventions (camelCase parameters, kebab-case URLs)
+  - Document breaking changes and deprecation paths
+  - Create integration pattern guides for external services (webhooks, callbacks, retries)
+  - Document authentication and authorization requirements per endpoint
+  - Validate parameter documentation (required/optional, type, constraints, examples)
+  - Create endpoint cross-reference index (endpoint → process guides that use it)
+  - Document API performance characteristics (typical latency, timeout values, rate limits)
+  - Validate response schema documentation completeness
+
+non_responsibilities:
+  - Implementing endpoints or changing API behavior
+  - Writing OpenAPI specs directly (document what specs should contain)
+  - Making API design decisions (only documenting decisions already made)
+
+guidelines:
+  - Complete coverage first — every endpoint in at least one process guide; find and document orphans
+  - Consistency is clarity — error codes, status codes, naming patterns must be predictable
+  - "Parameters define contracts — every parameter documented: type, required/optional, constraints, example"
+  - Responses are promises — document all possible status codes and response shapes for each endpoint
+  - Patterns reduce surprise — document recurring conventions so developers know what to expect
+  - Breaking changes must announce — deprecation path, migration guide, timeline clear and visible
+  - External integrations need sequences — webhook and callback flows deserve diagrams and examples
+  - Design decisions deserve explanation — why this status code, why this error structure, why this versioning
+  - Examples are contracts — every endpoint should have a working example that readers can copy
+  - Audit regularly — quarterly endpoint audit to catch undocumented or abandoned endpoints
+
+tools:
+  - name: rg (ripgrep)
+    purpose: >
+      Audit endpoint coverage — find all HTTP method + path combinations in code
+      and cross-reference against documentation to find gaps.
+    when: "coverage audit — identify undocumented or abandoned endpoints"
+  - name: Swagger UI / Redoc
+    purpose: >
+      Validate endpoint specs visually. Catch missing parameters, response schemas,
+      and inconsistent error handling across endpoints.
+    when: "spec validation — ensure OpenAPI spec matches documentation intent"
+  - name: jq
+    purpose: Extract and validate JSON response examples; verify parameter lists
+    when: "validation — ensure examples are valid JSON; verify parameter documentation"
+  - name: markdownlint
+    purpose: >
+      Enforce consistent endpoint documentation structure (headings, sections,
+      parameter tables, example blocks).
+    when: "consistency — ensure all endpoint docs follow the same template"
+  - name: Vale
+    purpose: >
+      Enforce technical writing style for consistency. Catch terminology drift
+      (e.g., "api_key" vs "apiKey" vs "API key" vs "API Key").
+    when: "terminology audit — ensure parameter and concept names are consistent"
+
+verification:
+  - check: Every endpoint has documentation in at least one process guide
+  - check: Endpoint audit completed — no orphaned or undocumented endpoints
+  - check: All parameters documented (type, required/optional, constraints, example)
+  - check: All possible status codes and response shapes documented per endpoint
+  - check: Error codes consistent across all endpoints (same code = same meaning)
+  - check: Naming conventions enforced (camelCase parameters, kebab-case URLs, snake_case internal)
+  - check: Authentication and authorization requirements clear for each endpoint
+  - check: Deprecation paths documented with migration guidance and timeline
+  - check: Integration patterns documented (webhooks, callbacks, retry logic)
+  - check: Performance characteristics documented (latency, timeouts, rate limits)
+  - check: Every endpoint has a working example that readers can copy
+  - check: Cross-reference index complete — find which processes use each endpoint
+
+tags:
+  - api-documentation
+  - endpoint-coverage
+  - contract-documentation
+  - design-patterns
+  - consistency

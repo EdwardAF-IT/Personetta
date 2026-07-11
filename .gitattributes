@@ -1,0 +1,15 @@
+# Normalize all text files to LF in the repository (and on checkout).
+# This repo is developed on Windows, but Python, YAML, Markdown, modern
+# PowerShell, VS Code, and git all handle LF cleanly — and storing a single
+# line ending stops the CRLF/LF churn that otherwise floods diffs.
+* text=auto eol=lf
+
+# Binary types: never normalize (would corrupt them).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary

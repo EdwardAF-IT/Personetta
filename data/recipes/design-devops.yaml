@@ -1,0 +1,16 @@
+name: design-devops
+description: >
+  Architect cloud-agnostic infrastructure and delivery — container/orchestration
+  topology, CI/CD pipeline stages, environment promotion, and observability — with
+  focus on extensibility, scalability, maintainability, and security. Not tied to
+  a single language; complements the PowerShell- and C#-specific infra recipes.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/infrastructure-engineer
+
+mixins:
+  - extensibility-focused
+  - scalability-focused
+  - maintainability-focused
+  - security-aware

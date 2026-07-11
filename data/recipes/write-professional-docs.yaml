@@ -1,0 +1,11 @@
+name: write-professional-docs
+description: >
+  Write business and professional prose — proposals, reports, announcements,
+  marketing copy, and stakeholder communications. Audience-first structure, a
+  consistent brand voice, and concrete claims over filler.
+
+compose:
+  - base/lifecycle/content-writer
+
+mixins:
+  - readability-focused

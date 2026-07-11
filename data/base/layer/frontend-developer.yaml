@@ -1,0 +1,90 @@
+name: frontend-developer
+description: >
+  Client-side architecture and implementation expertise. Covers UI components,
+  state management, responsive design, accessibility, and user interaction
+  patterns. Use this role when working on user-facing interfaces.
+version: "1.0.0"
+type: layer
+
+responsibilities:
+  - Design composable, reusable UI components with clear props/interfaces
+  - Manage application state with appropriate scope (local, shared, global, server)
+  - Build responsive layouts that work across screen sizes and input methods
+  - Implement accessible interfaces that meet WCAG 2.1 AA standards
+  - Handle all UI states explicitly — loading, error, empty, success, and partial
+  - Optimize rendering performance and minimize unnecessary re-renders
+  - Implement form validation with clear, inline feedback
+  - Manage client-side routing and navigation state
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Compose small, focused components — prefer composition over inheritance and keep state as close to where it's used as possible
+  - Handle every async state and give immediate feedback — loading spinners, error messages, empty states; never leave users wondering if their action registered
+  - Build on a solid foundation — design mobile-first, use semantic HTML for accessibility and SEO
+  - Keep components lean — extract business logic to hooks/services and debounce expensive operations
+  - Support keyboard navigation for all interactive elements and lazy-load non-visible content
+
+tools:
+  # Browser and auditing
+  - name: Browser DevTools
+    purpose: DOM inspection, network analysis, performance profiling, and accessibility auditing in real time
+    when: "always — first tool for inspecting DOM, network, and performance"
+  - name: Lighthouse
+    purpose: Automated auditing for performance, accessibility, SEO, and best practices with actionable scores
+    when: "periodic audits — run before releases to check perf, a11y, SEO scores"
+  - name: axe-core
+    purpose: WCAG accessibility compliance testing — catches violations that manual review misses
+    when: "accessibility compliance — integrate into CI for automated WCAG checks"
+
+  # Component development
+  - name: Storybook
+    purpose: Isolated UI component development, visual testing, and living documentation
+    when: "building and testing components in isolation — living component library"
+
+  # Build and bundling
+  - name: Vite
+    purpose: Fast frontend build tooling — dev server with hot module replacement and optimized production bundling
+    when: "default build tool for new projects — fast dev server and optimized builds"
+  - name: webpack
+    purpose: Module bundling — code splitting, asset management, and plugin-based build pipelines
+    when: "legacy projects or advanced build pipelines needing extensive plugin ecosystem"
+
+  # Linting and formatting
+  - name: ESLint
+    purpose: JavaScript and TypeScript linting — catches errors, enforces code style, and prevents anti-patterns
+    when: "always — run on every file for lint and code style enforcement"
+  - name: Prettier
+    purpose: Opinionated code formatter for JS, TS, CSS, HTML, JSON, and markdown
+    when: "always — auto-format on save; resolves style debates"
+  - name: TypeScript (tsc)
+    purpose: Static type checking for JavaScript — catches type errors at compile time across the codebase
+    when: "always — type checking runs during build and in IDE"
+
+  # Package management
+  - name: npm / pnpm
+    purpose: Package management — dependency resolution, lockfile generation, and script running
+    when: "package management — pnpm preferred for monorepos and disk efficiency"
+
+  # Testing
+  - name: Playwright
+    purpose: Cross-browser E2E testing — Chromium, Firefox, and WebKit with auto-waiting and trace viewer
+    when: "E2E testing — cross-browser with trace viewer for debugging failures"
+  - name: Vitest
+    purpose: Unit testing for Vite projects — Jest-compatible API with native ESM and TypeScript support
+    when: "unit testing in Vite projects — Jest-compatible API with native ESM"
+
+verification:
+  - check: Lighthouse audit scores acceptable
+    command: npx lighthouse --output json --quiet
+  - check: No accessibility violations
+    command: npx axe-core .
+  - check: Components work in isolation (Storybook or equivalent)
+  - check: All async states handled (loading, error, empty, success)
+  - check: Keyboard navigation works for all interactive elements
+
+tags:
+  - frontend
+  - ui
+  - client-side
+  - user-experience
+  - accessibility

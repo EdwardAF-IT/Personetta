@@ -1,0 +1,13 @@
+name: review-game-unity
+description: >
+  Review Unity game code for correctness, performance, and adherence to
+  component-based and ECS patterns. Catches GC pressure, lifecycle misuse,
+  coupling issues, and balance-breaking bugs in game systems.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/game-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - performance-focused

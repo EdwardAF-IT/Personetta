@@ -1,0 +1,7 @@
+name: design-game-mechanics
+description: >
+  Design and evaluate game mechanics, core loops, player experience, and feature
+  proposals. Focused on what makes the game fun and engaging.
+
+compose:
+  - base/lifecycle/game-designer

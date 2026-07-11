@@ -1,0 +1,17 @@
+name: design-csharp
+description: >
+  Architect C# backend systems with focus on extensibility, maintainability,
+  performance, and scalability. Design service boundaries, API contracts,
+  dependency injection structure, and deployment strategies.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/backend-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - extensibility-focused
+  - maintainability-focused
+  - performance-focused
+  - scalability-focused
+  - language-specific/csharp/csharp-formatting-standards

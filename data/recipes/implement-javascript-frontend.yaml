@@ -1,0 +1,17 @@
+name: implement-javascript-frontend
+description: >
+  Implement JavaScript/TypeScript frontend code — UI components, state, forms,
+  and client-side routing — with emphasis on readability, accessibility,
+  performance, and maintainability.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/frontend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - readability-focused
+  - maintainability-focused
+  - performance-focused
+  - security-aware
+  - language-specific/javascript/javascript-formatting-standards

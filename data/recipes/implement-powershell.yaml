@@ -1,0 +1,17 @@
+name: implement-powershell
+description: >
+  Implement PowerShell infrastructure scripts with emphasis on readability,
+  security, performance, and maintainability. Write clean, idiomatic PowerShell
+  following best practices and conventions.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-developer
+
+mixins:
+  - readability-focused
+  - security-aware
+  - performance-focused
+  - maintainability-focused
+  - language-specific/powershell/powershell-formatting-standards

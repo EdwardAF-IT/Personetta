@@ -1,0 +1,118 @@
+name: javascript-formatting-standards
+description: >
+  Edward's personal JavaScript formatting and style standards. Extrapolated from
+  Python and C# formatting preferences — parameter layout, visual alignment,
+  explicit structure, and consistent documentation. Apply alongside the general
+  javascript-developer role to enforce these conventions. Let Prettier own
+  mechanical formatting; these rules cover what linters and reviewers should
+  still enforce for clarity.
+version: "1.0.0"
+type: mixin
+model_requirements:
+  min_tier: standard
+  reasoning: none
+
+responsibilities:
+  - Enforce consistent function parameter and call argument formatting based on complexity
+  - Enforce visual alignment of similar assignments, object properties, and chained expressions where it aids scanning
+  - Enforce string and template literal conventions by complexity
+  - Enforce JSDoc and inline comment standards for exported and non-trivial code
+  - Enforce import grouping and export style for navigability
+
+guidelines:
+  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
+  # Functions and modules
+  - "Every exported function, class, and constant object must have a JSDoc block with at least a one-line summary; non-trivial functions include @param, @returns, and @throws where applicable"
+  - "Use const by default and let when rebinding; never var. Prefer explicit return at the end of non-void functions when it improves readability"
+  - "Inline comments start with a capital letter and a space after //; non-trivial code must have a descriptive comment — end-of-line if short, above if longer"
+
+  # Parameters and arguments
+  - "Short parameter list (fits within ~90 columns): keep on one line; longer lists: one parameter per line, indented, closing parenthesis aligned with the opening keyword"
+  - "For boolean or ambiguous call sites, use an options object — load({ useCache: true }) rather than load(true) when the API is designed for it"
+
+  # Conditionals
+  - "Short conditional + short body may use a single line — if (x === 1) return 'one'; compound conditionals: break each condition onto its own line with operators at the start of continuations"
+  - "Prefer early returns (guard clauses) to reduce nesting; avoid nested ternaries beyond a simple condition ? a : b"
+  - "Always use === and !== for equality; use == only with null or undefined when intentionally checking both"
+
+  # Chained calls and expressions
+  - "Short chains (fits on one line): keep inline; longer chains: one method per line, dot-aligned with the subject"
+  - "Object literals: short objects on one line; multi-line objects — one property per line, trailing comma on the last line"
+
+  # Alignment
+  - Align consecutive similar assignments on =, consecutive object short properties where it improves readability, and parallel branches in object or array literals when they form a logical group
+
+  # Line length and breaking
+  - Target ~90 columns maximum line length; break inside parentheses, brackets, and braces — avoid awkward breaks that split a single thought across many small lines
+
+  # Strings
+  - "Use single-quoted strings when the project Prettier config does; for interpolation use template literals (`...${x}...`)"
+  - "Never use + for multi-part string assembly in loops — use Array.join, template accumulation patterns, or a small builder; avoid + for long static concatenation"
+
+  # Imports and exports
+  - "Group imports: side-effect imports, then Node builtins (node:), then external packages, then internal aliases/paths — blank line between groups"
+  - "Prefer named exports for libraries; use default export only when the module exposes a single primary function or class"
+
+verification:
+  - check: ESLint passes with project rules
+    command: npx eslint .
+  - check: Prettier reports no changes needed
+    command: npx prettier --check .
+  - check: JSDoc present on all exported symbols
+
+examples:
+  - scenario: Function with long parameter list
+    input: "function createColor(name, hexValue, red, green, blue, isCustom) {"
+    output: |
+      /**
+       * Create a color record from component values.
+       * @param {string} name
+       * @param {string} hexValue
+       * @param {number} red
+       * @param {number} green
+       * @param {number} blue
+       * @param {boolean} isCustom
+       * @returns {ColorRecord}
+       */
+      function createColor(
+          name,
+          hexValue,
+          red,
+          green,
+          blue,
+          isCustom,
+      ) {
+          // ...
+      }
+
+  - scenario: Aligned constants
+    input: "const srgbThreshold = 0.04045; const srgbDivisor = 12.92; const srgbOffset = 0.055;"
+    output: |
+      const SRGB_THRESHOLD = 0.04045;
+      const SRGB_DIVISOR   = 12.92;
+      const SRGB_OFFSET    = 0.055;
+
+  - scenario: Compound conditional with aligned conditions
+    input: "if (envCfg.deploy.slotSettings && envCfg.deploy.slotName && envCfg.deploy.slotName.trim()) {"
+    output: |
+      if (envCfg.deploy.slotSettings
+              && envCfg.deploy.slotName
+              && envCfg.deploy.slotName.trim()) {
+          // ...
+      }
+
+  - scenario: Method chain formatting
+    input: "const results = items.filter(x => x.active).sort((a,b) => a.name.localeCompare(b.name)).map(x => toDto(x));"
+    output: |
+      const results = items
+          .filter((x) => x.active)
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((x) => toDto(x));
+
+tags:
+  - javascript
+  - js
+  - formatting
+  - style
+  - conventions
+  - mixin

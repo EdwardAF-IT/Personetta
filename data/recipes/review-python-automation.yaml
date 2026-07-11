@@ -1,0 +1,17 @@
+name: review-python-automation
+description: >
+  Review Python automation and data-processing scripts with attention to
+  idempotency, safety of destructive/source-mutating operations, error isolation
+  over large batches, readability, and performance. Identify issues and suggest
+  concrete improvements.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/automation-engineer
+  - language-specific/python/python-developer
+
+mixins:
+  - readability-focused
+  - maintainability-focused
+  - performance-focused
+  - language-specific/python/python-formatting-standards

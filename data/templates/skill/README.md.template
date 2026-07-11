@@ -1,0 +1,53 @@
+# ${skill_name} Skill
+
+This skill provides a structured workflow for ${skill_description}.
+
+## Usage
+
+Invoke this skill in your AI assistant:
+
+**Copilot**: `${copilot_invocation}`  
+**Claude**: `${claude_invocation}`  
+**Cursor**: `${cursor_invocation}`
+
+## Common Use Cases
+
+${common_use_cases}
+
+## What to Expect
+
+${what_to_expect}
+
+## Troubleshooting
+
+${troubleshooting}
+
+## Related Skills
+
+${related_skills}
+
+## Files in This Skill
+
+- **SKILL.md**: Main skill definition with procedure and guidelines
+- **references/criteria.md**: Detailed guidelines and best practices (if applicable)
+- **references/checklist.md**: Verification checklist (if applicable)
+${scripts_info}
+
+## Getting Help
+
+If the skill doesn't work as expected, check:
+1. The SKILL.md file for the complete procedure
+2. The references/ directory for supporting materials
+3. Your AI assistant's skill documentation
+
+For common issues, see the Troubleshooting section above.
+
+## Regenerating This Skill
+
+This skill was generated from personetta recipes. To update:
+
+```bash
+personetta skill <recipe-pattern> --name ${skill_name} --force
+```
+
+See the personetta documentation for details on skill generation.

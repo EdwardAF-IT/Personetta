@@ -1,0 +1,16 @@
+name: design-data-pipeline
+description: >
+  Architect Python data and automation pipelines — ingestion, transformation,
+  storage choice (flat file vs embedded vs server DB), idempotency, and resumable
+  orchestration — with focus on scalability, maintainability, and performance.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/automation-engineer
+  - language-specific/python/python-developer
+
+mixins:
+  - scalability-focused
+  - maintainability-focused
+  - performance-focused
+  - language-specific/python/python-formatting-standards

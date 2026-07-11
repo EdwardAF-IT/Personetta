@@ -1,0 +1,12 @@
+name: design-python-backend-scale
+description: >
+  Architect a Python backend system — service boundaries, API contracts,
+  data flow, and infrastructure considerations with scalability in mind.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - scalability-focused

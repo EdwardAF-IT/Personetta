@@ -1,0 +1,10 @@
+name: design-game-complete
+description: >
+  Comprehensive game design combining mechanics design, systems balance, and
+  level design. Use for holistic game design tasks that span vision, numbers,
+  and concrete level content.
+
+compose:
+  - base/lifecycle/game-designer
+  - base/lifecycle/systems-designer
+  - base/lifecycle/level-designer

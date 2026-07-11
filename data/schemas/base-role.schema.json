@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Base Role Definition",
+  "description": "Schema for AI agent role definitions. Each role is a composable building block that contributes one dimension of behavior (lifecycle stage, architectural layer, language expertise, or quality concern).",
+  "type": "object",
+  "required": ["name", "description", "version", "type", "responsibilities"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Unique identifier for this role. Lowercase with hyphens."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Clear, concise description of what this role does and when to use it."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version. Bump major for breaking responsibility changes, minor for new guidelines, patch for wording fixes."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["lifecycle", "layer", "language", "mixin", "system"],
+      "description": "Role category. Determines how this role composes with others: lifecycle (what work), layer (where in the stack), language (what ecosystem), mixin (crosscutting concern), system (baseline/router infrastructure)."
+    },
+    "responsibilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "What this role actively does. Each item should be a concrete, actionable statement.",
+      "x-merge-strategy": "union"
+    },
+    "non_responsibilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explicit boundaries. What this role does NOT do. Used for conflict detection: an item cannot appear in both responsibilities and non_responsibilities of a composed role.",
+      "x-merge-strategy": "union"
+    },
+    "guidelines": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Actionable rules, preferences, and principles. Should be specific enough to influence decisions, not vague platitudes.",
+      "x-merge-strategy": "union-dedup"
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "purpose"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tool name as typically invoked (e.g., 'pytest', 'dotnet format')."
+          },
+          "purpose": {
+            "type": "string",
+            "description": "What this role uses the tool for (e.g., 'unit testing', 'code formatting')."
+          },
+          "when": {
+            "type": "string",
+            "description": "Selection guidance — when to reach for this tool vs alternatives (e.g., 'primary linter; supersedes flake8 and isort'). Helps simpler models choose the right tool."
+          }
+        }
+      },
+      "description": "Tools this role should prefer. The role says when/why to use the tool; it does not re-document how the tool works.",
+      "x-merge-strategy": "union-by-key",
+      "x-merge-key": "name"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scenario"],
+        "additionalProperties": false,
+        "properties": {
+          "scenario": {
+            "type": "string",
+            "description": "Brief description of the situation."
+          },
+          "input": {
+            "type": "string",
+            "description": "What the role receives (code snippet, question, artifact)."
+          },
+          "output": {
+            "type": "string",
+            "description": "What the role produces (review comment, code, design decision)."
+          }
+        }
+      },
+      "description": "Concrete examples of the role in action. Demonstrates expected behavior for ambiguous situations.",
+      "x-merge-strategy": "append"
+    },
+    "tone": {
+      "type": "string",
+      "description": "Communication style. Typically set by lifecycle roles; layer, language, and mixin roles usually omit this to inherit from the lifecycle role.",
+      "x-merge-strategy": "priority"
+    },
+    "output_format": {
+      "type": "string",
+      "description": "How to structure the output. Like tone, typically set by lifecycle roles.",
+      "x-merge-strategy": "priority"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Additional structured context: framework preferences, conventions, environment details. Free-form key-value pairs.",
+      "x-merge-strategy": "deep-merge"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags for discovery and filtering.",
+      "x-merge-strategy": "union"
+    },
+    "verification": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check"],
+        "additionalProperties": false,
+        "properties": {
+          "check": {
+            "type": "string",
+            "description": "What to verify (e.g., 'Code passes linting', 'Business logic separated from handlers')."
+          },
+          "command": {
+            "type": "string",
+            "description": "Shell command to run for automated verification. Omit for checks that require AI self-assessment."
+          }
+        }
+      },
+      "description": "Concrete checks to verify role compliance. Checks with a command are run automatically; checks without a command are self-assessed by the AI.",
+      "x-merge-strategy": "union-by-key",
+      "x-merge-key": "check"
+    },
+    "model_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min_tier": {
+          "type": "string",
+          "enum": ["fast", "standard", "advanced"],
+          "description": "Minimum model capability tier. 'fast' = small/cheap models (Haiku-class), 'standard' = mid-range (Sonnet-class), 'advanced' = frontier (Opus-class)."
+        },
+        "reasoning": {
+          "type": "string",
+          "enum": ["none", "standard", "extended"],
+          "description": "Recommended reasoning depth. 'none' = straightforward tasks, 'standard' = analysis and tradeoffs, 'extended' = deep multi-step reasoning."
+        }
+      },
+      "description": "Minimum model requirements for this role to function well. The composer aggregates across all roles (taking the max) and adds a composition complexity bonus. Default is fast/none."
+    }
+  }
+}

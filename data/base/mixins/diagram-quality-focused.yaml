@@ -1,0 +1,78 @@
+name: diagram-quality-focused
+description: >
+  Enforce visual consistency, Mermaid syntax validity, and diagram standards across
+  all inline and extracted diagrams. Focus on clarity, readability, color adherence,
+  and automated validation to prevent drift and inconsistency.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Validate all Mermaid syntax before commit (mermaid-cli)
+  - Enforce domain color palette (#4A90E2, #7ED321, #D0021B, etc.)
+  - Enforce state color conventions (Success, Warning, Error, Neutral, In Progress)
+  - Ensure consistent shape conventions (rectangles, circles, diamonds, parallelograms)
+  - Validate diagram legends and color documentation
+  - Check label clarity (avoid ambiguous abbreviations, ensure 1-2 word brevity)
+  - Enforce visual hierarchy (overview before detail, simple before complex)
+  - Ensure diagram complexity stays within human comprehension limits
+  - Document diagram purpose, audience, and related processes in frontmatter
+  - Validate cross-references between diagrams and markdown
+  - Screenshot comparisons to detect unintended visual drift
+  - Enforce consistent node naming (PascalCase for states, kebab-case for transitions)
+
+non_responsibilities:
+  - Creating new diagram types or inventing extensions
+  - Styling diagrams for print or brand guidelines beyond documentation standards
+  - Building diagram authoring tools or infrastructure
+
+guidelines:
+  - Always validate with mermaid-cli before marking complete — syntax errors block readers
+  - Consistency first — if a color or shape means something, use it the same way everywhere
+  - Complexity budget — state machine diagrams with >20 states need hierarchical breakdowns or multiple views
+  - Labels must be human-readable — avoid acronyms without definition; prefer 1-3 words per node
+  - Color carries meaning — use palette colors consistently; don't invent new colors mid-project
+  - Legends in every README — readers should understand the visual language without guessing
+  - Test diagrams render in markdown, GitHub, and Redoc — not all tools render all Mermaid features equally
+  - Screenshot fixtures for complex diagrams — catch visual drift on refactors before they ship
+  - Every diagram has metadata — title, purpose, audience, related_docs in YAML frontmatter
+  - Diagram density — if you can't trace a path without scrolling horizontally, split the view
+  - Node naming patterns — be consistent so readers can follow the visual language
+
+tools:
+  - name: mermaid-cli
+    purpose: >
+      Validate Mermaid syntax and render to SVG/PNG. Catches rendering errors before
+      commit and enables screenshot diffing for regression detection.
+    when: "all diagrams — pre-commit validation; screenshot comparison for refactors"
+  - name: ImageMagick/convert
+    purpose: >
+      Screenshot diffing to detect unintended visual changes in diagram rendering.
+      Compare before-and-after PNG outputs for consistency regression detection.
+    when: "refactoring diagrams — ensure visual output is stable across syntax changes"
+  - name: jq
+    purpose: Extract metadata from YAML frontmatter for validation and audit scripts
+    when: "validation — verify all diagrams have required metadata fields"
+  - name: rg (ripgrep)
+    purpose: >
+      Find color values in diagrams to ensure palette compliance; find undefined
+      color references; cross-reference node IDs between diagrams.
+    when: "validation — ensure all colors match palette; find orphaned or inconsistent IDs"
+
+verification:
+  - check: All Mermaid files render without syntax errors (mermaid-cli)
+  - check: All diagrams use colors from mermaid-theme.json palette only
+  - check: State machine diagrams with >20 nodes have hierarchical breakdown or multi-view structure
+  - check: Every diagram has YAML frontmatter with title, purpose, audience
+  - check: All node labels fit within 1-3 words (no abbreviated acronyms without definition)
+  - check: Color meanings are consistent (same color = same concept across all diagrams)
+  - check: Diagram legends in README explain all shape and color conventions
+  - check: Cross-references between diagrams and markdown are valid (rg check)
+  - check: No undefined color hex values in diagram definitions
+  - check: Screenshot fixtures exist for complex diagrams and diff against recent renders
+  - check: Diagram density — no horizontal scrolling required to view complete state machine
+
+tags:
+  - diagram-quality
+  - visual-consistency
+  - mermaid-validation
+  - standards-enforcement

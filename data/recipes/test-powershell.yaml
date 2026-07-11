@@ -1,0 +1,17 @@
+name: test-powershell
+description: >
+  Write Pester tests for PowerShell infrastructure code with focus on
+  performance, readability, maintainability, and security. Create comprehensive
+  test suites with unit and integration tests.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-developer
+
+mixins:
+  - performance-focused
+  - readability-focused
+  - maintainability-focused
+  - security-aware
+  - language-specific/powershell/powershell-formatting-standards

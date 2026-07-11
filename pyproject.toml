@@ -1,0 +1,188 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "personetta"
+version = "1.0.1"
+description = "Composable AI role system with recipe-based generation for Cursor, Copilot, Claude, and Cline"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Edward Fry" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Code Generators",
+]
+dependencies = [
+    "pyyaml>=6.0",
+    "jsonschema>=4.20",
+]
+
+[project.scripts]
+personetta = "generator.cli.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.0",
+    "setuptools>=77",
+    "wheel>=0.40",
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+    "pytest-xdist>=3.0",
+    "pytest-timeout>=2.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+    "types-PyYAML>=6.0",
+    "types-jsonschema>=4.20",
+    "black>=24.0",
+    "bandit>=1.7",
+    "pylint>=3.0",
+    "mutmut>=3.0",
+    "radon>=6.0",
+    "cognitive-complexity>=1.3",
+]
+tooling = [
+    "httpx>=0.27",
+    "ruamel.yaml>=0.18",
+    "packaging>=23.0",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src", "."]
+include = ["generator*", "data*", "scripts*"]
+exclude = ["tests*", "tooling*"]
+
+# Include data directory files
+[tool.setuptools.package-data]
+data = ["**/*.yaml", "**/*.json", "**/*.md", "**/*.txt", "**/*.template"]
+scripts = ["*.ps1", "*.sh", "*.py", "README.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]  # Add src/ to Python path for imports
+cache_dir = ".tool-stuff/.pytest_cache"
+addopts = [
+    "-n=auto",              # Auto-detect CPUs and run tests in parallel
+    "--maxprocesses=12",    # Use all available cores
+    "--dist=loadgroup",     # Group tests by xdist_group marker for controlled parallelism
+    "--strict-markers",     # Enforce marker definitions
+    "--tb=short",           # Shorter tracebacks by default
+]
+markers = [
+    # Test levels
+    "unit: Fast isolated unit tests (<100ms each)",
+    "integration: Component integration tests (100ms-1s)",
+    "e2e: End-to-end workflow tests (1-10s)",
+    
+    # Speed tiers (cumulative - lengthy includes slow, slow includes medium, medium includes fast)
+    "fast: Fast tests (<1s)",
+    "medium: Medium tests (1-10s)",
+    "slow: Slow tests (10s-60s)",
+    "lengthy: Very slow tests (>60s)",
+    
+    # Functional areas
+    "cli: Command-line interface tests",
+    "core: Core business logic (loader, merger, formatter)",
+    "layouts: Layout/installation tests (cursor, copilot, claude, cline)",
+    "skills: Skill generation and management",
+    "validation: Validation and error detection",
+    "prompt_export: Prompt generation workflows",
+    
+    # Quality categories
+    "quality: Quality gate tests (linting, typing, complexity, formatting, coverage)",
+    "performance: Performance budget tests",
+    "security: Security-related tests",
+    "complexity: Code complexity guard tests (cyclomatic, size, coupling metrics)",
+    "workspace: Workspace organization and structure tests",
+    "conventions: Naming and organizational convention tests",
+    
+    # Behavior characteristics
+    "readonly: Tests that don't modify files (parallelizable)",
+    "modifying: Tests that modify code/files (run sequentially)",
+    "requires_real_project: Needs actual recipe files (not mocked)",
+    
+    # Special
+    "smoke: Quick smoke tests for CI fast feedback",
+    "regression: Regression tests for known issues",
+    
+    # Feature-specific markers
+    "audit_tooling: Tool corpus auditor subsystem (tracks obsolete Python tools)",
+    "transformation: Declarative to imperative prompt transformations (should→must, prefer→use)",
+]
+
+[tool.coverage.run]
+source = ["src/generator", "src/tooling"]
+parallel = true
+concurrency = ["multiprocessing"]
+omit = []
+
+[tool.coverage.report]
+fail_under = 90
+precision = 2
+show_missing = true
+skip_covered = false
+
+[tool.coverage.html]
+directory = ".tool-stuff/htmlcov"
+
+# Ruff linter configuration
+[tool.ruff]
+cache-dir = ".tool-stuff/.ruff_cache"
+
+# Mypy type checker configuration
+[tool.mypy]
+cache_dir = ".tool-stuff/.mypy_cache"
+exclude = ["language_specific"]
+
+# Black configuration - follows Edward's Python formatting standards
+[tool.black]
+line-length = 90
+target-version = ["py311", "py312", "py313"]
+skip-string-normalization = false
+
+# Bandit security scanner
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "venv", ".tox", ".tool-stuff"]
+skips = ["B101"]  # assert_used - common in tests
+
+# Pylint configuration
+[tool.pylint.main]
+max-line-length = 90
+jobs = 0  # Auto-detect CPUs for parallel linting
+
+[tool.pylint.messages_control]
+disable = [
+    "C0111",  # missing-docstring (some test helpers don't need them)
+    "R0903",  # too-few-public-methods (data classes, simple containers)
+    "R0913",  # too-many-arguments (CLI/config functions need many params)
+    "C0103",  # invalid-name (test functions use descriptive names)
+    "W0212",  # protected-access (tests need to access internals)
+    "R0801",  # duplicate-code (formatters share similar structure intentionally)
+    "W1203",  # logging-fstring-interpolation (f-strings in logging are fine)
+]
+
+[tool.pylint.format]
+max-line-length = 90
+
+[tool.pylint.design]
+max-args = 8
+max-attributes = 12
+min-similarity-lines = 10  # Require 10+ similar lines before flagging duplicates
+
+[tool.pylint.reports]
+output-format = "text"
+score = true

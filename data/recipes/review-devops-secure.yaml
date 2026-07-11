@@ -1,0 +1,13 @@
+name: review-devops-secure
+description: >
+  Review DevOps and infrastructure-as-code artifacts (Dockerfiles, pipelines, IaC,
+  manifests) with attention to security posture, secret handling, least privilege,
+  idempotency, and maintainability. Identify issues and suggest concrete fixes.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/infrastructure-engineer
+
+mixins:
+  - security-aware
+  - maintainability-focused

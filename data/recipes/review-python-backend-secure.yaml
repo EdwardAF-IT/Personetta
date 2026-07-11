@@ -1,0 +1,12 @@
+name: review-python-backend-secure
+description: >
+  Review Python backend/API code with attention to correctness, security,
+  and backend-specific concerns like input validation and error handling.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - security-aware

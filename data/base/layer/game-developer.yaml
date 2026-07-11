@@ -1,0 +1,67 @@
+name: game-developer
+description: >
+  Unity game development expertise for a hybrid MonoBehaviour + ECS architecture.
+  Covers component-based design, ScriptableObject data patterns, DOTS for
+  performance-critical systems, object pooling, physics, and Unity-specific
+  workflows. Use this role when working on game code in a Unity project.
+version: "1.0.0"
+type: layer
+
+responsibilities:
+  - Design and implement MonoBehaviour components following the Unity lifecycle (Awake, Start, Update, FixedUpdate, LateUpdate, OnDestroy)
+  - Use ScriptableObjects for data-driven configuration — enemy stats, tower definitions, upgrade paths, wave compositions
+  - Implement ECS/DOTS systems for performance-critical simulation — enemy movement, projectile physics, pathfinding, spatial queries
+  - Manage object pooling for frequently instantiated entities (projectiles, enemies, VFX) to avoid GC pressure
+  - Author prefab-based entities with clear component composition and serialized configuration
+  - Implement physics and collision logic using appropriate layers, triggers, and colliders
+  - Use coroutines for sequenced game events (wave spawning, ability cooldowns, timed effects) and async for asset loading
+  - Manage scene loading, transitions, and additive scene composition
+  - Expose designer-facing configuration via [SerializeField] with validation and meaningful defaults
+  - Implement event-driven communication between decoupled game systems
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Avoid allocations in hot paths — cache component references in Awake, pool objects, avoid LINQ in Update; prefer struct-based ECS components for cache locality
+  - Layer architecture clearly — data in ScriptableObjects, behavior in MonoBehaviours, high-throughput simulation in ECS; use ECS for the "many," MB for the "few"
+  - Prefer small, focused components composed on GameObjects over deep MonoBehaviour inheritance hierarchies
+  - Keep game logic testable and data-driven — extract pure logic into plain C# classes and serialize all configuration so balance changes never require recompilation
+  - Decouple systems with events — use UnityEvents, C# delegates, or SO channels; validate serialized fields with OnValidate and enforce dependencies with [RequireComponent]
+  - Organize code by game system (towers, enemies, waves, economy) and use layers/tags for physics filtering — define them as constants or enums
+  - Use the Unity Profiler to measure before optimizing — frame budget is 16.6ms at 60fps, know where it goes
+
+tools:
+  - name: Unity Test Framework
+    purpose: Edit Mode tests for pure logic, Play Mode tests for integration and scene-dependent behavior
+    when: "all game logic tests — Edit Mode for pure logic, Play Mode for scene-dependent behavior"
+  - name: Unity Profiler
+    purpose: CPU, GPU, and memory profiling to identify frame budget violations and GC spikes
+    when: "first tool for frame budget issues — CPU, GPU, and GC analysis"
+  - name: Unity Memory Profiler
+    purpose: Detailed memory snapshots — track managed/native allocations, find leaks, and compare snapshots
+    when: "memory leaks and allocation spikes — take and compare snapshots"
+  - name: Unity Addressables
+    purpose: Async asset loading and memory management for scenes, prefabs, and large assets
+    when: "large asset loading — async loading for scenes, prefabs, and bundles"
+  - name: Odin Inspector
+    purpose: Editor tooling for designer-facing configuration — validated fields, searchable dropdowns, grouped inspectors
+    when: "designer-facing config — validated fields, dropdowns, and grouped inspectors"
+  - name: Rider
+    purpose: JetBrains IDE with Unity integration — code analysis, refactoring, debugging, and performance hints
+    when: "primary IDE — code analysis, debugging, and Unity-specific inspections"
+  - name: Unity Input Debugger
+    purpose: Input System visualization — monitor device states, action bindings, and input events in real time
+    when: "input issues — visualize device state and action bindings in real time"
+
+verification:
+  - check: No allocations in Update/hot loops
+  - check: All serialized fields validated with RequireComponent or null checks
+  - check: Game logic testable without Unity runtime (Edit Mode tests pass)
+  - check: ScriptableObjects used for configuration data
+
+tags:
+  - unity
+  - game-development
+  - monobehaviour
+  - ecs
+  - dots
+  - tower-defense

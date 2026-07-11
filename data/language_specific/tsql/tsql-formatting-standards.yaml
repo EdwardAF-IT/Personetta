@@ -1,0 +1,147 @@
+name: tsql-formatting-standards
+description: >
+  Edward's personal T-SQL formatting and style standards. Extrapolated from
+  PowerShell formatting preferences — BEGIN/END placement mirrors brace rules,
+  visual alignment, parameter layout by complexity, explicit formatting, and
+  consistent commenting. Apply alongside the general tsql-developer role
+  to enforce these conventions.
+version: "1.0.0"
+type: mixin
+model_requirements:
+  min_tier: standard
+  reasoning: none
+
+responsibilities:
+  - Enforce consistent BEGIN/END placement rules based on block length and conditional complexity
+  - Enforce parameter and column list formatting rules based on count and line length
+  - Enforce visual alignment of similar declarations, assignments, and expressions
+  - Enforce string building conventions (CONCAT/FORMAT, not concatenation)
+  - Enforce comment and documentation standards for stored procedures
+
+guidelines:
+  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
+  # Procedure structure
+  - "Every stored procedure must have a header block comment with procedure name, author, created date, description, and modification history table"
+  - Always explicitly define the result set — never rely on implicit column names; constants in ALL_CAPS — @MAX_RETRIES, @DEFAULT_STATUS
+
+  # Parameter formatting
+  - "Short parameter list (few params, short names): keep on one line; longer lists: one per line, indented, with leading comma, types and defaults column-aligned"
+  - Always put a space between parameter name and data type; add a short inline comment for parameters whose purpose isn't obvious
+
+  # BEGIN/END placement (mirrors PS brace rules)
+  - "BEGIN on its own line, aligned with the keyword — never at end of conditional line; END aligns with the opening keyword"
+  - "Short conditional (single comparator) + short body: inline without BEGIN/END — IF @id IS NULL RETURN;; non-short conditional + short body: body on one line below, indented"
+  - "Non-short conditional with longer comparators: comparators aligned on separate lines; non-short block (2+ statements): BEGIN on next line, aligned with IF/WHILE/TRY"
+  - Apply the same BEGIN/END placement rules to IF, WHILE, TRY/CATCH, and nested blocks
+
+  # SELECT list formatting
+  - "Short SELECT (2-3 short columns): one line; longer SELECT: keyword on its own line, columns on next line indented, one per line with leading comma"
+  - "Alias style: use Assignment = Expression — ProjectEstimateId = pe.Id — for clarity and vertical alignment"
+
+  # WHERE clause formatting
+  - "WHERE keyword with the first predicate on the same line; continuation predicates: leading AND/OR on next line, indented and aligned vertically"
+  - "Compound conditions with longer comparators: align each condition on its own line"
+
+  # JOIN formatting
+  - "Each JOIN on its own line, indented under FROM; ON clause on the same line when it fits within ~90 columns"
+  - "Multi-condition ON: first condition on JOIN line, additional conditions on next line with AND aligned"
+
+  # Procedure calls
+  - "Short calls (<4 params, fits ~90 columns): one line; long calls: EXECUTE on first line, parameters on subsequent lines indented with leading comma"
+  - Always use named parameters in EXECUTE calls — never positional
+
+  # Alignment
+  - Align similar DECLARE statements along data type/default, SET assignments along =, column aliases in SELECT lists, and parameter declarations for visual consistency
+  - Align parameters of consecutive similar EXECUTE calls for visual consistency
+
+  # Math and complex expressions
+  - Break long expressions across lines, align operands for clarity; use parentheses to make operator precedence explicit
+
+  # String building
+  - "Use CONCAT() for combining strings (never + concatenation — CONCAT handles NULLs gracefully); use FORMAT() for number and date formatting"
+
+  # Operators and comparisons
+  - "Always put spaces around operators (=, <>, <, >, +, -, *, /) and comparison operators in WHERE clauses"
+  - "Null comparisons: always use IS NULL / IS NOT NULL — never = NULL; prefer variable IS NULL over ISNULL(@var, sentinel) = sentinel"
+
+  # Inline comments
+  - "Inline comments start with a capital letter; non-trivial code must have a descriptive comment — end-of-line if short, above if longer; use -- for single-line, /* */ for multi-line blocks/headers only"
+
+  # Line width
+  - Target ~90 columns maximum line length; break long lines at logical points — before AND/OR, after commas, before JOIN
+
+verification:
+  - check: Keywords are uppercase (SELECT, FROM, WHERE, JOIN)
+  - check: One column per line in SELECT statements
+  - check: Consistent indentation (4 spaces)
+  - check: Commas at end of line (trailing style)
+
+examples:
+  - scenario: Multi-line block with compound conditional
+    input: "IF @x > 1 AND @y < 5 BEGIN SET @result = @x + @y; PRINT 'Checking range'; END"
+    output: |
+      IF @x > 1 AND @y < 5
+      BEGIN
+          SET @result = @x + @y;
+          PRINT 'Checking range';
+      END;
+
+  - scenario: Short conditional with single statement
+    input: "IF @id IS NULL BEGIN RETURN; END"
+    output: |
+      IF @id IS NULL RETURN;
+
+  - scenario: Compound conditional with aligned comparators
+    input: "IF @slotSettings IS NOT NULL AND @slotName IS NOT NULL AND LEN(LTRIM(RTRIM(@slotName))) > 0"
+    output: |
+      IF @slotSettings IS NOT NULL
+          AND @slotName IS NOT NULL
+          AND LEN(LTRIM(RTRIM(@slotName))) > 0
+      BEGIN
+          -- ...
+      END;
+
+  - scenario: Aligned parameter declarations
+    input: "CREATE PROCEDURE spGetEstimates @updatedFrom DATETIME2(2) = NULL, @updatedTo DATETIME2(2) = NULL, @estimateId INT = NULL"
+    output: |
+      CREATE PROCEDURE dbo.spGetEstimates
+           @updatedFrom    DATETIME2(2)    = NULL
+          ,@updatedTo      DATETIME2(2)    = NULL
+          ,@estimateId     INT             = NULL
+      AS
+
+  - scenario: Aligned variable declarations
+    input: "DECLARE @threshold DECIMAL(10,5); DECLARE @divisor DECIMAL(10,5); DECLARE @offset DECIMAL(10,5); SET @threshold = 0.04045; SET @divisor = 12.92; SET @offset = 0.055;"
+    output: |
+      DECLARE
+           @threshold  DECIMAL(10,5)
+          ,@divisor    DECIMAL(10,5)
+          ,@offset     DECIMAL(10,5);
+
+      SET @threshold = 0.04045;
+      SET @divisor   = 12.92;
+      SET @offset    = 0.055;
+
+  - scenario: Long EXECUTE call with named parameters
+    input: "EXECUTE spProcessWorkOrder @WO = @WO, @FormID = @FormID, @FileID = @FileID, @ModBy = @ModBy, @Completed = 'N'"
+    output: |
+      EXECUTE spProcessWorkOrder
+           @WO        = @WO
+          ,@FormID    = @FormID
+          ,@FileID    = @FileID
+          ,@ModBy     = @ModBy
+          ,@Completed = 'N';
+
+  - scenario: String building
+    input: "SET @msg = 'Error for WO ' + CAST(@woId AS VARCHAR) + ' on ' + CAST(GETDATE() AS VARCHAR)"
+    output: |
+      SET @msg = CONCAT(
+          'Error for WO ', @woId,
+          ' on ', FORMAT(GETDATE(), 'yyyy-MM-dd'));
+
+tags:
+  - tsql
+  - formatting
+  - style
+  - conventions
+  - mixin

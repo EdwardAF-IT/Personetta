@@ -1,0 +1,20 @@
+# Guidelines and Criteria
+
+These guidelines provide detailed best practices and criteria for this workflow.
+
+## Guidelines
+
+${guidelines}
+
+## How to Use These Guidelines
+
+1. **Review before starting**: Familiarize yourself with the guidelines before beginning the workflow
+2. **Reference during work**: Check relevant guidelines as you complete each step
+3. **Verify at completion**: Use these as a checklist to confirm you followed best practices
+
+## Adapting Guidelines
+
+These guidelines come from battle-tested practices, but may need adjustment for your specific context:
+- Consider your team's conventions and standards
+- Adapt tools and approaches to your tech stack
+- Maintain the spirit of the guideline even if you modify the implementation

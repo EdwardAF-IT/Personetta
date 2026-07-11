@@ -1,0 +1,44 @@
+---
+name: personetta-current
+description: >-
+  Reports the active Personetta recipe id using the installed CLI. The host
+  agent (Cursor here) is auto-detected. Use when the user asks for their current
+  persona, active recipe, which Personetta role is on, or "what recipe am I
+  using".
+---
+
+# Personetta — show current active recipe
+
+## Goal
+
+Tell the user the **active recipe id** Personetta last applied for the host
+agent (global install).
+
+## Running the CLI (no repository required)
+
+Personetta runs from its installed CLI; you do **not** need a checkout. Use the
+first invocation that works:
+
+1. `personetta <args>` — the installed console script.
+2. `python -m generator <args>` — module fallback when `personetta` is not on
+   PATH but the package is installed.
+
+## Command
+
+```bash
+personetta current
+```
+
+The format is **auto-detected** from the host agent. To override, append
+`--format <cursor|claude|copilot|cline>`. The command prints
+`Active <format> recipe: <recipe-id>`.
+
+## If there is no active recipe
+
+The command reports that none is set and suggests
+`personetta install '*' --format cursor`. Offer to run it.
+
+## Note
+
+After `set-active`, Cursor picks up **Settings > Rules** after **Reload Window**
+if the app was already open.

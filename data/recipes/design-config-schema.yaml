@@ -1,0 +1,13 @@
+name: design-config-schema
+description: >
+  Design configuration structures and schemas — the shape of IaC modules, manifest
+  layouts, JSON Schema/OpenAPI contracts, and tool or agent definition formats —
+  with focus on extensibility, composability, and maintainability.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/configuration-author
+
+mixins:
+  - extensibility-focused
+  - maintainability-focused

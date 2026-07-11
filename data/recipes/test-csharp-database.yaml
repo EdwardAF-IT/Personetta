@@ -1,0 +1,9 @@
+name: test-csharp-database
+description: >
+  Write tests for C# data access code — repository patterns, EF Core
+  interactions, migration verification, and data integrity checks.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/database-specialist
+  - language-specific/csharp/csharp-developer

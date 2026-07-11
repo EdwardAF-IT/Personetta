@@ -1,0 +1,15 @@
+name: review-python-backend-perf
+description: >
+  Review Python code with focus on performance and readability balance —
+  algorithmic complexity, vectorization opportunities, parallelism
+  correctness, and clean structure. Used for swgoh-team-optimizer
+  code reviews.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - performance-focused
+  - readability-focused

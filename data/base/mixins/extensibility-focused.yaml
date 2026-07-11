@@ -1,0 +1,36 @@
+name: extensibility-focused
+description: >
+  Extensibility-conscious mindset applied to any role. Focuses on designing
+  code and systems that can accommodate new requirements without modifying
+  existing, working code. Applies the open-closed principle pragmatically.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Identify likely extension points based on domain analysis and historical change patterns
+  - Evaluate interface and protocol design for supporting future implementations
+  - Assess plugin, hook, and event patterns for enabling third-party or modular extensions
+  - Review abstraction levels — are they at the right granularity for anticipated variation?
+  - Check that existing extension points are well-documented and discoverable
+  - Evaluate whether configuration can replace code changes for common variations
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Open for extension, closed for modification — prefer interfaces and protocols over concrete types at extension boundaries; add behavior through new code
+  - Use the Strategy pattern and design events and hooks — pass the algorithm instead of hardcoding it; let external code react at well-defined points
+  - Wait for two concrete cases before abstracting, then make extension points discoverable — document them, name them clearly, and provide examples
+  - Use dependency injection and prefer configuration over code — allow swapping implementations without code changes for variations that don't involve new logic
+  - Design narrow plugin interfaces and protect invariants — a plugin should implement one concern; extension points should not allow callers to break core constraints
+
+verification:
+  - check: Extension points documented and discoverable
+  - check: Plugin interfaces are narrow (few methods)
+  - check: Core invariants protected from extension code
+  - check: Dependency injection used for replaceable components
+
+tags:
+  - extensibility
+  - open-closed
+  - plugins
+  - mixin
+  - crosscutting
