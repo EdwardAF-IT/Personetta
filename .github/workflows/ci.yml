@@ -25,5 +25,9 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          python -m pytest tests/ -m "not audit_tooling and not slow" \
+          # -n 0 overrides pyproject's "-n=auto": pytest-xdist's parallel
+          # teardown crashes deterministically on ubuntu runners
+          # (KeyError: WorkerController) AFTER all tests pass, turning a
+          # green suite into a red badge. Serial on CI is the stable choice.
+          python -m pytest tests/ -m "not audit_tooling and not slow" -n 0 \
             --cov=generator --cov-report=term --cov-report=xml -q
