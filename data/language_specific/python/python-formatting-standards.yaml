@@ -1,0 +1,115 @@
+name: python-formatting-standards
+description: >
+  Edward's personal Python formatting and style standards. Extrapolated from
+  PowerShell formatting preferences — visual alignment, parameter layout
+  rules, explicit formatting, and consistent documentation. Apply alongside
+  the general python-developer role to enforce these conventions.
+version: "1.0.0"
+type: mixin
+model_requirements:
+  min_tier: standard
+  reasoning: none
+
+responsibilities:
+  - Enforce consistent function and parameter formatting based on complexity
+  - Enforce visual alignment of similar assignments, arguments, and expressions
+  - Enforce string formatting conventions favoring explicit format methods
+  - Enforce docstring and inline comment standards
+  - Enforce line-breaking and continuation rules for readability
+
+guidelines:
+  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
+  # Function and class structure
+  - "Every function and class must have a docstring with at least a one-line summary; non-trivial functions include Args, Returns, and Raises sections (Google style)"
+  - Always include a return statement, even if returning None — make the return explicit
+  - "Constants in UPPER_SNAKE_CASE; inline comments start with a capital letter and two spaces before #; non-trivial code must have a descriptive comment — end-of-line if short, above if longer"
+
+  # Parameter formatting
+  - "Short parameter list (fits within ~90 columns): keep on one line; longer lists: one parameter per line, indented, closing parenthesis aligned with def"
+  - "Always use type hints for parameters and return types; use keyword arguments for boolean parameters at call sites — load(use_cache=True) not load(True)"
+
+  # Conditional structure
+  - "Short conditional + short body may use single line — if x == 1: return \"one\"; compound conditionals: break each condition onto its own line, aligned, operator at start of continuation"
+  - "Prefer early returns (guard clauses) to reduce nesting; avoid nested ternaries — use if/elif/else beyond a simple a if cond else b"
+
+  # Function calls
+  - "Short calls (<4 args, fits within ~90 columns): keep on one line; long calls: one argument per line, indented; fluent-style chained calls: one method per line, dot-aligned"
+
+  # Alignment
+  - Align similar variable assignments along =, dictionary entries along :, consecutive function call parameters, and multi-line .format() arguments vertically for visual consistency
+
+  # Line length and breaking
+  - Target ~90 columns maximum line length; use implicit line continuation inside parentheses, brackets, and braces — avoid backslash continuation
+  - "Comprehensions: inline if they fit, else break with each clause on its own line; multi-line expressions: break after operators, align operands"
+
+  # String formatting
+  - "Use f-strings for simple cases (1-2 variables); use .format() for 3+ variables, alignment specifiers, or repeated placeholders"
+  - "Never use % formatting or + concatenation; use triple-quoted strings (\"\"\") for multi-line content"
+
+  # Operators and spacing
+  - "Spaces around binary operators (=, ==, !=, +, -, and, or, in, not in); no spaces around = in keyword arguments or default parameter values"
+  - "None comparisons: always is None / is not None; boolean checks: prefer if items: over if len(items) > 0:"
+
+  # Imports
+  - "Group imports: standard library, third-party, local — blank line between groups; one import per line; prefer absolute imports over relative"
+
+verification:
+  - check: Code passes linting
+    command: ruff check .
+  - check: Code is formatted
+    command: black --check .
+  - check: Imports are sorted
+    command: ruff check --select I .
+  - check: Docstrings present on all public functions and classes
+
+examples:
+  - scenario: Function with long parameter list
+    input: "def create_color(name: str, hex_value: str, red: int, green: int, blue: int, is_custom: bool) -> ColorRecord:"
+    output: |
+      def create_color(
+          name: str,
+          hex_value: str,
+          red: int,
+          green: int,
+          blue: int,
+          is_custom: bool,
+      ) -> ColorRecord:
+          """Create a new color record from component values."""
+          ...
+
+  - scenario: Aligned assignments
+    input: "srgb_threshold = 0.04045; srgb_divisor = 12.92; srgb_offset = 0.055"
+    output: |
+      SRGB_THRESHOLD = 0.04045
+      SRGB_DIVISOR   = 12.92
+      SRGB_OFFSET    = 0.055
+
+  - scenario: Compound conditional with aligned conditions
+    input: "if env_cfg.deploy.slot_settings and env_cfg.deploy.slot_name and env_cfg.deploy.slot_name.strip():"
+    output: |
+      if (env_cfg.deploy.slot_settings
+              and env_cfg.deploy.slot_name
+              and env_cfg.deploy.slot_name.strip()):
+          ...
+
+  - scenario: Aligned consecutive function calls
+    input: "print(f'Red: {red}'); print(f'Green: {green}'); print(f'Blue: {blue}')"
+    output: |
+      print("Red   : {0}".format(red))
+      print("Green : {0}".format(green))
+      print("Blue  : {0}".format(blue))
+
+  - scenario: Long math expression
+    input: "chroma = math.sqrt(lab.a * lab.a + lab.b * lab.b)"
+    output: |
+      chroma = math.sqrt(
+          (lab.a * lab.a) +
+          (lab.b * lab.b)
+      )
+
+tags:
+  - python
+  - formatting
+  - style
+  - conventions
+  - mixin

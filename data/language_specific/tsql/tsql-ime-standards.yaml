@@ -1,0 +1,190 @@
+name: tsql-ime-standards
+description: >
+  IME SoloJet T-SQL formatting and style standards. Derived from existing
+  stored procedures across dbo, hss, and rpt schemas. Codifies the modern
+  house style and makes definitive choices where legacy code is inconsistent.
+  Apply alongside database-specialist for IME database work.
+version: "1.0.0"
+type: mixin
+model_requirements:
+  min_tier: standard
+  reasoning: none
+
+responsibilities:
+  - Enforce consistent keyword casing and formatting across all T-SQL code
+  - Enforce leading comma placement in parameter lists, SELECT lists, and INSERT columns
+  - Enforce standard stored procedure structure including preamble, TRY/CATCH, and transactions
+  - Enforce consistent naming for procedures, parameters, variables, and objects
+  - Enforce proper JOIN syntax, WHERE clause formatting, and alias conventions
+  - Enforce error handling and transaction management patterns
+
+guidelines:
+  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
+  # Keyword casing
+  - "All SQL keywords, boolean operators (AND, OR, NOT, IN, EXISTS, BETWEEN, LIKE, IS NULL), and data types in UPPERCASE"
+  - Function names in UPPERCASE when built-in — ISNULL, CAST, CONVERT, GETDATE, STRING_AGG, CONCAT
+
+  # Indentation
+  - "Use 4 spaces (never tabs); indent procedure body one level inside BEGIN TRY; indent JOIN clauses under FROM, ON on the same line as JOIN, WHERE predicates under WHERE"
+
+  # Comma placement
+  - "Use leading commas for all multi-line lists (parameters, SELECT columns, INSERT columns, VALUES); align leading commas vertically; first item has a space where subsequent items have a comma"
+
+  # SELECT list formatting
+  - "SELECT keyword on its own line, columns on next line indented, one column per line beyond 2-3 short columns"
+  - "Use Assignment = Expression for aliased columns — ProjectEstimateId = pe.Id; reserve expr AS Alias only for table/subquery aliases"
+
+  # JOIN formatting
+  - "Use explicit JOIN syntax exclusively (never comma-separated FROM); qualify JOIN type explicitly — INNER JOIN, LEFT JOIN, CROSS JOIN — never bare JOIN"
+  - "Each JOIN on its own line, indented under FROM; ON clause on same line when it fits; multi-condition ON: first on JOIN line, additional on next line with AND aligned"
+
+  # WHERE clause formatting
+  - "WHERE keyword on its own line or with first predicate; continuation predicates: leading AND/OR on next line, indented under WHERE, aligned vertically; never trailing AND/OR"
+
+  # Stored procedure naming
+  - "Prefix all stored procedures with sp + PascalCase — spGetWorkOrder; name pattern: sp + Verb + Entity + Qualifier — spProductDetailsForExportGetByIds"
+  - Always schema-qualify procedure names — hss.spProjectEstimateItemsClone, dbo.spCreateFile
+
+  # Parameter naming
+  - "Use @camelCase for parameters; align declarations (name, type, default) in columns; use leading commas with first parameter indented with a space"
+
+  # Variable naming
+  - "Use @camelCase for local variables; use UPPER_SNAKE_CASE for constants or config-like variables that don't change — @MAX_RETRY_COUNT"
+
+  # Table and column naming
+  - "hss schema: PascalCase singular table names — Projects, Products, WorkOrders; column names: PascalCase; primary key: always Id (INT IDENTITY)"
+  - "Foreign key columns: Entity_Id with underscore — WorkOrder_Id, ProductCategory_Id; always bracket-quote reserved words — [Value], [Key]"
+  - Avoid prefixes like tbl_ on table names
+
+  # Standard procedure structure
+  - "Header block comment with procedure name, author, created date, description, modification history; SET preamble: NOCOUNT ON, XACT_ABORT ON, ANSI_NULLS ON, QUOTED_IDENTIFIER ON (NUMERIC_ROUNDABORT OFF for decimal work)"
+  - "Body wrapped in BEGIN TRY / BEGIN CATCH; CATCH block: check XACT_STATE(), ROLLBACK if needed, then THROW"
+
+  # Error handling
+  - "Use TRY/CATCH for all data-modification procedures; use THROW for re-throwing (RAISERROR only for explicit business rule validation with custom messages)"
+  - Always check XACT_STATE() in CATCH before ROLLBACK or COMMIT
+
+  # Transaction management
+  - Use BEGIN TRAN / COMMIT TRAN (short form) inside TRY blocks; keep transactions as short as possible — do reads and validation before BEGIN TRAN
+  - "CATCH block pattern: IF XACT_STATE() = -1 ROLLBACK; IF XACT_STATE() = 1 COMMIT; then THROW"
+
+  # Semicolons
+  - Terminate all statements with semicolons; required before CTEs (WITH) and at end of THROW — enforce consistently everywhere
+
+  # Query hints and locking
+  - "Do not use WITH (NOLOCK) in new code — rely on RCSI; if genuinely needed, add an explanatory comment; remove NOLOCK when modifying existing procedures unless documented reason to keep"
+
+  # Temp tables and table variables
+  - "Use TVPs (dbo.IntKeyTableType READONLY) for structured data from C#; temp tables (#name) for multi-step staging; table variables (@name) for small short-lived sets"
+  - Always define explicit column types — never SELECT * INTO #temp
+
+  # Inline SQL in C# (Dapper)
+  - "Prefer stored procedures via CommandType.StoredProcedure for non-trivial queries; short read-only queries (single table, no joins) may use CommandType.Text"
+  - "Embedded SQL files in SqlResources: one query per file, UPPERCASE keywords, parameterized; never concatenate user input — always parameterized queries"
+
+  # Miscellaneous
+  - "Avoid SELECT * — always specify columns explicitly; use OUTER APPLY / CROSS APPLY for per-row subqueries; use STRING_AGG over FOR XML PATH"
+  - "EXECUTE stored procedures with named parameters — EXECUTE spWOFormsReceived @WO = @WO, @FormID = @FormID"
+
+verification:
+  - check: Keywords are uppercase
+  - check: Table names use PascalCase singular (Customer not Customers)
+  - check: Stored procedures prefixed with usp_
+  - check: No sp_ prefix on user procedures
+  - check: Semicolons terminate all statements
+
+examples:
+  - scenario: Standard stored procedure structure
+    input: "Create a procedure to get project estimates by date range"
+    output: |
+      /******************************************************************************
+       * Procedure:   rpt.spProjectEstimatesGetByDateRange
+       * Author:      Edward
+       * Created:     2026-03-24
+       * Description: Retrieves project estimates updated within a date range.
+       *
+       * Modifications:
+       *   Date        Author    Description
+       *   ----------  --------  --------------------------------------------------
+       ******************************************************************************/
+      CREATE PROCEDURE rpt.spProjectEstimatesGetByDateRange
+           @updatedFrom    DATETIME2(2)    = NULL
+          ,@updatedTo      DATETIME2(2)    = NULL
+          ,@estimateId     INT             = NULL
+      AS
+      BEGIN
+          SET NOCOUNT ON;
+          SET XACT_ABORT ON;
+
+          BEGIN TRY
+
+              SELECT
+                   ProjectEstimateId = pe.Id
+                  ,ProjectName = p.Name
+                  ,WorkOrderId = wo.WO_Id
+                  ,UpdatedOn = pe.ItemUpdatedOn
+              FROM hss.ProjectEstimates AS pe
+                  INNER JOIN hss.Projects AS p ON p.Id = pe.Project_Id
+                  INNER JOIN hss.WorkOrders AS wo ON wo.Id = p.WorkOrder_Id
+              WHERE pe.IsPrimary = 1
+                  AND pe.ItemUpdatedOn BETWEEN @updatedFrom AND @updatedTo
+                  AND pe.Id = ISNULL(@estimateId, pe.Id);
+
+          END TRY
+          BEGIN CATCH
+
+              IF XACT_STATE() <> 0
+                  ROLLBACK TRANSACTION;
+
+              THROW;
+
+          END CATCH;
+      END;
+
+  - scenario: Leading comma parameter and column lists
+    input: "INSERT into ProjectEstimateAccessories from a clone operation"
+    output: |
+      INSERT INTO hss.ProjectEstimateAccessories (
+           ProjectEstimateId
+          ,AccessoryId
+          ,RoomId
+          ,Quantity
+          ,Notes
+      )
+      SELECT
+           @newProjectEstimateId
+          ,pea.AccessoryId
+          ,roomMap.NewRoomId
+          ,pea.Quantity
+          ,pea.Notes
+      FROM hss.ProjectEstimateAccessories AS pea
+          LEFT JOIN @projectRoomMapping AS roomMap ON pea.RoomId = roomMap.ItemKey
+      WHERE pea.ProjectEstimateId = @oldProjectEstimateId;
+
+  - scenario: Aligned variable declarations
+    input: "Declare variables for error handling context"
+    output: |
+      DECLARE
+           @errorMessage   NVARCHAR(4000)
+          ,@errorSeverity  INT
+          ,@errorState     INT
+          ,@errorLine      INT;
+
+  - scenario: Multi-condition WHERE clause
+    input: "Filter active estimates by date range and status"
+    output: |
+      WHERE pe.IsPrimary = 1
+          AND pe.ItemUpdatedOn >= @updatedFrom
+          AND pe.ItemUpdatedOn <= @updatedTo
+          AND ws.IsTerminal = 0
+          AND pe.Id = ISNULL(@estimateId, pe.Id);
+
+tags:
+  - tsql
+  - sql
+  - ime
+  - solojet
+  - formatting
+  - style
+  - conventions
+  - mixin

@@ -1,0 +1,22 @@
+# Domain routing: which registry fetchers may run for a role file (first matching path_prefix wins).
+# Tools still need a source_map entry for that registry — we never guess IDs from display names.
+path_rules:
+  - path_prefix: "language-specific/python/"
+    fetchers: [pypi, github]
+  - path_prefix: "language-specific/csharp/"
+    fetchers: [nuget, github]
+  - path_prefix: "language-specific/tsql/"
+    fetchers: [nuget, github]
+  - path_prefix: "language-specific/powershell/"
+    fetchers: [nuget, github]
+
+# Roles under base/ and any unmatched paths: allow all mapped registries.
+default_fetchers: [pypi, github, npm, nuget]
+
+# Tier 3: bounded README keyword scan via GitHub API (report-only; never auto-removed).
+tier3_readme:
+  enabled: false
+  phrases:
+    - deprecated
+    - no longer maintained
+    - superseded by

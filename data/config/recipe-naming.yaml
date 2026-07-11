@@ -1,0 +1,82 @@
+# Recipe naming grammar: <lifecycle>-<domain>[-<facet>]
+#
+# Closed vocabularies for each name segment. Compound needs (e.g. backend +
+# secure) are expressed by composition/mixins, NOT by stacking facets in the
+# name, so at most ONE facet is permitted.
+#
+# `grandfathered` is the migration ledger: existing names that predate this
+# grammar. The conventions test ratchets on it — NEW names must conform, while
+# these legacy names are tolerated until renamed (with set-active aliases) during
+# the ingest work. Remove a name from this list once it is renamed.
+version: 1
+
+lifecycles:
+  - design
+  - implement
+  - review
+  - test
+  - debug
+  - document
+  - write
+  - edit
+
+domains:
+  # Languages
+  - csharp
+  - powershell
+  - python
+  - tsql
+  - javascript
+  # Areas
+  - devops
+  - game
+  - config
+  - agent
+  - web
+  - data
+  - api
+
+facets:
+  # Architectural / cross-cutting
+  - backend
+  - frontend
+  - infra
+  - secure
+  - perf
+  - scale
+  - automation
+  - database
+  - unity
+  # Game design sub-types (domain: game)
+  - balance
+  - mechanics
+  - levels
+  - complete
+  # Agent sub-types (domain: agent)
+  - roles
+  - prompts
+  - config
+  # Data / config / api sub-types
+  - pipeline
+  - schema
+  - system
+
+# Migration ledger: names that predate the grammar (facet-stacking, the special
+# `general` recipe, and prose recipes that do not fit lifecycle-domain-facet).
+# The conventions test forbids NEW violations; rename these (with set-active
+# aliases) during the ingest work, then delete them from this list.
+grandfathered:
+  - design-csharp-backend-infra
+  - design-python-backend-perf
+  - design-python-backend-scale
+  - implement-csharp-backend-secure
+  - implement-python-backend-perf
+  - review-powershell-infra-secure
+  - review-python-backend-perf
+  - review-python-backend-secure
+  - test-csharp-backend-secure
+  - general
+  - edit-copyedit
+  - write-creative
+  - write-career-materials
+  - write-professional-docs

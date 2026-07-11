@@ -1,0 +1,16 @@
+name: review-javascript
+description: >
+  Review JavaScript/TypeScript backend code with attention to performance,
+  readability, and security. Identify issues, suggest improvements, and ensure
+  code quality standards across Node.js services and APIs.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/backend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - performance-focused
+  - readability-focused
+  - security-aware
+  - language-specific/javascript/javascript-formatting-standards

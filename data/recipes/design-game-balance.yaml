@@ -1,0 +1,8 @@
+name: design-game-balance
+description: >
+  Quantitative game balance work — stat curves, economy modeling, difficulty
+  scaling, DPS analysis, and progression pacing. The spreadsheet role that
+  ensures the numbers behind the fun are sound.
+
+compose:
+  - base/lifecycle/systems-designer

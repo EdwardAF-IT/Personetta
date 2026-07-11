@@ -1,0 +1,17 @@
+name: design-javascript
+description: >
+  Architect JavaScript/TypeScript backend systems with focus on extensibility,
+  maintainability, performance, and scalability. Design service boundaries, module
+  structure, API contracts, and Node.js runtime considerations.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/backend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - extensibility-focused
+  - maintainability-focused
+  - performance-focused
+  - scalability-focused
+  - language-specific/javascript/javascript-formatting-standards

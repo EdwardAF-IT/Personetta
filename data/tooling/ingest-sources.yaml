@@ -1,0 +1,37 @@
+# Ingest source registry: external repos Personetta may scan for conventions/skills.
+#
+# Scanning is report-only by default (proposal-first, human-in-the-loop). Each
+# source is fetched via the GitHub API; `glob` selects which files to parse, and
+# `kind` hints how to treat them (skills | recipes | index).
+version: 1
+
+sources:
+  dotnet-skills:
+    name: dotnet/skills
+    owner: dotnet
+    repo: skills
+    kind: skills
+    glob: SKILL.md
+    description: >-
+      Framework-deep .NET conventions (EF/data, MSBuild, diagnostics, ASP.NET,
+      upgrades) considered for native re-authoring into Personetta C# roles/recipes.
+
+  superpowers:
+    name: obra/superpowers
+    owner: obra
+    repo: superpowers
+    kind: skills
+    glob: SKILL.md
+    description: >-
+      Discrete workflow capabilities (systematic-debugging, verification,
+      brainstorming, writing-plans) folded into Personetta lifecycle roles/mixins.
+
+  awesome-claude-code:
+    name: hesreallyhim/awesome-claude-code
+    owner: hesreallyhim
+    repo: awesome-claude-code
+    kind: index
+    glob: README.md
+    description: >-
+      Community index used as a discovery front-of-funnel; produces candidates for
+      ingest or provisions rather than installing anything itself.

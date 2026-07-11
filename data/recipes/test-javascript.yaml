@@ -1,0 +1,17 @@
+name: test-javascript
+description: >
+  Write tests for JavaScript/TypeScript backend code (Vitest, Jest, or node:test)
+  with focus on performance, readability, maintainability, and security. Create
+  comprehensive unit and integration test suites.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/backend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - performance-focused
+  - readability-focused
+  - maintainability-focused
+  - security-aware
+  - language-specific/javascript/javascript-formatting-standards

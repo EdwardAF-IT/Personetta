@@ -1,0 +1,13 @@
+name: test-csharp-backend-secure
+description: >
+  Write tests for C# APIs including unit, integration, and security test
+  categories. Covers input validation testing, injection prevention, and
+  test doubles for external services. Used for holy-cheese-azdo-tools test suites.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/backend-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - security-aware

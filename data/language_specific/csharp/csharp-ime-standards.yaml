@@ -1,0 +1,163 @@
+name: csharp-ime-standards
+description: >
+  IME SoloJet C# formatting and style standards. Derived from existing codebase
+  conventions across controllers, services, repositories, and models. Makes
+  definitive choices where the codebase is inconsistent due to historical
+  evolution. Apply alongside the general csharp-developer role for IME work.
+version: "1.0.0"
+type: mixin
+model_requirements:
+  min_tier: standard
+  reasoning: none
+
+responsibilities:
+  - Enforce consistent Allman-style brace placement across all code
+  - Enforce naming conventions including _camelCase for private fields
+  - Enforce XML documentation standards on public API surface
+  - Enforce consistent string formatting, null handling, and LINQ patterns
+  - Enforce async/await conventions including Async suffix and proper Task usage
+  - Enforce consistent using directive placement and namespace style
+
+guidelines:
+  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
+  # Indentation and whitespace
+  - Use 4 spaces for indentation (never tabs); one blank line between methods; blank lines within methods to separate logical sections
+  - Target ~120 columns maximum line length — break longer lines at logical points
+
+  # Brace placement (Allman style)
+  - "Allman style — opening brace on own line aligned with keyword; closing brace aligned with opening keyword; apply consistently to all block structures"
+  - Always use braces for multi-statement blocks; single-statement guards may omit braces when return is on the same line; single-statement body on next line without braces is acceptable for simple assignments
+  - "Single-statement body on next line without braces is acceptable for simple assignments — if (productCost.Color != null)\\n    this.ColorName = productCost.Color.Name;"
+
+  # Naming conventions
+  - "Private fields: _camelCase with underscore prefix; class-level constants: PascalCase; local constants in methods: UPPER_SNAKE_CASE"
+  - "Properties, public members: PascalCase; local variables and parameters: camelCase; interfaces: I prefix + PascalCase"
+  - "Async methods: always Async suffix — CloneAsync; test methods: WhenCondition_ExpectedResult — WhenInputIsValid_ReturnSuccess"
+  - "Namespace casing: use Ime.* (not IME.*) for consistency in new projects"
+
+  # Variable declarations
+  - "Use var when type is obvious from the right side; use explicit types when clarity is needed; use target-typed new() in initializers when the type is declared"
+  - Use collection expressions for empty collections — return [];
+
+  # String formatting
+  - "Use string interpolation ($\"...\") for new code; string.Format() only for externalized/reused format strings; StringBuilder for loops; never use + or string.Concat()"
+  - "Structured logging: use message templates with ILogger, not interpolation — _logger.LogError(\"Failed for {WorkOrderId}\", id)"
+
+  # Null handling
+  - "Use is null / is not null for null checks (never == null); use ?. and ?? for null propagation; use GetValueOrDefault() on nullable value types"
+  - "Never use double-negative null checks; use string.IsNullOrEmpty() or string.IsNullOrWhiteSpace() for string null checks, never manual checks"
+
+  # Conditional structure
+  - "Prefer guard clauses with early returns (may be single-line); limit nesting to 3 levels — extract methods if deeper"
+  - "Ternary: use for simple value selection; multi-line ternary: condition on first line, ? indented on next, : aligned with ?; use switch expressions for mapping discrete values"
+
+  # LINQ
+  - "Use method syntax exclusively — no query syntax; short chains (1-2 methods) on one line; longer chains one method per line with leading dot, indented"
+  - "Use meaningful lambda parameter names for complex projections; simple predicates may use discard-style _ — .FirstOrDefault(_ => _.IsActive)"
+
+  # Parameter formatting
+  - "Short parameter list (fits within ~120 columns): keep on one line; long lists: one per line, indented one level from the method signature"
+  - Long constructor injection parameter lists go one per line with closing parenthesis on its own line or aligned with last parameter
+
+  # Async patterns
+  - "Always suffix async methods with Async; use await directly (not Task.Run unless CPU-bound); passthrough methods omit async keyword and return the Task directly"
+  - "Use Task.WhenAll for independent parallel operations; propagate CancellationToken through async call chains"
+
+  # Using directives and namespaces
+  - "Place using directives outside the namespace; order: System first, third-party, then Ime.*; use file-scoped namespaces in new files"
+  - Existing files with braced namespaces should be left as-is unless being substantially rewritten
+
+  # Access modifiers
+  - Always specify access modifiers explicitly — never rely on C# defaults; interface members omit access modifiers (implicitly public)
+
+  # Class organization
+  - "Order members: constants/static fields, private fields, constructors, public properties, public methods, private methods; one class per file"
+  - Use #region only for genuinely large utility sections (50+ lines) — not for organizing normal method groups
+
+  # Comments and documentation
+  - "XML doc comments (/// <summary>) on all public classes, methods, and properties; indent summary text 4 spaces after ///; include <param> tags for all parameters"
+  - "Inline comments: capitalize first letter, space after //; TODO comments: include author tag — // TODO @Name description"
+  - Remove commented-out code before committing; never leave empty catch blocks without an explanatory comment
+
+  # DI and registration
+  - "Use constructor injection for all dependencies; use [DiComponent(typeof(IService))] attribute for service registration where project conventions require it"
+  - Prefer IOptions<T> / IOptionsSnapshot<T> for configuration binding
+
+verification:
+  - check: Code is formatted per .editorconfig
+    command: dotnet format --verify-no-changes
+  - check: Naming conventions followed (PascalCase for publics, _camelCase for fields)
+  - check: Async methods end in Async suffix
+  - check: Using directives sorted and grouped
+
+examples:
+  - scenario: Constructor with dependency injection
+    input: "public class CloneEstimateService { IWorkOrderService _svc; ILogger _log; public CloneEstimateService(IWorkOrderService svc, ILogger log) { _svc = svc; _log = log; } }"
+    output: |
+      public class CloneEstimateService
+      {
+          private readonly IWorkOrderService _workOrderService;
+          private readonly ILogger<CloneEstimateService> _logger;
+
+          /// <summary>
+          ///     Initializes a new instance of the <see cref="CloneEstimateService"/> class.
+          /// </summary>
+          /// <param name="workOrderService">Service for work order operations.</param>
+          /// <param name="logger">Logger instance.</param>
+          public CloneEstimateService(
+              IWorkOrderService workOrderService,
+              ILogger<CloneEstimateService> logger)
+          {
+              _workOrderService = workOrderService;
+              _logger = logger;
+          }
+      }
+
+  - scenario: Guard clause and null handling
+    input: "public ActionResult Edit(int? id) { if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); } var cost = db.Find(id); if (cost == null) { return HttpNotFound(); } return View(cost); }"
+    output: |
+      public ActionResult Edit(int? id)
+      {
+          if (id is null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+          var cost = _context.SundryCosts.Find(id);
+          if (cost is null) return HttpNotFound();
+
+          return View(cost);
+      }
+
+  - scenario: LINQ chain formatting
+    input: "var results = items.Where(x => x.IsActive).OrderBy(x => x.SortIndex).Select(x => x.FieldName + (x.SortOrder == Descending ? \" DESC\" : \"\")).ToList();"
+    output: |
+      var results = items
+          .Where(_ => _.IsActive)
+          .OrderBy(_ => _.SortIndex)
+          .Select(_ => _.FieldName + (_.SortOrder == Descending ? " DESC" : ""))
+          .ToList();
+
+  - scenario: Async method with Task.WhenAll
+    input: "async Task CloneAsync(int srcId, int destId) { await CloneRoomsAsync(srcId, destId); await CloneProductsAsync(srcId, destId); await CloneDiagramsAsync(srcId, destId); }"
+    output: |
+      public async Task CloneAsync(int sourceId, int destinationId)
+      {
+          await Task.WhenAll(
+              CloneRoomsAsync(sourceId, destinationId),
+              CloneProductsAsync(sourceId, destinationId),
+              CloneDiagramsAsync(sourceId, destinationId));
+      }
+
+  - scenario: Multi-line ternary expression
+    input: "var name = changeType == EstimateChangeType.Procurement ? $\"{source.Name} - Procurement\" : request.EstimateName;"
+    output: |
+      var name = changeType == EstimateChangeType.Procurement
+          ? $"{sourceEstimate.Name} - Procurement"
+          : request.EstimateName;
+
+tags:
+  - csharp
+  - ime
+  - solojet
+  - formatting
+  - style
+  - conventions
+  - mixin

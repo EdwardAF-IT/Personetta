@@ -1,0 +1,16 @@
+name: review-csharp
+description: >
+  Review C# backend code with attention to performance, readability,
+  and security. Identify issues, suggest improvements, and ensure code
+  quality standards and .NET best practices.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/backend-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - performance-focused
+  - readability-focused
+  - security-aware
+  - language-specific/csharp/csharp-formatting-standards

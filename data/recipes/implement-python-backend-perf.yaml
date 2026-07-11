@@ -1,0 +1,14 @@
+name: implement-python-backend-perf
+description: >
+  Implement performance-sensitive Python backend code — algorithmic
+  optimization, NumPy vectorization, parallelism, and efficient data
+  structures. Used for swgoh-team-optimizer scoring and allocation engines.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - performance-focused
+  - language-specific/python/python-formatting-standards

@@ -1,0 +1,13 @@
+name: implement-devops
+description: >
+  Implement cloud-agnostic DevOps artifacts — Dockerfiles, Compose files,
+  Kubernetes/Helm manifests, Terraform/Bicep, and CI/CD pipeline definitions —
+  with emphasis on idempotency, reproducibility, security, and maintainability.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/infrastructure-engineer
+
+mixins:
+  - maintainability-focused
+  - security-aware

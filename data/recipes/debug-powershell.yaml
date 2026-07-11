@@ -1,0 +1,14 @@
+name: debug-powershell
+description: >
+  Diagnose and fix defects in PowerShell infrastructure scripts and modules —
+  reproduce the failure, inspect error records and the pipeline, isolate the root
+  cause (often state, scope, or environment), and apply the smallest correct fix.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-developer
+
+mixins:
+  - maintainability-focused
+  - language-specific/powershell/powershell-formatting-standards

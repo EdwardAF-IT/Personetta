@@ -1,0 +1,14 @@
+name: implement-game-unity
+description: >
+  Implement Unity game code with a hybrid MonoBehaviour + ECS architecture.
+  Covers component design, ScriptableObject data patterns, DOTS systems,
+  object pooling, and performance-aware C# coding in a Unity project.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/game-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - performance-focused
+  - language-specific/csharp/csharp-formatting-standards

@@ -1,0 +1,17 @@
+name: implement-python
+description: >
+  Implement Python backend code with emphasis on readability, security,
+  performance, and maintainability. Write clean, idiomatic Python following
+  best practices and conventions.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - readability-focused
+  - security-aware
+  - performance-focused
+  - maintainability-focused
+  - language-specific/python/python-formatting-standards

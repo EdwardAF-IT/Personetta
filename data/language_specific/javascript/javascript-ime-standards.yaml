@@ -1,0 +1,122 @@
+name: javascript-ime-standards
+description: >
+  IME SoloJet JavaScript formatting and style standards. Derived from first-party
+  scripts under HSS.Web, HSS.WebPlatform, and related projects (excluding vendor
+  bundles). Makes definitive choices where the codebase mixes legacy patterns
+  (var, loose equality, PascalCase globals) with modern ones (const/let, arrow
+  functions, optional chaining). Apply alongside javascript-developer for IME work.
+version: "1.0.0"
+type: mixin
+model_requirements:
+  min_tier: standard
+  reasoning: none
+
+responsibilities:
+  - Enforce indentation, line length, and brace placement consistent with IME C# conventions where applicable
+  - Enforce naming for new code — jQuery references, page entry points vs internal helpers, and constants
+  - Enforce equality, null checks, and defensive DOM/API access patterns for new and touched code
+  - Enforce jQuery.ajax and event-handler structure aligned with team practice
+  - Enforce commenting, localization placeholder, and XSS-aware string handling conventions
+
+guidelines:
+  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections when ESLint/Prettier are configured for the project
+  # Indentation and line length
+  - Use 4 spaces for indentation (never tabs); normalize accidental tab indents when editing a file
+  - Target ~120 columns maximum line length — break at logical points (chained calls, object literals, URL segments)
+
+  # Variables and declarations
+  - "New and substantially edited code: use const by default, let when rebinding; avoid var except when matching a small surrounding legacy block you are not yet refactoring"
+  - "Module-level constants (selectors shared across functions): const in PascalCase or SCREAMING_SNAKE_CASE — match the dominant pattern in the file you edit"
+
+  # Functions and naming
+  - "Internal helpers and closures: camelCase — refreshItems, sendRequest, errorModal"
+  - "Razor-invoked page functions and legacy globals may remain PascalCase for consistency with existing views (e.g. GetInstallationPriceInfo, ApplyQRCode); new greenfield modules should prefer camelCase exports or a single namespace object"
+  - "jQuery-wrapped elements: use a leading $ — $modal, $list, $content — for variables holding jQuery collections"
+
+  # Braces and control flow
+  - "Allman-style opening brace on its own line for function declarations and multi-line blocks; closing brace aligned with the opening keyword"
+  - "Single-statement branches: may omit braces when the body is a single return, break, continue, or short assignment on the next line — same spirit as csharp-ime-standards"
+  - Prefer guard clauses and early returns to limit nesting; avoid deep else ladders — extract helpers when logic branches multiply
+
+  # Equality and null checks
+  - "Use === and !== for primitives, types, and explicit comparisons in new code"
+  - "Use == null or != null only when intentionally treating undefined and null the same — document with a short comment if non-obvious"
+  - Prefer optional chaining (?.) for defensive reads on parsed JSON and partial DTO shapes when the runtime supports it
+
+  # jQuery and AJAX
+  - "Prefer $.ajax({ ... }) with a single options object; use dataType (correct casing) not datatype; set cache: false for data that must be fresh unless there is a documented reason"
+  - "For new code prefer .done(), .fail(), and .always() (or async/await with a Promise-wrapped ajax) over deprecated .success() / .error() chain methods where jQuery version allows"
+  - Use shorthand property names in options objects when passing callbacks — success, error — when it improves readability
+
+  # Strings and HTML
+  - "Prefer template literals for URLs and messages that interpolate values; avoid long + chains for new code"
+  - "User- or server-sourced text inserted into HTML must be encoded (follow existing htmlEncode or platform helpers); never concatenate raw user input into markup — preserve existing security comments when present"
+  - "Localization placeholders such as [**[Label]**] are intentional — do not strip or rewrite them in script-only changes"
+
+  # Async
+  - "async/await is acceptable for new flows; when wrapping $.ajax in new Promise, resolve in complete or always and handle errors explicitly"
+  - Do not leave empty success, error, or catch bodies — log, surface UI feedback, or document why no-op is safe
+
+  # Strict mode and modules
+  - "Use 'use strict' inside IIFE or module wrappers when introducing new wrapped script blocks"
+  - Preserve existing global script layout when files rely on Razor-rendered globals; prefer gradual extraction over breaking page load order
+
+  # Comments
+  - "Inline comments: capitalize first letter, space after //; TODO comments include author — // TODO @Name description"
+  - Remove commented-out code before commit; file-level banner comments may remain if they document paired legacy files (e.g. customerSearch)
+
+verification:
+  - check: ESLint passes when configured for the web project
+    command: npx eslint .
+  - check: No tab characters in changed lines (editor show whitespace)
+  - check: No empty ajax error handlers or catch blocks in new code
+
+examples:
+  - scenario: jQuery ajax with const, $ prefix, and Allman braces
+    input: "function loadData(url) { var x = $.ajax({url:url,type:'GET'}).success(function(d){show(d);}); }"
+    output: |
+      function loadData(url)
+      {
+          const options = {
+              url: url,
+              type: "GET",
+              cache: false,
+              dataType: "json",
+          };
+
+          $.ajax(options)
+              .done(function (data) {
+                  show(data);
+              })
+              .fail(function () {
+                  showErrorModal();
+              });
+      }
+
+  - scenario: Guard clause and strict key check
+    input: "if (e.keyCode == 13) { submitForm(); }"
+    output: |
+      if (e.keyCode === 13)
+      {
+          submitForm();
+      }
+
+  - scenario: Optional chaining on JSON error payload
+    input: "if (response && response.messages && response.messages[0]) msg = response.messages[0].Text;"
+    output: |
+      const msg = response?.messages?.[0]?.Text ?? "";
+
+  - scenario: Template literal for MVC endpoint
+    input: "var url = '/api/x?zip=' + zip + '&id=' + id;"
+    output: |
+      const url = `/api/x?zip=${zip}&id=${id}`;
+
+tags:
+  - javascript
+  - js
+  - ime
+  - solojet
+  - formatting
+  - style
+  - conventions
+  - mixin

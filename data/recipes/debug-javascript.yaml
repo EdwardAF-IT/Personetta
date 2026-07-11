@@ -1,0 +1,15 @@
+name: debug-javascript
+description: >
+  Diagnose and fix defects in JavaScript/TypeScript code — reproduce the failure,
+  trace async and event-loop issues, isolate the root cause, apply the smallest
+  correct fix, and add a regression test.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/backend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - readability-focused
+  - maintainability-focused
+  - language-specific/javascript/javascript-formatting-standards

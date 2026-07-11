@@ -1,0 +1,17 @@
+name: design-tsql
+description: >
+  Design SQL Server schemas, data models, and stored-procedure architecture with
+  focus on extensibility, maintainability, performance, and scalability. Plan
+  normalization, indexing strategy, and safe migration paths.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/database-specialist
+  - language-specific/tsql/tsql-developer
+
+mixins:
+  - extensibility-focused
+  - maintainability-focused
+  - performance-focused
+  - scalability-focused
+  - language-specific/tsql/tsql-formatting-standards

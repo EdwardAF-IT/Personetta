@@ -1,0 +1,45 @@
+name: router
+description: >
+  Recipe index and persona switching guide. Maps user utterances to recipe names
+  and provides set-active commands. Not always-on; context-matched when relevant.
+version: "1.0.0"
+type: system
+
+# Mismatch detection - primary guidance
+mismatch_detection:
+  title: "ACTIVE PERSONA MISMATCH DETECTION"
+  priority: critical
+  steps:
+    - "STOP immediately — Do not proceed with mismatched work"
+    - "Tell them: 'This work belongs to `<recipe-id>` not `<current-active>`'"
+    - "Show the exact command: The appropriate set-active line from below"
+    - "Ask: 'Would you like me to proceed anyway, or should you switch first?'"
+  warning: "Do NOT silently work in the wrong persona."
+
+# General switching guidance
+switching_guidance:
+  when: "User's message clearly matches another recipe than currently loaded in active file"
+  action: "Tell them the exact command"
+  command_template: "{cli_tool} set-active <recipe-id> --format {format}"
+  target_note: "Use same --target they used for install (omit for global install)"
+  until_switched: "Keep following only the active file + baseline — do not merge other recipes"
+
+# Boundary violations
+boundary_violations:
+  when: "User asks for work that violates Boundaries in active file (e.g. tests while in design-only persona)"
+  action: "Stop after one-line redirect with appropriate recipe-id and set-active command"
+  exception: "Do not fully perform out-of-scope work unless they explicitly insist"
+
+# Recipe index structure (populated at runtime from actual recipes)
+# This section defines what information to show for each recipe:
+recipe_display:
+  show_summary: true
+  show_role_label: true
+  show_activation_phrases: true
+  show_switch_commands: true
+  sort_by: name
+  
+# Format-specific command variations
+cli_tools:
+  primary: "personetta"
+  fallback: "personetta"

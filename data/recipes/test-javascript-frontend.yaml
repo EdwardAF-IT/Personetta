@@ -1,0 +1,15 @@
+name: test-javascript-frontend
+description: >
+  Write tests for JavaScript/TypeScript frontend code — component tests (Vitest,
+  Testing Library) and end-to-end flows (Playwright) — with focus on readability,
+  maintainability, and meaningful user-facing assertions.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/frontend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - readability-focused
+  - maintainability-focused
+  - language-specific/javascript/javascript-formatting-standards

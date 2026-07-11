@@ -1,0 +1,16 @@
+name: review-powershell
+description: >
+  Review PowerShell infrastructure code with attention to performance,
+  readability, and security. Identify issues, suggest improvements, and
+  ensure code quality standards and idempotent operations.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-developer
+
+mixins:
+  - performance-focused
+  - readability-focused
+  - security-aware
+  - language-specific/powershell/powershell-formatting-standards

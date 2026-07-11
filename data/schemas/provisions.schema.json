@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Provisions Configuration",
+  "description": "Schema for the merged provisions document (default + user override). Provisions are optional, non-persona capabilities installed alongside roles. Tool names in 'targets' are validated by pattern, not an enumerated list, so support for new tools is a data change.",
+  "type": "object",
+  "required": ["version"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Schema version of this provisions document."
+    },
+    "provisions": {
+      "type": "object",
+      "description": "Map of provision name to definition.",
+      "additionalProperties": { "$ref": "#/definitions/provision" }
+    },
+    "bundles": {
+      "type": "object",
+      "description": "Map of bundle name to definition.",
+      "additionalProperties": { "$ref": "#/definitions/bundle" }
+    }
+  },
+  "definitions": {
+    "toolName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "An output format / tool identifier (e.g. claude, cursor)."
+    },
+    "provision": {
+      "type": "object",
+      "required": ["kind"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["tool-setting", "plugin", "behavior"],
+          "description": "Dispatch key selecting the strategy that applies this provision."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether this provision is applied by 'provision apply' / install-all."
+        },
+        "targets": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/toolName" },
+          "description": "Tools this provision targets. Unsupported tools report 'unsupported'."
+        },
+        "settings": {
+          "type": "object",
+          "description": "tool-setting: object deep-merged into the tool's settings file."
+        },
+        "install": {
+          "type": "object",
+          "description": "plugin: marketplace/plugin/interactive details for the install driver."
+        },
+        "policy": {
+          "type": "object",
+          "description": "Governance knobs (e.g. sensitive_repos: deny)."
+        },
+        "options": {
+          "type": "object",
+          "description": "behavior: tunables (e.g. max_delegation_depth, depth_marker)."
+        }
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Human-readable summary of what the bundle installs together."
+        },
+        "members": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Provision names that make up the bundle."
+        },
+        "install_order": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Explicit ordering (critical when members install competing hooks)."
+        },
+        "overrides": {
+          "type": "object",
+          "description": "Bundle-scoped config that wins over each member's own defaults."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Installing a bundle enables its members as a unit."
+        }
+      }
+    }
+  }
+}

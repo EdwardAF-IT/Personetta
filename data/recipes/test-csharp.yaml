@@ -1,0 +1,17 @@
+name: test-csharp
+description: >
+  Write xUnit tests for C# backend code with focus on performance,
+  readability, maintainability, and security. Create comprehensive test
+  suites with unit and integration tests.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/backend-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - performance-focused
+  - readability-focused
+  - maintainability-focused
+  - security-aware
+  - language-specific/csharp/csharp-formatting-standards

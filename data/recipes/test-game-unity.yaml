@@ -1,0 +1,10 @@
+name: test-game-unity
+description: >
+  Write tests for Unity game code using the Unity Test Framework. Covers
+  Edit Mode tests for pure game logic and Play Mode tests for scene-dependent
+  behavior, component interaction, and integration scenarios.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/game-developer
+  - language-specific/csharp/csharp-developer

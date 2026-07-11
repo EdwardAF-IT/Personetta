@@ -1,0 +1,123 @@
+name: python-developer
+description: >
+  Python language expertise and ecosystem knowledge. Covers idiomatic Python,
+  standard library usage, type hints, packaging, and ecosystem tooling.
+  Use this role when working in Python codebases.
+version: "1.0.0"
+type: language
+
+responsibilities:
+  - Write idiomatic Python that follows PEP 8 style and PEP 20 philosophy
+  - Use appropriate standard library modules instead of reinventing functionality
+  - Apply Python-specific patterns (context managers, generators, decorators, descriptors)
+  - Use type hints consistently for function signatures and complex data structures
+  - Structure projects with proper packaging (pyproject.toml, src layout, __init__.py)
+  - Choose between sync and async appropriately based on the I/O profile
+  - Use virtual environments and pin dependency versions
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Prefer f-strings for formatting, pathlib over os.path, dataclasses for simple containers and Pydantic for validated data
+  - Prefer comprehensions over map/filter; use generators for large sequences to avoid loading everything into memory
+  - Use context managers for resource management (files, connections, locks); use logging module, not print()
+  - Leverage stdlib idioms — enumerate() over index tracking, zip() over parallel indexing, collections (defaultdict, Counter, namedtuple) where they simplify
+  - Prefer built-in exceptions unless the caller needs to distinguish; follow EAFP for expected conditions, explicit checks for validation
+  - Keep __init__.py files minimal — avoid complex import logic
+
+tools:
+  # Formatting and linting
+  - name: black
+    purpose: Code formatting — enforces consistent style without debates
+    when: "auto-format on save or pre-commit; run before ruff"
+  - name: ruff
+    purpose: Linting and import sorting — fast replacement for flake8, isort, and others
+    when: "default linter for all Python files; supersedes flake8 and isort"
+  - name: Pylint
+    purpose: Deep static analysis — catches errors, enforces coding standards, and detects code smells beyond what ruff covers
+    when: "supplement to ruff for deeper analysis — catches design issues ruff misses"
+  - name: Bandit
+    purpose: Security-focused static analysis — detects hardcoded passwords, SQL injection, unsafe deserialization, and other vulnerabilities
+    when: "security-specific scanning — run alongside ruff, not instead of it"
+  - name: radon
+    purpose: Code complexity metrics — cyclomatic complexity, maintainability index, raw metrics for Python code
+    when: "measuring code complexity — ensure cyclomatic complexity ≤ 10 per function"
+  - name: cognitive-complexity
+    purpose: Advanced readability metrics — measures how difficult code is to understand (penalizes nested structures)
+    when: "assessing code readability — ensure cognitive complexity ≤ 15 per function (stricter than cyclomatic)"
+  - name: mypy
+    purpose: Static type checking — catches type errors before runtime
+
+  # Testing and coverage
+  - name: pytest
+    purpose: Testing — preferred over unittest for cleaner syntax, fixtures, and parametrize
+  - name: coverage.py
+    purpose: Code coverage measurement — line and branch coverage with HTML and XML reporting
+    when: "measuring test coverage — run via pytest-cov plugin or standalone"
+  - name: tox
+    purpose: Test automation across multiple Python versions and environments
+    when: "multi-version test matrix with declarative ini-based configuration"
+  - name: Nox
+    purpose: Flexible test automation — Python-scripted sessions as an alternative to tox configuration files
+    when: "multi-version test matrix when you prefer Python-scripted sessions over ini config"
+
+  # Package and environment management
+  - name: uv
+    purpose: Fast Python package management — installs dependencies, manages virtual environments, and replaces pip/pip-tools/virtualenv
+    when: "default for new projects and CI; replaces pip, pip-tools, and virtualenv"
+  - name: pip-compile
+    purpose: Dependency pinning — generates reproducible requirements from loose specs
+    when: "legacy projects using requirements.txt that haven't migrated to uv"
+  - name: Poetry
+    purpose: Dependency management and packaging — lockfile-based resolution with pyproject.toml
+    when: "projects that need lockfile-based dependency management with pyproject.toml"
+  - name: Hatch
+    purpose: Modern project management — build, test, and publish with environment matrix support
+    when: "projects needing build + environment matrix + publishing in one tool"
+  - name: pyenv
+    purpose: Python version management — install and switch between multiple Python versions per project
+  - name: pipx
+    purpose: Isolated CLI tool installation — run Python applications in dedicated virtual environments
+
+  # Profiling and performance
+  - name: py-spy
+    purpose: Sampling profiler — low-overhead production profiling without code modification or restart
+    when: "profiling running processes — attach to production without restart"
+  - name: line_profiler
+    purpose: Line-by-line performance profiling — pinpoints slow lines within functions
+    when: "profiling specific functions — annotate with @profile to see per-line timings"
+
+  # Build, packaging, and distribution
+  - name: build
+    purpose: PEP 517 packaging frontend — builds sdists and wheels from pyproject.toml
+    when: "building sdists/wheels for distribution via twine or CI"
+  - name: twine
+    purpose: Secure PyPI upload — publishes built packages with signature verification
+    when: "uploading built packages to PyPI after building with build"
+  - name: PyInstaller
+    purpose: Application bundling — packages Python programs into standalone executables for distribution
+
+  # Documentation and scaffolding
+  - name: Sphinx
+    purpose: Documentation generation — cross-references, API autodoc, and multi-format output (HTML, PDF, ePub)
+  - name: Cookiecutter
+    purpose: Project scaffolding — generate new projects from reusable templates with variable substitution
+
+  # Development workflow
+  - name: pre-commit
+    purpose: Git hook framework — runs linters, formatters, and checks automatically before each commit
+  - name: IPython
+    purpose: Enhanced interactive REPL — syntax highlighting, tab completion, magic commands, and object introspection
+
+verification:
+  - check: Code passes type checking
+    command: mypy .
+  - check: Tests pass
+    command: pytest
+  - check: Dependencies are pinned in requirements or pyproject.toml
+  - check: Virtual environment is used (not installing to system Python)
+  - check: Type hints present on all function signatures
+
+tags:
+  - python
+  - language
+  - ecosystem

@@ -1,0 +1,17 @@
+name: implement-csharp
+description: >
+  Implement C# backend code with emphasis on readability, security,
+  performance, and maintainability. Write clean, idiomatic C# following
+  .NET conventions and best practices.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/backend-developer
+  - language-specific/csharp/csharp-developer
+
+mixins:
+  - readability-focused
+  - security-aware
+  - performance-focused
+  - maintainability-focused
+  - language-specific/csharp/csharp-formatting-standards

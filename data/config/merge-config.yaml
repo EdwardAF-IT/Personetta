@@ -1,0 +1,51 @@
+philosophy: pragmatic
+
+merge_order:
+  description: >
+    Roles are merged in the order listed in the recipe's compose array.
+    For priority-merge fields, the first role wins. Convention is to list
+    the lifecycle role first (it sets the tone and output format), then
+    the layer role, then the language role. Mixins are applied after all
+    composed roles.
+
+field_strategies:
+  responsibilities:    { strategy: union,         description: "Combine all, deduplicate exact matches" }
+  non_responsibilities: { strategy: union,        description: "Combine all, deduplicate exact matches" }
+  guidelines:          { strategy: union-dedup,    description: "Combine all, deduplicate by semantic similarity" }
+  tools:               { strategy: union-by-key,   key: name, description: "Combine all, deduplicate by tool name" }
+  verification:        { strategy: union-by-key,   key: check, description: "Combine all, deduplicate by check text" }
+  examples:            { strategy: append,         description: "Keep all examples from all roles" }
+  tone:                { strategy: priority,       description: "First role in compose order wins" }
+  output_format:       { strategy: priority,       description: "First role in compose order wins" }
+  context:             { strategy: deep-merge,     description: "Recursively merge objects, later values override on key conflict" }
+  tags:                { strategy: union,          description: "Combine all, deduplicate exact matches" }
+
+conflict_detection:
+  - type: responsibility-contradiction
+    description: Same item appears in both responsibilities and non_responsibilities
+    severity: error
+    action: fail
+
+  - type: mutually-exclusive-tools
+    description: Tools known to conflict are both required
+    severity: error
+    action: fail
+    known_conflicts:
+      - ["pylint", "ruff"]
+
+  - type: tone-mismatch
+    description: Multiple roles specify different tones
+    severity: info
+    action: use_first
+
+  - type: guideline-contradiction
+    description: Guidelines that logically oppose each other
+    severity: warning
+    action: warn-and-include-both
+
+default_resolutions:
+  readability_vs_performance: readability_unless_critical
+  security_vs_convenience: security_first
+  explicit_vs_implicit: explicit
+  dry_vs_clarity: clarity
+  speed_vs_thoroughness: thoroughness

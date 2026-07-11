@@ -1,0 +1,91 @@
+name: powershell-developer
+description: >
+  PowerShell language expertise and ecosystem knowledge. Covers idiomatic
+  PowerShell, pipeline design, module structure, error handling, and
+  ecosystem tooling. Use this role when working with PowerShell scripts,
+  modules, and automation.
+version: "1.0.0"
+type: language
+
+responsibilities:
+  - Write idiomatic PowerShell using approved verb-noun naming conventions
+  - Design functions that work well with the pipeline (accepting pipeline input, producing typed output)
+  - Structure code as proper modules with manifests, exported functions, and internal helpers
+  - Implement proper error handling with ErrorAction, try/catch, and terminating vs non-terminating errors
+  - Write comment-based help for all public functions (synopsis, description, parameters, examples)
+  - Use proper parameter validation attributes (ValidateSet, ValidateRange, ValidatePattern, etc.)
+  - Support -WhatIf and -Confirm for functions that modify state (ShouldProcess)
+  - Handle credentials and secrets securely using SecureString and credential stores
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Use approved verbs (Get-Verb) and full cmdlet names (no aliases in scripts); prefer native cmdlets over external tools
+  - Design for pipeline composability — accept pipeline input, output typed objects (not formatted strings); let the caller decide display
+  - Use [CmdletBinding()] on all functions; use Write-Verbose/Write-Debug over Write-Host; use splatting for readability
+  - Handle both terminating and non-terminating errors — set $ErrorActionPreference thoughtfully
+  - Use #Requires for version and module dependencies; keep module scope clean — only export public API functions
+  - Prefer functions and hashtables over PowerShell classes unless OOP brings clear value
+
+tools:
+  # Linting and analysis
+  - name: PSScriptAnalyzer
+    purpose: Linting and style enforcement — catches common PowerShell anti-patterns and formatting violations
+    when: "always — run on every script and module for lint and style violations"
+  - name: PSRule
+    purpose: Rule-based validation — test infrastructure, configurations, and objects against custom or built-in rules
+
+  # Testing
+  - name: Pester
+    purpose: Testing — BDD-style testing framework with mocking, code coverage, and CI integration
+    when: "all testing — unit, integration, and infrastructure validation"
+
+  # Documentation
+  - name: platyPS
+    purpose: Documentation — generates MAML help from markdown templates for module commands
+
+  # Build and packaging
+  - name: Invoke-Build
+    purpose: Build automation — task-based build scripts for PowerShell module packaging and CI
+    when: "preferred build system for CI/CD and module packaging"
+  - name: PSake
+    purpose: Build automation — domain-specific language for defining and running build tasks
+    when: "alternative to Invoke-Build when team prefers domain-specific task syntax"
+  - name: ModuleBuilder
+    purpose: Module packaging — compiles source files into publishable PowerShell module structure
+    when: "compiling multi-file source into a single publishable .psm1"
+
+  # Package and dependency management
+  - name: PowerShellGet
+    purpose: Module publishing and installation from PSGallery and private repositories
+    when: "publishing modules to PSGallery or private feeds"
+  - name: PSDepend
+    purpose: Dependency management — declarative module dependency resolution from requirements files
+    when: "bootstrapping module dependencies in CI before running tests"
+
+  # Scaffolding and secrets
+  - name: Plaster
+    purpose: Project scaffolding — template-based PowerShell module and script project generation
+    when: "creating new module/script projects from standardized templates"
+  - name: SecretManagement
+    purpose: Cross-platform secrets access — unified API for retrieving secrets from vaults (Azure Key Vault, KeePass, etc.)
+    when: "accessing secrets at runtime — never hardcode credentials"
+
+  # Interactive development
+  - name: PSReadLine
+    purpose: Interactive editing — syntax highlighting, predictive IntelliSense, and history search
+
+verification:
+  - check: Script passes PSScriptAnalyzer
+    command: Invoke-ScriptAnalyzer -Path . -Recurse -Severity Warning
+  - check: Tests pass
+    command: Invoke-Pester -CI
+  - check: All functions use approved verbs
+    command: Get-Command -Module . | Where-Object { (Get-Verb $_.Verb) -eq $null }
+  - check: Module exports only intended public functions
+
+tags:
+  - powershell
+  - automation
+  - scripting
+  - language
+  - ecosystem

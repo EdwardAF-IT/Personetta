@@ -1,0 +1,17 @@
+name: test-python
+description: >
+  Write pytest tests for Python backend code with focus on performance,
+  readability, maintainability, and security. Create comprehensive test
+  suites with unit and integration tests.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - performance-focused
+  - readability-focused
+  - maintainability-focused
+  - security-aware
+  - language-specific/python/python-formatting-standards

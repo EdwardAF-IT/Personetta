@@ -1,0 +1,56 @@
+# Template for creating a new base role.
+# Copy this file, fill in the values, and place it in the appropriate directory:
+#   - base/lifecycle/    for roles about what kind of work (designing, reviewing, testing, etc.)
+#   - base/layer/        for roles about where in the stack (backend, frontend, database, etc.)
+#   - base/mixins/       for crosscutting concerns (security, performance, readability, etc.)
+#   - language-specific/ for language ecosystem knowledge (python, csharp, powershell, etc.)
+
+name: role-name-here
+description: >
+  One to three sentences describing what this role does and when to use it.
+  Be specific enough that someone can decide whether this role fits their task.
+version: "1.0.0"
+type: lifecycle  # One of: lifecycle, layer, language, mixin
+
+responsibilities:
+  - First concrete responsibility — what this role actively does
+  - Second concrete responsibility — each should be actionable and verifiable
+  # Aim for 5-10 responsibilities. Each should answer: "would I notice if the role skipped this?"
+
+non_responsibilities:
+  - Something this role explicitly does NOT do — prevents scope creep
+  - Hand-off point to another role (e.g., "hand off to developer role")
+  # Optional but valuable. Helps conflict detection and sets clear boundaries.
+
+guidelines:
+  - First actionable guideline — specific enough to influence a decision
+  - Second guideline — avoid vague platitudes like "write good code"
+  # Aim for 8-12 guidelines. Each should answer: "in a concrete situation, would this change what I do?"
+
+# Tools are optional. Include only for roles that prescribe specific tooling.
+# Typically present on language roles and some layer roles.
+# tools:
+#   - name: tool-name
+#     purpose: What this role uses the tool for (one phrase)
+
+# Examples are optional but valuable for ambiguous roles.
+# They demonstrate expected behavior in concrete scenarios.
+# examples:
+#   - scenario: Brief description of the situation
+#     input: What the role receives
+#     output: What the role produces
+
+# Tone and output_format are typically set only by lifecycle roles.
+# Layer, language, and mixin roles usually omit these to inherit
+# from whatever lifecycle role they're composed with.
+# tone: descriptive-style-label
+# output_format: output-structure-label
+
+# Context is optional. Use for additional structured data that doesn't
+# fit other fields (framework preferences, environment conventions, etc.)
+# context:
+#   key: value
+
+tags:
+  - tag1
+  - tag2

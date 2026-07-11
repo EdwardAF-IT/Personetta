@@ -1,0 +1,16 @@
+name: review-python
+description: >
+  Review Python backend code with attention to performance, readability,
+  and security. Identify issues, suggest improvements, and ensure code
+  quality standards.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
+
+mixins:
+  - performance-focused
+  - readability-focused
+  - security-aware
+  - language-specific/python/python-formatting-standards

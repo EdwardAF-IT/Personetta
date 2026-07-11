@@ -1,0 +1,16 @@
+name: write-creative
+description: >
+  Creative writing — fiction, narrative, worldbuilding, character work, and
+  emotionally complex scenes. Develops voice, structure, and subtext; drafts and
+  revises prose with attention to rhythm and pacing.
+
+compose:
+  - base/lifecycle/content-writer
+
+model_recommendation:
+  min_tier: advanced
+  reasoning: extended
+  rationale: >
+    Worldbuilding, character arcs, narrative structure, and emotionally complex
+    scenes benefit from the strongest model and extended reasoning for coherence
+    and subtext across a long piece.

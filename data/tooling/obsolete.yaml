@@ -1,0 +1,3 @@
+# Tier 1 policy: tools listed here are obsolete for Personetta regardless of API signals.
+# Normalized match: trim + casefold on `name` (same as duplicate-tool detection).
+entries: []

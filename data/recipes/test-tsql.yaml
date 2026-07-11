@@ -1,0 +1,15 @@
+name: test-tsql
+description: >
+  Write tests for T-SQL stored procedures and functions using tSQLt — unit tests
+  with mocked tables, edge-case coverage, and data-integrity assertions — with
+  focus on readability and maintainability.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/database-specialist
+  - language-specific/tsql/tsql-developer
+
+mixins:
+  - maintainability-focused
+  - readability-focused
+  - language-specific/tsql/tsql-formatting-standards

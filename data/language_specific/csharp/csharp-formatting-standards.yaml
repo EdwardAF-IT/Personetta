@@ -1,0 +1,121 @@
+name: csharp-formatting-standards
+description: >
+  Edward's personal C# formatting and style standards. Extrapolated from
+  PowerShell formatting preferences — Allman brace placement, visual
+  alignment, parameter layout rules, and consistent commenting. Apply
+  alongside the general csharp-developer role to enforce these conventions.
+version: "1.0.0"
+type: mixin
+model_requirements:
+  min_tier: standard
+  reasoning: none
+
+responsibilities:
+  - Enforce consistent Allman-style brace placement for all block structures
+  - Enforce parameter and argument formatting rules based on count and line length
+  - Enforce visual alignment of similar assignments, declarations, and expressions
+  - Enforce string formatting conventions appropriate to complexity
+  - Enforce XML documentation and inline comment standards
+
+guidelines:
+  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
+  # Method and class structure
+  - All public methods and classes must have XML doc comments with <summary>; all public method parameters must have <param> documentation
+  - Always use expression-bodied members (=>) only for true one-liners — if it needs a line break, use a block body; constants use PascalCase and are declared const or static readonly as appropriate
+  - "Inline comments start with a capital letter and a space after //; non-trivial code must have a descriptive comment — end-of-line if short, above the code if longer"
+
+  # Parameter and argument formatting
+  - "Short parameter/argument list (<4 items, fits within ~90 columns): keep on one line; longer lists: one per line, indented"
+  - "Always use named arguments for boolean parameters to make intent clear — Load(useCache: true) not Load(true)"
+
+  # Brace placement (Allman style)
+  - "Allman style — opening brace on own line, aligned with the keyword; closing brace aligned with opening keyword; never end-of-line braces"
+  - "Simple property accessors may be single-line — public string Name { get; set; }; apply consistently to all block structures (if, else, for, foreach, while, switch, try/catch/finally, using, lock, class, method)"
+
+  # Conditional structure
+  - "Short conditional + short body may be single line — if (x == 1) return \"one\"; compound conditionals: break each condition onto its own line, aligned"
+  - Always use braces for multi-statement blocks; prefer early returns (guard clauses) to reduce nesting
+
+  # Alignment
+  - Align similar declarations, assignments, LINQ/fluent chains, switch expression arms, and consecutive method calls along their respective operators for visual consistency
+
+  # Line length and breaking
+  - Target ~90 columns maximum line length
+  - "LINQ chains: one method per line when >2 operations, dot-aligned; ternary: inline if short, else break across three lines; lambda: inline if short, block body if multi-statement"
+
+  # String formatting
+  - "Use string interpolation ($\"\") for simple cases (1-2 variables); use string.Format() for complex cases with multiple variables, alignment, or format specifiers"
+  - "Never use + concatenation; use StringBuilder for loops that accumulate strings; use raw string literals (\"\"\") for multi-line or special-character-heavy strings"
+
+  # Operators and spacing
+  - "Spaces around binary operators (=, ==, !=, &&, ||, +, -); no space between unary operator and operand; space after keywords (if, for, while) but not after method names before parentheses"
+  - "Null comparisons: prefer is null and is not null over == null and != null"
+
+verification:
+  - check: Code is formatted per .editorconfig
+    command: dotnet format --verify-no-changes
+  - check: StyleCop analyzers pass
+    command: dotnet build /p:TreatWarningsAsErrors=true
+  - check: Allman brace style used consistently
+
+examples:
+  - scenario: Allman brace placement for method with compound conditional
+    input: "public bool IsInRange(int x, int y) { if (x > 1 && y < 5) { Log(\"Checking\"); return true; } return false; }"
+    output: |
+      public bool IsInRange(int x, int y)
+      {
+          if (x > 1 && y < 5)
+          {
+              Log("Checking");
+              return true;
+          }
+
+          return false;
+      }
+
+  - scenario: Long parameter list
+    input: "public ColorRecord CreateColor(string name, string hex, int red, int green, int blue, bool isCustom)"
+    output: |
+      public ColorRecord CreateColor(
+          string name,
+          string hex,
+          int red,
+          int green,
+          int blue,
+          bool isCustom)
+      {
+          // ...
+      }
+
+  - scenario: Aligned assignments
+    input: "var threshold = 0.04045; var divisor = 12.92; var offset = 0.055;"
+    output: |
+      var threshold = 0.04045;
+      var divisor   = 12.92;
+      var offset    = 0.055;
+
+  - scenario: LINQ chain formatting
+    input: "var results = items.Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => x.ToDto()).ToList();"
+    output: |
+      var results = items
+          .Where(x => x.IsActive)
+          .OrderBy(x => x.Name)
+          .Select(x => x.ToDto())
+          .ToList();
+
+  - scenario: Compound conditional with aligned conditions
+    input: "if (config.DeploySettings != null && config.SlotName != null && !string.IsNullOrWhiteSpace(config.SlotName))"
+    output: |
+      if (config.DeploySettings != null &&
+          config.SlotName       != null &&
+          !string.IsNullOrWhiteSpace(config.SlotName))
+      {
+          // ...
+      }
+
+tags:
+  - csharp
+  - formatting
+  - style
+  - conventions
+  - mixin

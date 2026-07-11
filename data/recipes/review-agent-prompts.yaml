@@ -1,0 +1,14 @@
+name: review-agent-prompts
+description: >
+  Review agent role definitions and system prompts for instruction clarity,
+  contradictory responsibilities, composition conflicts, right-sized model
+  recommendations, token economy, and prompt-injection exposure. Identify issues
+  and suggest concrete improvements.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/agent-systems-engineer
+
+mixins:
+  - security-aware
+  - maintainability-focused

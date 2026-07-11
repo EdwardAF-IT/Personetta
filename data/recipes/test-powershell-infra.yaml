@@ -1,0 +1,10 @@
+name: test-powershell-infra
+description: >
+  Write Pester tests for PowerShell infrastructure modules and deployment
+  scripts — parameter validation, helper function behavior, and
+  idempotency verification.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-developer

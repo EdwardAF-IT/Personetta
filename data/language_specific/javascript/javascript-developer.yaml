@@ -1,0 +1,118 @@
+name: javascript-developer
+description: >
+  JavaScript language expertise and runtime ecosystem knowledge. Covers
+  idiomatic modern JavaScript (ES modules, async control flow, the event loop),
+  Node.js and browser constraints, packaging, and common tooling. Use this
+  role when working in JavaScript codebases; pair with a layer role
+  (e.g. frontend-developer) for UI-specific concerns.
+version: "1.0.0"
+type: language
+
+responsibilities:
+  - Write idiomatic modern JavaScript — const by default, explicit async/await, avoid mutable shared state and accidental globals
+  - "Use ES modules for structure; respect the package.json type field and correct relative specifiers in Node and bundler contexts"
+  - Model asynchronous work with Promises and async/await; handle errors with try/catch or explicit .catch() at boundaries
+  - Respect the event loop — avoid blocking the main thread; offload CPU-heavy work (workers, child processes) when appropriate
+  - Choose clear module and file boundaries; prefer pure functions and explicit dependencies over implicit singletons
+  - Manage dependencies deliberately — lockfiles, semver ranges, regular audit for vulnerabilities
+  - Use JSDoc types where .js files need maintainability without a TypeScript migration
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Prefer strict mode and linters that enforce it; avoid loose equality (==) except when comparing to null with intentional double equality
+  - Prefer async/await over raw Promise constructor and long .then() chains when flow has multiple steps or error handling
+  - Prefer structured errors — attach codes or causes; never swallow errors silently; log or rethrow at system boundaries
+  - Prefer immutable updates for shared data (spread, Object.assign to new objects) unless profiling shows a hotspot
+  - Prefer explicit exports (named exports) for library code; default exports only when the module truly has a single concept
+  - For new greenfield work, prefer TypeScript; when staying in JavaScript, use JSDoc @param/@returns/@typedef for public APIs
+
+tools:
+  # Formatting and linting
+  - name: ESLint
+    purpose: Linting — catches errors, enforces style, import hygiene, and framework-specific rules via plugins
+    when: "always — run on every .js/.cjs/.mjs file; extend with typescript-eslint only when the project uses TypeScript"
+  - name: Prettier
+    purpose: Opinionated formatting — consistent quotes, commas, and line breaks across JS, JSON, and markdown
+    when: "always — integrate with ESLint via eslint-config-prettier to avoid rule conflicts"
+  - name: eslint-plugin-import
+    purpose: Import resolution and ordering — detects unresolved paths, cycles, and inconsistent import style
+    when: "medium and large codebases — catch broken imports and circular dependencies early"
+  - name: eslint-plugin-n
+    purpose: Node.js-specific linting — correct require/import of built-ins, deprecated APIs, and file extensions
+    when: "Node.js services, CLIs, and tooling — supplement core ESLint rules"
+
+  # Testing
+  - name: Vitest
+    purpose: Fast unit and integration tests — Jest-compatible API, native ESM, watch mode, and coverage via c8/v8
+    when: "Vite projects or greenfield JS — default when the stack already uses Vite"
+  - name: Jest
+    purpose: Unit and integration testing — snapshots, mocks, and large ecosystem of matchers
+    when: "existing Jest codebases or when team standard is Jest"
+  - name: node:test
+    purpose: Built-in test runner — no extra dependency for small Node packages and CLIs
+    when: "minimal Node libraries — pair with node:assert for assertions"
+  - name: Playwright
+    purpose: Cross-browser E2E — use from JS test projects when validating full user flows
+    when: "E2E from JavaScript — complements unit tests; not a substitute for layer-specific UI guidance"
+
+  # Package management
+  - name: npm
+    purpose: Default package manager — install, scripts, and lockfile (package-lock.json)
+  - name: pnpm
+    purpose: Efficient installs — content-addressable store, strict node_modules layout, ideal for monorepos
+    when: "monorepos and disk efficiency — preferred when the team adopts pnpm"
+  - name: Yarn
+    purpose: Alternative package manager — Berry (PnP) or Classic with yarn.lock
+    when: "teams standardized on Yarn — match existing lockfile and CI"
+
+  # Build and bundling
+  - name: Vite
+    purpose: Dev server and optimized builds — ESM-first, fast HMR, Rollup production output
+    when: "frontend and library projects using Vite as the pipeline"
+  - name: esbuild
+    purpose: Extremely fast transpile and bundle — Go-based, suitable for tooling and simple bundles
+    when: "libraries, CLIs, and scripts needing speed over deep customization"
+  - name: Rollup
+    purpose: Library-oriented bundling — tree-shaking and multiple output formats
+    when: "publishing npm packages with ESM/CJS dual outputs"
+  - name: webpack
+    purpose: Full-featured bundling — code splitting, loaders, and legacy ecosystem
+    when: "existing webpack codebases — migrate to lighter tools only when justified"
+
+  # Runtime and version management
+  - name: Node.js
+    purpose: Server-side JavaScript runtime — LTS versions for production services
+    when: "always for Node code — pin engines in package.json and document supported versions"
+  - name: nvm / fnm / volta
+    purpose: Per-project Node version switching — reproducible dev and CI environments
+    when: "teams with multiple Node versions — align .nvmrc or Volta pins with CI"
+
+  # Security and quality
+  - name: npm audit
+    purpose: Dependency vulnerability reporting — baseline supply-chain checks from the registry
+    when: "CI gates and release prep — triage findings; pair with org policy for exceptions"
+  - name: madge
+    purpose: Dependency graph and circular dependency detection — visual and CLI analysis of module graphs
+    when: "refactors and architecture reviews — break cycles before they spread"
+
+  # Documentation
+  - name: JSDoc
+    purpose: Structured comments — types and API documentation extractable to HTML or IDE hints
+    when: "JavaScript-only APIs — document exports; use @typedef for complex shapes"
+
+verification:
+  - check: ESLint passes with project configuration
+    command: npx eslint .
+  - check: Prettier formatting is clean
+    command: npx prettier --check .
+  - check: Tests pass
+    command: npm test
+  - check: Dependencies installed from lockfile in CI
+    command: npm ci
+
+tags:
+  - javascript
+  - js
+  - node
+  - language
+  - ecosystem

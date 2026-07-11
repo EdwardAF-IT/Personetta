@@ -1,0 +1,38 @@
+formatted/
+__pycache__/
+*.pyc
+.venv/
+
+# Coverage files
+.coverage
+.coverage.*
+coverage.xml
+coverage.json
+
+# All build/test/cache artifacts in one place
+.tool-stuff/
+build/
+dist/
+*.egg-info/
+
+# Generated merged recipes (created by personetta install)
+merged/
+
+# Local Personetta install output under the clone (global install lives under %USERPROFILE% / ~).
+# Keep .personetta/last-audit tracked for tooling (see scripts/record_audit_date.py).
+.personetta/cursor-active.json
+.personetta/copilot-active.json
+.personetta/claude-active.json
+.personetta/cline-active.json
+.personetta/cursor-recipes/
+.personetta/copilot-recipes/
+.personetta/claude-recipes/
+.personetta/cline-recipes/
+.personetta/audit-reports/
+
+# Workspace Copilot file merges with user ~/.copilot/instructions and duplicates personas.
+.github/copilot-instructions.md
+
+# User-specific IDE settings (create your own locally)
+.claude/
+.cursor/

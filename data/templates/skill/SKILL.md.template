@@ -1,0 +1,33 @@
+---
+name: ${name}
+description: '${description}'
+argument-hint: '${argument_hint}'
+---
+
+# ${name}
+
+${description}
+
+## When to Use
+
+${when_to_use}
+
+## Procedure
+
+${procedure}
+
+## Tools Used
+
+${tools}
+
+## Verification
+
+${verification}
+
+## Examples
+
+${examples}
+
+## Related Skills
+
+${related_skills}

@@ -1,0 +1,17 @@
+name: implement-python-automation
+description: >
+  Implement Python automation and data-wrangling scripts — batch file/media
+  processing, ETL, metadata operations, and scheduled jobs — with emphasis on
+  idempotency, safe handling of source data, readability, and performance over
+  large inputs.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/automation-engineer
+  - language-specific/python/python-developer
+
+mixins:
+  - readability-focused
+  - maintainability-focused
+  - performance-focused
+  - language-specific/python/python-formatting-standards

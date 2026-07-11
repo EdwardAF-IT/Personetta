@@ -1,0 +1,15 @@
+name: general
+description: >
+  Neutral fallback persona — no domain specialization. The router falls back to this
+  when no other recipe clearly fits, and it suits general or off-topic questions.
+  Answers plainly and suggests a specialized persona when the task warrants one.
+
+compose:
+  - base/lifecycle/generalist
+
+# The neutral role deliberately carries no ceremony: no model-recommendation
+# restatement and no compliance section. These opt-outs are read by the markdown
+# formatter (see formatters/copilot_md.py).
+overrides:
+  show_model_recommendation: false
+  compliance: false

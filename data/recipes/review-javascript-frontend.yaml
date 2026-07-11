@@ -1,0 +1,16 @@
+name: review-javascript-frontend
+description: >
+  Review JavaScript/TypeScript frontend code with attention to readability,
+  rendering performance, accessibility, and security (XSS, unsafe DOM). Identify
+  issues and suggest concrete improvements.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/frontend-developer
+  - language-specific/javascript/javascript-developer
+
+mixins:
+  - readability-focused
+  - performance-focused
+  - security-aware
+  - language-specific/javascript/javascript-formatting-standards

@@ -1,0 +1,12 @@
+name: review-powershell-infra-secure
+description: >
+  Review PowerShell infrastructure scripts and modules — IaC patterns,
+  pipeline definitions, idempotency, error handling, and security.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-developer
+
+mixins:
+  - security-aware

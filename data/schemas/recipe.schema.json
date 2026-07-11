@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Recipe Definition",
+  "description": "Schema for role composition recipes. A recipe references base roles and mixins to compose on demand, producing a fully merged role for a specific AI tool format.",
+  "type": "object",
+  "required": ["name", "compose"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Unique identifier for this recipe."
+    },
+    "description": {
+      "type": "string",
+      "description": "What this recipe is for. Helps with discovery."
+    },
+    "activation_phrases": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Optional natural-language triggers for the Cursor router rule (e.g. \"You are a C# backend developer\")."
+    },
+    "compose": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Ordered list of role paths to compose (without .yaml extension). Order matters: for priority-merge fields (tone, output_format), the first role wins. Typically: lifecycle role first, then layer, then language."
+    },
+    "mixins": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Mixin paths to apply after composition. Mixins add responsibilities and guidelines but do not override tone or output_format."
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Override any field in the composed result. Applied last, after all merging. Use sparingly — if you're overriding a lot, consider creating a new base role instead."
+    },
+    "model_recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min_tier": {
+          "type": "string",
+          "enum": ["fast", "standard", "advanced"],
+          "description": "Override the computed minimum model tier."
+        },
+        "reasoning": {
+          "type": "string",
+          "enum": ["none", "standard", "extended"],
+          "description": "Override the computed reasoning depth."
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Human-written explanation of why this tier/reasoning is needed."
+        }
+      },
+      "description": "Override the auto-computed model recommendation. Use when the composition heuristic over- or under-estimates the needed model tier."
+    }
+  }
+}

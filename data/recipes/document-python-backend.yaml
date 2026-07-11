@@ -1,0 +1,10 @@
+name: document-python-backend
+description: >
+  Document Python system architecture, data flows, and design decisions.
+  Covers architecture docs, component diagrams, performance documentation,
+  and developer guides. Used for swgoh-team-optimizer documentation.
+
+compose:
+  - base/lifecycle/documenter
+  - base/layer/backend-developer
+  - language-specific/python/python-developer
