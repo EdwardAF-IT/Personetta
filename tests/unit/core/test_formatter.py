@@ -497,7 +497,8 @@ class TestModelRecommendation:
 
     def test_cursor_shows_surfacing_instruction(self, composed_role):
         output = format_cursor(composed_role)
-        assert "Tell the user this recommendation before starting work" in output
+        assert "State this as the first line of your response" in output
+        assert "autonomous dispatch" in output
 
     def test_copilot_shows_recommendation(self, composed_role):
         output = format_copilot(composed_role)
@@ -505,7 +506,8 @@ class TestModelRecommendation:
 
     def test_copilot_shows_surfacing_instruction(self, composed_role):
         output = format_copilot(composed_role)
-        assert "Tell the user this recommendation before starting work" in output
+        assert "State this as the first line of your response" in output
+        assert "autonomous dispatch" in output
 
     def test_claude_shows_recommendation_markdown(self, composed_role):
         output = format_claude(composed_role)
@@ -514,7 +516,8 @@ class TestModelRecommendation:
 
     def test_claude_shows_surfacing_instruction(self, composed_role):
         output = format_claude(composed_role)
-        assert "Tell the user this recommendation before starting work" in output
+        assert "State this as the first line of your response" in output
+        assert "autonomous dispatch" in output
 
     def test_no_recommendation_when_absent(self, minimal_role):
         for fmt in [format_cursor, format_copilot, format_claude, format_cline]:

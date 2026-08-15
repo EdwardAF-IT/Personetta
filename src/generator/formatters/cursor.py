@@ -186,14 +186,22 @@ def format_cursor(composed: dict, *, always_apply: bool = True) -> str:
         mr = _format_model_recommendation(composed["_model_recommendation"])
         lines.append(
             "2. **Cursor model settings** — The next blockquote is mandatory to surface. "
-            "Your **first sentence** of any substantive reply must quote or restate it verbatim so the user "
-            "can change model/thinking **before** you continue."
+            "Your **first sentence** of any substantive reply must quote or restate it verbatim: in an "
+            "interactive session this lets the user change model/thinking before you continue; in an "
+            "autonomous dispatch with no one watching live, state it anyway for the record and proceed "
+            "without waiting."
         )
         lines.append("")
         lines.append(f"> {mr}")
         lines.append(">")
         lines.append(
-            "> **Tell the user this recommendation before starting work so they can adjust their model and thinking settings.**"
+            "> **State this as the first line of your response, before starting substantive work.** "
+            "In an interactive session this lets whoever you're working with adjust the model/thinking "
+            "settings themselves. In an autonomous dispatch with no one watching live, state it anyway - "
+            "it lands in this run's own output/transcript for the dispatching process or a later reviewer, "
+            "since you cannot change your own model or thinking setting mid-run. Either way, do not stall "
+            "waiting for a reply that may never come - proceed with the work using whatever model you were "
+            "actually given."
         )
         lines.append("")
     else:
