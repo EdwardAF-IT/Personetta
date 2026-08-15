@@ -29,7 +29,13 @@ def format_copilot(composed: dict) -> str:
         )
         lines.append(">")
         lines.append(
-            "> **Tell the user this recommendation before starting work so they can adjust their model and thinking settings.**"
+            "> **State this as the first line of your response, before starting substantive work.** "
+            "In an interactive session this lets whoever you're working with adjust the model/thinking "
+            "settings themselves. In an autonomous dispatch with no one watching live, state it anyway - "
+            "it lands in this run's own output/transcript for the dispatching process or a later reviewer, "
+            "since you cannot change your own model or thinking setting mid-run. Either way, do not stall "
+            "waiting for a reply that may never come - proceed with the work using whatever model you were "
+            "actually given."
         )
         lines.append("")
 
