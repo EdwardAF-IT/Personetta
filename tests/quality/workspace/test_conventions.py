@@ -59,7 +59,9 @@ def _get_filename_without_extension(path: Path) -> str:
 
 def test_no_allcaps_markdown_files(workspace_root: Path) -> None:
     """No ALL_CAPS .md files except SKILL.md and conventional root files."""
-    # Allowed ALL_CAPS filenames
+    # Allowed ALL_CAPS filenames. These are names the surrounding ecosystem
+    # requires verbatim (packaging, GitHub, coding agents) -- the lowercase
+    # convention applies to files we are free to name ourselves.
     allowed = {
         "README.md",
         "LICENSE.md",
@@ -69,6 +71,8 @@ def test_no_allcaps_markdown_files(workspace_root: Path) -> None:
         "SKILL.md",
         "MANIFEST.in",
         "WORKSPACE_STATUS.md",
+        "CLAUDE.md",  # Claude Code only auto-loads this exact filename
+        "AGENTS.md",  # cross-agent equivalent of the above
     }
 
     violations = []

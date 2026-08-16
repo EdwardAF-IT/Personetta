@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+#
+# Strip AI-assistant attribution trailers from commit messages.
+#
+# Why: coding agents (Claude Code, Copilot, Cursor, Codex, ...) append
+# "Co-Authored-By:" trailers by default. GitHub resolves those trailers to real
+# accounts, so the assistant shows up in the repo's Contributors panel. This
+# project credits the humans who authored the work; the tooling used to write it
+# is not a contributor.
+#
+# Enable once per clone:
+#   git config core.hooksPath .githooks
+#
+# See docs/contributing.md -> "AI assistants and commit attribution".
+
+msg_file="$1"
+[ -f "$msg_file" ] || exit 0
+
+tmp_file="$msg_file.noai"
+
+# Drop Co-Authored-By lines naming an AI assistant, plus the "Generated with"
+# advert some agents add. Matching is case-insensitive and anchored to the
+# trailer keyword so ordinary prose is never touched.
+grep -viE \
+  -e '^[[:space:]]*Co-Authored-By:.*(claude|anthropic|copilot|cursor|codex|chatgpt|openai|gemini|devin|noreply@anthropic\.com)' \
+  -e '^[[:space:]]*(🤖 )?Generated with \[?(Claude Code|Cursor|GitHub Copilot)' \
+  "$msg_file" >"$tmp_file"
+
+# Collapse any trailing blank lines left behind by the removal.
+awk 'BEGIN { blanks = 0 }
+     /^[[:space:]]*$/ { blanks++; next }
+     { while (blanks-- > 0) print ""; blanks = 0; print }' \
+  "$tmp_file" >"$msg_file"
+
+rm -f "$tmp_file"
+exit 0
