@@ -2,9 +2,22 @@ name: Publish to PyPI
 
 # Publishes to PyPI when a GitHub Release is published (deliberate, not on every tag).
 # Uses PyPI Trusted Publishing (OIDC) -- no API token stored in secrets.
-# One-time setup on pypi.org: Project -> Publishing -> add a GitHub publisher
-#   (owner: edwardaf-it, repo: personetta, workflow: publish-pypi.yml, environment: pypi).
-# For the very first release, register a "pending publisher" before publishing.
+#
+# ONE-TIME SETUP on pypi.org (this is NOT configured in the repo -- without it
+# every run dies with `invalid-publisher`, as the v1.0.1 release did):
+#   https://pypi.org/manage/project/personetta/settings/publishing/
+#     Owner:            EdwardAF-IT
+#     Repository name:  Personetta
+#     Workflow name:    publish-pypi.yml
+#     Environment name: pypi
+# These must match the OIDC claims this workflow actually presents:
+#   sub = repo:EdwardAF-IT/Personetta:environment:pypi
+# The `environment: pypi` below is what puts `:environment:pypi` in the claim, so
+# the Environment field on PyPI is required, not optional. A publisher registered
+# with it blank will not match.
+#
+# For a brand-new project, register a "pending publisher" instead (same fields),
+# under Your projects -> Publishing.
 
 on:
   release:
