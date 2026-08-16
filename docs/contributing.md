@@ -180,6 +180,24 @@ git commit -m "Updates"
 git commit -m "WIP"
 ```
 
+**AI assistants and commit attribution:**
+
+Using a coding assistant is fine. Crediting it as a contributor is not.
+
+Most agents (Claude Code, Copilot, Cursor, and friends) append a
+`Co-Authored-By:` trailer by default. GitHub resolves that trailer to a real
+account, which puts the assistant in this repository's Contributors panel. Keep
+those trailers out of your commits — `Co-Authored-By:` is for people.
+
+Enable the bundled hook once per clone and it is handled for you:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+`.githooks/commit-msg` strips assistant trailers and "Generated with ..."
+footers while leaving human co-authors and ordinary prose untouched.
+
 ### 5. Push and Create PR
 
 ```bash
