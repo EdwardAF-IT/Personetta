@@ -143,6 +143,15 @@ directory = ".tool-stuff/htmlcov"
 [tool.ruff]
 cache-dir = ".tool-stuff/.ruff_cache"
 
+[tool.ruff.lint]
+# Pin the rule set explicitly. Ruff's *implicit* default changed in 0.16
+# (E4/E7/E9/F -> a much wider set incl. I, B, SIM, UP, RUF, S, DTZ, FURB),
+# which turned a green suite red on CI the moment an unpinned `ruff>=0.1.0`
+# resolved to 0.16.x. Declaring the selection makes lint results depend on
+# this file rather than on whichever ruff version the runner happens to get.
+# Widen deliberately (and fix the fallout) rather than by upgrade drift.
+select = ["E4", "E7", "E9", "F"]
+
 # Mypy type checker configuration
 [tool.mypy]
 cache_dir = ".tool-stuff/.mypy_cache"
