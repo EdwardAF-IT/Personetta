@@ -1,0 +1,72 @@
+# Missing Role Name Inventory
+
+## Lifecycle names
+- systems-administrator
+- operations-engineer
+- repository-maintainer
+- release-manager
+- tooling-debugger
+- performance-analyst
+- security-operator
+- migration-planner
+- refactoring-specialist
+- network-troubleshooter
+
+## Layer names
+- windows-system-administration
+- linux-ubuntu-administration
+- home-lab-orchestration
+- credential-security-keys
+- network-diagnostics
+- storage-filesystems
+- hardware-driver-management
+- git-workflow-specialist
+- azure-devops-operator
+- cloud-infra-orchestration
+- api-contract-design
+- database-migration-strategy
+- performance-regression-analysis
+- iac-safety-validation
+- linux-shell-automation
+- codebase-structure-refactoring
+- vscode-extension-diagnostics
+- csharp-api-contracts
+- csharp-database-migrations
+- python-performance-diagnostics
+- webhook-event-processing
+- cli-tool-authoring
+
+## Recipe IDs
+- admin-windows
+- admin-linux-ubuntu
+- admin-home-lab-orchestration
+- admin-credential-security-keys
+- admin-network-diagnostics
+- admin-storage-filesystems
+- admin-hardware-drivers
+- diagnose-system-config
+- diagnose-vscode-extension-runtime
+- diagnose-python-perf
+- diagnose-git-history-divergence
+- refactor-csharp
+- refactor-python
+- refactor-tsql
+- review-refactor-safety
+- review-git-operations
+- review-release-readiness
+- implement-git-workflow
+- implement-cloud-infra-orchestration
+- implement-linux-shell-automation
+- implement-devops-azure
+- implement-csharp-database-migration
+- design-csharp-api-contracts
+- design-event-driven-architecture
+- implement-webhook-handler
+- validate-iac-safety
+- validate-migration-plan
+- migrate-database-schema
+- benchmark-perf-regression
+- harden-system-security
+- audit-secrets-csharp
+- audit-repository-compliance
+- optimize-system-performance
