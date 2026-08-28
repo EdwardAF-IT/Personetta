@@ -1,0 +1,12 @@
+name: debug-devops-system
+description: >
+  Diagnose and fix system-level DevOps failures across pipeline, deployment,
+  and runtime control points using evidence-first troubleshooting.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/infrastructure-engineer
+
+mixins:
+  - diagnostics-first
+  - reliability-focused

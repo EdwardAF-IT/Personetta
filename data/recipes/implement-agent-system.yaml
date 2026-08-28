@@ -1,0 +1,12 @@
+name: implement-agent-system
+description: >
+  Implement agent system configurations and workflow composition with schema
+  conformance, maintainability, and secure defaults.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/agent-systems-engineer
+
+mixins:
+  - maintainability-focused
+  - security-aware

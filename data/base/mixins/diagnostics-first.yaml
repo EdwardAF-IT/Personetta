@@ -1,0 +1,40 @@
+name: diagnostics-first
+description: >
+  Diagnostics overlay that prioritizes evidence collection before remediation.
+  Reduces speculative fixes by enforcing reproducible triage patterns.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Require reproducible evidence gathering before implementing fixes
+  - Promote hypothesis-driven investigation and isolation
+  - Preserve diagnostic artifacts needed for retrospective learning
+  - Reduce repeated incidents caused by symptom-only remediation
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Capture baseline evidence before changing system state
+  - Change one variable at a time during investigation
+  - Record failed hypotheses and disproven assumptions
+  - Confirm fix impact in the original failing scenario
+
+tools:
+  - name: diagnostic logging
+    purpose: Evidence capture for failure context and sequence
+    when: "triaging production or tooling incidents"
+  - name: repro scripts
+    purpose: Deterministic reproduction of observed failures
+    when: "proving causality before and after fixes"
+  - name: trace tooling
+    purpose: Deep execution-path visibility for hard-to-isolate defects
+    when: "investigating complex or intermittent failures"
+
+verification:
+  - check: Evidence captured before remediation attempts
+  - check: Investigation records include tested hypotheses
+  - check: Fix is validated against original failure conditions
+
+tags:
+  - mixin
+  - diagnostics
+  - troubleshooting

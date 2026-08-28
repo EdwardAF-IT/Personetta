@@ -1,0 +1,12 @@
+name: design-api-system
+description: >
+  Design API system contracts, versioning strategy, and boundary semantics for
+  reliable consumer integration.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/api-contract-engineer
+
+mixins:
+  - extensibility-focused
+  - observability-focused

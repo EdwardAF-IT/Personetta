@@ -1,0 +1,13 @@
+name: debug-data-pipeline
+description: >
+  Diagnose and repair failures in data pipeline execution, state transitions,
+  and batch error isolation.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/automation-engineer
+  - language-specific/python/python-workflow-automation-engineer
+
+mixins:
+  - diagnostics-first
+  - reliability-focused

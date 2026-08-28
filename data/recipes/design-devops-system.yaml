@@ -1,0 +1,13 @@
+name: design-devops-system
+description: >
+  Design DevOps system architecture for delivery, operations, and reliability
+  with explicit observability and risk controls.
+
+compose:
+  - base/lifecycle/architect
+  - base/layer/ci-cd-release-engineer
+
+mixins:
+  - extensibility-focused
+  - reliability-focused
+  - observability-focused

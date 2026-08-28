@@ -1,0 +1,14 @@
+name: implement-data-automation
+description: >
+  Implement data automation workflows with resumability, safe mutation guards,
+  and reliable execution over large batches.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/automation-engineer
+  - language-specific/python/python-developer
+
+mixins:
+  - readability-focused
+  - maintainability-focused
+  - performance-focused

@@ -1,0 +1,12 @@
+name: debug-config-system
+description: >
+  Diagnose and fix configuration system failures caused by drift, invalid
+  values, and environment-specific mismatches.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/configuration-author
+
+mixins:
+  - diagnostics-first
+  - maintainability-focused

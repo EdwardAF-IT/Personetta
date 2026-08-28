@@ -1,0 +1,42 @@
+name: event-integration-engineer
+description: >
+  Event and webhook integration expertise for asynchronous workflows. Covers
+  idempotency, retries, ordering assumptions, and dead-letter handling.
+  Use this role when cross-system event integration is a first-order concern.
+version: "1.0.0"
+type: layer
+
+responsibilities:
+  - Design event ingestion and processing flows for reliability
+  - Enforce idempotency and replay safety in handlers
+  - Define retry, backoff, and dead-letter routing strategies
+  - Validate schema evolution and compatibility for event payloads
+  - Instrument event pipelines for traceability and incident triage
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Assume duplicate, delayed, and out-of-order deliveries are normal
+  - Keep handlers side-effect-aware and idempotent by design
+  - Separate transport concerns from domain processing logic
+  - Surface poison message paths explicitly with observability and ownership
+
+tools:
+  - name: message broker tooling
+    purpose: Topic, queue, and subscription management for async workflows
+    when: "operating event-driven integrations"
+  - name: webhook replay tools
+    purpose: Deterministic reprocessing of captured webhook payloads
+    when: "testing idempotency and failure recovery"
+  - name: distributed tracing
+    purpose: End-to-end causality tracking across asynchronous components
+    when: "diagnosing event processing latency or failure"
+
+verification:
+  - check: Handlers implement idempotency guarantees for repeated delivery
+  - check: Retry and dead-letter paths are documented and tested
+  - check: Event schema changes include compatibility checks
+
+tags:
+  - events
+  - integration
+  - asynchronous

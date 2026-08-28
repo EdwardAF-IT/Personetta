@@ -1,0 +1,13 @@
+name: test-api-system
+description: >
+  Write tests for API system behavior, contract fidelity, and failure-path
+  handling across service boundaries.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/backend-developer
+  - base/layer/api-contract-engineer
+
+mixins:
+  - security-aware
+  - reliability-focused

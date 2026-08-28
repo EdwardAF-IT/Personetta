@@ -1,0 +1,13 @@
+name: implement-api-system
+description: >
+  Implement API systems with clear contracts, secure defaults, and production-
+  ready observability.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/backend-developer
+  - base/layer/api-contract-engineer
+
+mixins:
+  - security-aware
+  - observability-focused

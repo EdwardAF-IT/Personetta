@@ -1,0 +1,13 @@
+name: review-powershell-automation
+description: >
+  Review PowerShell automation code for correctness, idempotency, and safe
+  operational behavior.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/automation-engineer
+  - language-specific/powershell/powershell-developer
+
+mixins:
+  - maintainability-focused
+  - language-specific/powershell/powershell-formatting-standards
