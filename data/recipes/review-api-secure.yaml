@@ -1,0 +1,13 @@
+name: review-api-secure
+description: >
+  Review API changes for security, contract compatibility, and operational
+  resilience.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/backend-developer
+  - base/layer/api-contract-engineer
+
+mixins:
+  - security-aware
+  - compliance-aware

@@ -1,0 +1,13 @@
+name: debug-powershell-infra
+description: >
+  Diagnose and fix PowerShell infrastructure script failures with evidence-first
+  root cause analysis and minimal corrective changes.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/infrastructure-engineer
+  - language-specific/powershell/powershell-systems-administrator
+
+mixins:
+  - diagnostics-first
+  - language-specific/powershell/powershell-formatting-standards

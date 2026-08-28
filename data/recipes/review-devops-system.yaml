@@ -1,0 +1,13 @@
+name: review-devops-system
+description: >
+  Review DevOps system changes for safety, policy conformance, and operational
+  readiness before release.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/ci-cd-release-engineer
+
+mixins:
+  - security-aware
+  - compliance-aware
+  - release-safety-focused

@@ -1,0 +1,41 @@
+name: observability-focused
+description: >
+  Observability overlay that emphasizes actionable telemetry, correlation,
+  and diagnosability. Applies to implementation, review, and operations tasks
+  where runtime visibility is critical.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Promote structured logs and correlation identifiers across workflows
+  - Ensure key health and performance signals are measurable
+  - Encourage traceability across service and automation boundaries
+  - Surface gaps where diagnosis would be ambiguous or delayed
+
+guidelines:
+  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - Prefer structured telemetry over ad-hoc text logs
+  - Capture enough context to explain failures without leaking sensitive data
+  - Define observable success and failure criteria for critical flows
+  - Treat missing instrumentation as delivery risk, not a nice-to-have
+
+tools:
+  - name: structured logging
+    purpose: Machine-parseable event records with stable keys
+    when: "building diagnosable workflows and services"
+  - name: distributed tracing
+    purpose: Request and event causality visibility across boundaries
+    when: "investigating latency and cross-component failures"
+  - name: metrics dashboards
+    purpose: Time-series signal visualization and alert review
+    when: "monitoring reliability and performance objectives"
+
+verification:
+  - check: Critical paths expose logs, metrics, or traces sufficient for diagnosis
+  - check: Telemetry includes correlation context for cross-step analysis
+  - check: Observability changes avoid sensitive data leakage
+
+tags:
+  - mixin
+  - observability
+  - diagnostics

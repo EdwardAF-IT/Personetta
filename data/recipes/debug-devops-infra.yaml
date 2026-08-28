@@ -1,0 +1,12 @@
+name: debug-devops-infra
+description: >
+  Diagnose and remediate infrastructure-layer DevOps failures across network,
+  platform, and deployment dependencies.
+
+compose:
+  - base/lifecycle/debugger
+  - base/layer/network-infrastructure-engineer
+
+mixins:
+  - diagnostics-first
+  - reliability-focused

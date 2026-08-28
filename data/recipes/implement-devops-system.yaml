@@ -1,0 +1,13 @@
+name: implement-devops-system
+description: >
+  Implement DevOps system workflows with safe automation, deployment guardrails,
+  and operational maintainability.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/ci-cd-release-engineer
+
+mixins:
+  - maintainability-focused
+  - release-safety-focused
+  - operability-focused

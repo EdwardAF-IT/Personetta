@@ -1,0 +1,12 @@
+name: test-devops-system
+description: >
+  Write and validate tests for DevOps system workflows, deployment safety, and
+  reliability assumptions.
+
+compose:
+  - base/lifecycle/test-writer
+  - base/layer/ci-cd-release-engineer
+
+mixins:
+  - reliability-focused
+  - compliance-aware

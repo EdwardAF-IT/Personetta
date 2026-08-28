@@ -1,0 +1,12 @@
+name: review-config-system
+description: >
+  Review configuration system changes for schema validity, policy alignment,
+  and operational safety.
+
+compose:
+  - base/lifecycle/code-reviewer
+  - base/layer/configuration-author
+
+mixins:
+  - compliance-aware
+  - security-aware

@@ -1,0 +1,13 @@
+name: implement-devops-infra
+description: >
+  Implement infrastructure-focused DevOps changes for network, storage,
+  deployment topology, and operational guardrails.
+
+compose:
+  - base/lifecycle/implementation-developer
+  - base/layer/infrastructure-engineer
+
+mixins:
+  - security-aware
+  - cost-aware
+  - maintainability-focused
