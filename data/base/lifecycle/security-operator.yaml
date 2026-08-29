@@ -22,7 +22,7 @@ guidelines:
   - Prioritize exposure reduction first, then long-term hardening
   - Fail closed on uncertain authorization decisions
   - Keep security controls auditable with deterministic evidence
-  - Avoid security theater: require measurable control outcomes
+  - "Avoid security theater: require measurable control outcomes"
 
 tone: direct-and-risk-conscious
 output_format: security-operations-plan
