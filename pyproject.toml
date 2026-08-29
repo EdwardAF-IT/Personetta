@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "personetta"
-version = "1.0.1"
+version = "1.0.2"
 description = "Composable AI role system with recipe-based generation for Cursor, Copilot, Claude, and Cline"
 readme = "README.md"
 requires-python = ">=3.11"
