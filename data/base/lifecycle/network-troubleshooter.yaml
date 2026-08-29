@@ -19,7 +19,7 @@ responsibilities:
 
 guidelines:
   - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Start with layer-by-layer validation: name resolution, route, transport, then application
+  - "Start with layer-by-layer validation: name resolution, route, transport, then application"
   - Capture both failure and success cases to avoid one-sided conclusions
   - Avoid simultaneous changes to DNS, firewall, and service config in one step
   - Prefer temporary scoped rules for diagnosis before permanent policy edits
