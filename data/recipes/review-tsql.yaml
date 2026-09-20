@@ -12,5 +12,6 @@ compose:
 mixins:
   - performance-focused
   - readability-focused
+  - maintainability-focused
   - security-aware
   - language-specific/tsql/tsql-formatting-standards
