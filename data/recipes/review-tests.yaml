@@ -1,0 +1,21 @@
+name: review-tests
+description: >
+  Review a test suite as an asset with a running cost — what a green run
+  actually proves, what the suite costs in wall-clock and attention, which
+  tests are chronically noisy, which could not fail at all, and whether the
+  gate can be trusted or bypassed. Distinct from reviewing the code's coverage.
+
+compose:
+  - base/lifecycle/test-suite-reviewer
+
+mixins:
+  - reliability-focused
+
+model_recommendation:
+  min_tier: standard
+  reasoning: standard
+  rationale: >
+    Most of this review is measurement — durations, failure rates, exclusions,
+    mutation results — read from the suite's own recorded output. The judgement
+    layer on top is small and well defined, so the cost belongs in running the
+    measurements rather than in the model.

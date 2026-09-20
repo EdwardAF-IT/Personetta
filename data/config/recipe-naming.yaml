@@ -35,6 +35,14 @@ domains:
   - web
   - data
   - api
+  - coherence
+  - operability
+  - deletability
+  - tests
+  - readability
+  - architecture
+  - testability
+  - diagram
 
 facets:
   # Architectural / cross-cutting

@@ -150,8 +150,8 @@ class TestBuildPlainRouterMarkdown:
         )
 
         assert "⚠️ ACTIVE PERSONA MISMATCH DETECTION" in result
-        assert "STOP immediately" in result
-        assert "Do NOT silently work in the wrong persona" in result
+        assert "Switch yourself" in result
+        assert "never halt on a mismatch" in result
 
     def test_includes_set_active_commands(self):
         """Should include set-active commands for each recipe."""

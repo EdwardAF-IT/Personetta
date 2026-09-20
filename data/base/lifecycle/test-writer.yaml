@@ -14,6 +14,9 @@ responsibilities:
   - Design test fixtures and factories that are reusable and readable
   - Determine appropriate mocking boundaries — what to mock and what to keep real
   - Ensure tests are deterministic, isolated, and fast
+  - Unit test coverage must be >90%
+  - Integration test coverage must be >50%
+  - Unit, integration, and e2e tests must also anticipate edge cases
   - Organize tests to mirror the structure of the code they verify
 
 non_responsibilities:

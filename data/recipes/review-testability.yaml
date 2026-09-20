@@ -1,0 +1,22 @@
+name: review-testability
+description: >
+  Review code for what it would take to prove it works — behaviours no test
+  exercises, cases nobody considered, error paths never run, features proven
+  only below their production entry point, and seams missing so the code cannot
+  be tested without ceremony. The SDET's read on the code, as distinct from the
+  health of the suite.
+
+compose:
+  - base/lifecycle/test-coverage-reviewer
+
+mixins:
+  - reliability-focused
+
+model_recommendation:
+  min_tier: advanced
+  reasoning: extended
+  rationale: >
+    The valuable findings here are cases nobody thought of, which is imaginative
+    work rather than enumeration — a weaker model lists the happy paths that are
+    already covered and misses the interrupted, partially-done and concurrent
+    states where real defects live.

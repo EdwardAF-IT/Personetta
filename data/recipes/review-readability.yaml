@@ -1,0 +1,22 @@
+name: review-readability
+description: >
+  Read code cold, the way a maintainer will in eighteen months with no design
+  document and nobody to ask, and report where comprehension actually broke and
+  what the detour cost. Tests whether code explains itself — a different
+  question from whether it is correct, well structured or well tested.
+
+compose:
+  - base/lifecycle/cold-read-reviewer
+
+mixins:
+  - readability-focused
+
+model_recommendation:
+  min_tier: standard
+  reasoning: standard
+  rationale: >
+    Capability is the wrong axis here. A stronger model is unusually good at
+    inferring intent from weak code — it reads a badly named method, correctly
+    guesses what it does, and never reports the confusion an ordinary
+    maintainer would feel. What makes this review accurate is the constraint —
+    no design docs, no decision log, no prior findings — not the horsepower.

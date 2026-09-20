@@ -1,0 +1,23 @@
+name: review-operability
+description: >
+  Review a running system for whether a human woken at 3am could tell what
+  happened — silent failures, correlation identifiers that die at a process
+  boundary, health checks that verify nothing, retries that double an effect,
+  and signal drowned in noise. The review that asks not "is it correct" but
+  "when it goes wrong, will anyone know".
+
+compose:
+  - base/lifecycle/operability-reviewer
+
+mixins:
+  - operability-focused
+  - observability-focused
+
+model_recommendation:
+  min_tier: advanced
+  reasoning: extended
+  rationale: >
+    Enumerating failures that have not happened yet is imaginative work, not
+    inspection — the valuable findings are the ones nobody has been bitten by.
+    A weaker model reports the failure paths that are already handled and
+    misses the one that fails quiet, which is the class that costs days.

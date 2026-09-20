@@ -53,12 +53,11 @@ def build_plain_router_markdown(
         "",
         "**If the user's request clearly belongs to a DIFFERENT recipe than currently active:**",
         "",
-        "1. **STOP immediately** — Do not proceed with mismatched work",
-        "2. **Tell them:** 'This work belongs to `<recipe-id>` not `<current-active>`'",
-        "3. **Show the exact command:** The appropriate `set-active` line from below",
-        "4. **Ask:** 'Would you like me to proceed anyway, or should you switch first?'",
+        "1. **Say so in one line** — 'This work belongs to `<recipe-id>`, not `<current-active>`'",
+        "2. **Switch yourself** — run the appropriate `set-active` line from below if a skill or shell tool lets you; otherwise show the exact command",
+        "3. **Proceed** — continue the work under the better-fitting recipe; do not stop and wait for confirmation",
         "",
-        "**Do NOT silently work in the wrong persona.**",
+        "**Never silently work in the wrong persona — and never halt on a mismatch either.**",
         "",
         "## When the user names a different persona",
         "",
@@ -130,7 +129,7 @@ def build_plain_baseline_markdown(
         "2. ✅ If found, **restate it verbatim** in your **first sentence**",
         "3. ✅ Scan the active persona for required **tone**, **output format**, and **guidelines**",
         "4. ✅ **VERIFY WORK ALIGNMENT** — Does the user's request match this persona's domain?",
-        "   - ❌ If NO: Stop immediately, suggest the correct persona from router, show exact `set-active` command",
+        "   - ❌ If NO: Note the mismatch in one line, switch to the correct persona from the router (run `set-active` if you can, else show it), then proceed",
         "   - ✅ If YES: Proceed with the active persona's guidelines",
         "",
         "**Example opening:**",
@@ -144,8 +143,8 @@ def build_plain_baseline_markdown(
         "**MISMATCH — Must warn:**",
         "- Active: test-csharp-backend-secure",
         "- Request: 'Package this Python project for PyPI'",
-        "- Action: ⚠️ Stop and say: 'This work (Python packaging) doesn't match test-csharp-backend-secure. "
-        "Consider: personetta set-active implement-python-backend-perf --format {0}'".format(
+        "- Action: ⚠️ Say: 'This work (Python packaging) doesn't match test-csharp-backend-secure — switching', "
+        "run `personetta set-active implement-python-backend-perf --format {0}`, then proceed".format(
             format_key
         ),
         "",

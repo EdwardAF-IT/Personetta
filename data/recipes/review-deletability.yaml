@@ -1,0 +1,21 @@
+name: review-deletability
+description: >
+  Review a system for what can be removed — dead paths, flags pinned to one
+  value, migrations that copied data but never cut over, two vocabularies kept
+  alive in parallel, abstractions with one caller, dependencies nobody uses.
+  Every candidate carries the evidence that proves it safe to delete.
+
+compose:
+  - base/lifecycle/deletability-reviewer
+
+mixins:
+  - maintainability-focused
+
+model_recommendation:
+  min_tier: standard
+  reasoning: standard
+  rationale: >
+    This review is evidence-gathering more than judgement: call graphs, greps
+    across every spelling, flag reads, write paths still accepting data. The
+    answers are verifiable, so a standard tier with good tool discipline
+    produces the same findings as a stronger one at a fraction of the cost.

@@ -1,0 +1,24 @@
+name: review-diagram
+description: >
+  Judge diagrams as printed figures — rendered at the size a reader will see,
+  ruled on for type fit, legibility and whether each answers its question in
+  seconds. Traces an illegible diagram to its cause rather than its symptom,
+  flags orphaned and redundant figures, and names the passages whose concept
+  needs a figure and has none.
+
+compose:
+  - base/lifecycle/diagram-reviewer
+
+mixins:
+  - diagram-quality-focused
+
+model_recommendation:
+  min_tier: advanced
+  reasoning: extended
+  rationale: >
+    The mechanical half of this review is measurement a script does. What needs
+    the model is the judgement a measurement cannot make: whether the shape
+    suits the relationship, whether a reader gets the answer quickly, and
+    whether a passage genuinely needs a figure — restraint being as important
+    as detection, since a document peppered with unnecessary diagrams is worse
+    than one with none.

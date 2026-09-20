@@ -1,0 +1,23 @@
+name: review-architecture
+description: >
+  Review a system's structure rather than its code — where the boundaries are,
+  what depends on what, whether one part can change without rippling, which
+  seams are missing and which are not earning themselves, and what a screen or
+  contract promises that nothing implements. Judges an existing design against
+  the code; does not produce a replacement.
+
+compose:
+  - base/lifecycle/architecture-reviewer
+
+mixins:
+  - extensibility-focused
+  - maintainability-focused
+
+model_recommendation:
+  min_tier: advanced
+  reasoning: extended
+  rationale: >
+    Structural judgement needs the whole tree held at once: the dependency
+    graph, the co-change history, and the gap between what the design claims
+    and what the code does. A weaker model reports the boundaries that are
+    documented and misses the ones the code actually has.
