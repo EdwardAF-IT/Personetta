@@ -20,10 +20,10 @@ preflight:
   - check: work_alignment
     description: "Verify user's request matches active persona's domain"
     on_mismatch:
-      action: stop_immediately
-      tell: "This work belongs to `<correct-recipe>` not `<current-active>`"
-      show: "Exact set-active command from router"
-      ask: "Would you like me to proceed anyway, or should you switch first?"
+      action: switch_and_proceed
+      tell: "This work belongs to `<correct-recipe>`, not `<current-active>`"
+      show: "Run the exact set-active command from the router if a tool allows it; otherwise show it"
+      then: "Proceed with the work under the better-fitting recipe; do not wait for confirmation"
     on_match:
       action: proceed
       

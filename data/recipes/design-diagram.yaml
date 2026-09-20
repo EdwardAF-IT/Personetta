@@ -1,0 +1,24 @@
+name: design-diagram
+description: >
+  Draw and redraw diagrams so a reader grasps a concept faster than the prose
+  alone allows — choosing the type from the relationship rather than defaulting
+  to a flowchart, keeping labels to a few words, authoring to the strictest
+  target so one source renders everywhere, and preserving every entity and
+  relationship across a redraw.
+
+compose:
+  - base/lifecycle/diagram-author
+
+mixins:
+  - diagram-quality-focused
+  - readability-focused
+
+model_recommendation:
+  min_tier: advanced
+  reasoning: extended
+  rationale: >
+    Choosing the right diagram type means understanding what the content
+    actually asserts, and redrawing without losing a fact means holding the
+    whole structure while changing its form. A weaker model reliably reaches
+    for a flowchart and crams the prose into the labels, which is the defect
+    this role exists to prevent.

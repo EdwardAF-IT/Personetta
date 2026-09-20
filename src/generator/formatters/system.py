@@ -152,7 +152,7 @@ def format_baseline_for_plain(baseline: dict, format_key: str, **context) -> str
                 on_match = check.get("on_match", {})
                 if on_mismatch:
                     lines.append(
-                        "   - ❌ If NO: Stop immediately, suggest the correct persona from router, show exact `set-active` command"
+                        "   - ❌ If NO: Note the mismatch in one line, switch to the correct persona from the router (run `set-active` if you can, else show it), then proceed"
                     )
                 if on_match:
                     lines.append(

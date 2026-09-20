@@ -267,7 +267,7 @@ class TestConsumerExperience:
         # Verify router includes mismatch detection
         router_content = router.read_text(encoding="utf-8")
         assert "ACTIVE PERSONA MISMATCH DETECTION" in router_content
-        assert "STOP immediately" in router_content
+        assert "Switch yourself" in router_content
 
     def test_consumer_set_active_cursor(self, temp_venv, built_wheel, tmp_path):
         """Test that consumer can run set-active to switch personas."""

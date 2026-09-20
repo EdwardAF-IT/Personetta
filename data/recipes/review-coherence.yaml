@@ -1,0 +1,23 @@
+name: review-coherence
+description: >
+  Review a whole system for conceptual coherence — concepts implemented more
+  than one way, parallel mechanisms that must agree by luck, documented rules
+  the code does not implement, and complexity pressure per-file metrics cannot
+  see. Runs against the entire tree, never a diff; every unification names one
+  home and ships with a gate that stops the drift regrowing.
+
+compose:
+  - base/lifecycle/coherence-reviewer
+
+mixins:
+  - maintainability-focused
+
+model_recommendation:
+  min_tier: advanced
+  reasoning: extended
+  rationale: >
+    A concept census means holding every home of a concept in mind across the
+    whole tree at once and judging drift between them — long-context,
+    cross-file reasoning where a smaller model reliably misses the thirteenth
+    location. This is the review that exists because diff-scoped passes kept
+    coming back clean while systemic drift accumulated.

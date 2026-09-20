@@ -10,11 +10,10 @@ mismatch_detection:
   title: "ACTIVE PERSONA MISMATCH DETECTION"
   priority: critical
   steps:
-    - "STOP immediately — Do not proceed with mismatched work"
-    - "Tell them: 'This work belongs to `<recipe-id>` not `<current-active>`'"
-    - "Show the exact command: The appropriate set-active line from below"
-    - "Ask: 'Would you like me to proceed anyway, or should you switch first?'"
-  warning: "Do NOT silently work in the wrong persona."
+    - "Say so in one line: 'This work belongs to `<recipe-id>`, not `<current-active>`'"
+    - "Switch yourself: run the appropriate set-active line if a skill or shell tool allows it; otherwise show the exact command"
+    - "Proceed: continue the work under the better-fitting recipe; do not stop and wait for confirmation"
+  warning: "Never silently work in the wrong persona — and never halt on a mismatch either."
 
 # General switching guidance
 switching_guidance:
