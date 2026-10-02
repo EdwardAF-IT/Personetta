@@ -8,6 +8,7 @@ __pycache__/
 .coverage.*
 coverage.xml
 coverage.json
+test-results.xml
 
 # All build/test/cache artifacts in one place
 .tool-stuff/
