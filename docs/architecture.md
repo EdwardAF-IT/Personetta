@@ -588,7 +588,7 @@ python -m build --wheel
 
 **Workflow**: `.github/workflows/publish-pypi.yml` builds the wheel and publishes to PyPI.
 
-**Trigger**: Push tag `v1.2.3` → build → publish to PyPI
+**Trigger**: Bump `version` in `pyproject.toml` and push to `main` → CI creates release `v<version>` → CI dispatches the publish workflow → build → publish to PyPI. Publishing a release by hand also triggers it.
 
 **Install**:
 
