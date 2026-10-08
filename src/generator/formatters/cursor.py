@@ -5,6 +5,8 @@ from generator.formatters.common import (
     _format_model_recommendation,
     build_title,
     humanize,
+    id_marker,
+    identity_line,
 )
 
 # Legacy baseline and router builders - deprecated in favor of YAML-based system roles
@@ -161,6 +163,9 @@ def format_cursor(composed: dict, *, always_apply: bool = True) -> str:
         lines.append("")
 
     lines.append(f"> **Personetta — active recipe:** `{recipe_id}`")
+    header = identity_line(composed)
+    if header:
+        lines.append(f"> {header}")
     lines.append(">")
     lines.append(
         "> Stay in this persona for the whole thread unless the user runs `set-active` with another recipe. "
@@ -260,7 +265,7 @@ def format_cursor(composed: dict, *, always_apply: bool = True) -> str:
         lines.append("## Guidelines")
         lines.append("")
         for item in composed["guidelines"]:
-            lines.append(f"- {item}")
+            lines.append(f"- {id_marker(item)}{item}")
         lines.append("")
 
     if composed.get("tools"):
@@ -302,10 +307,11 @@ def format_cursor(composed: dict, *, always_apply: bool = True) -> str:
         lines.append("## Verification")
         lines.append("")
         for v in composed["verification"]:
+            marker = f"[{v['id']}] " if v.get("id") else ""
             if v.get("command"):
-                lines.append(f"- [ ] {v['check']} — `{v['command']}`")
+                lines.append(f"- [ ] {marker}{v['check']} — `{v['command']}`")
             else:
-                lines.append(f"- [ ] {v['check']} *(self-assess)*")
+                lines.append(f"- [ ] {marker}{v['check']} *(self-assess)*")
         lines.append("")
 
     lines.append("## Compliance")

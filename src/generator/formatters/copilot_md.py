@@ -4,6 +4,8 @@ from generator.formatters.common import (
     _format_model_recommendation,
     build_title,
     humanize,
+    id_marker,
+    identity_line,
 )
 
 
@@ -14,6 +16,11 @@ def format_copilot(composed: dict) -> str:
 
     lines.append(f"# {title}")
     lines.append("")
+
+    header = identity_line(composed)
+    if header:
+        lines.append(f"> {header}")
+        lines.append("")
 
     if desc:
         lines.append(desc)
@@ -57,7 +64,7 @@ def format_copilot(composed: dict) -> str:
         lines.append("## Guidelines")
         lines.append("")
         for item in composed["guidelines"]:
-            lines.append(f"- {item}")
+            lines.append(f"- {id_marker(item)}{item}")
         lines.append("")
 
     if composed.get("tools"):
@@ -95,10 +102,11 @@ def format_copilot(composed: dict) -> str:
         lines.append("## Verification")
         lines.append("")
         for v in composed["verification"]:
+            marker = f"[{v['id']}] " if v.get("id") else ""
             if v.get("command"):
-                lines.append(f"- [ ] {v['check']} — `{v['command']}`")
+                lines.append(f"- [ ] {marker}{v['check']} — `{v['command']}`")
             else:
-                lines.append(f"- [ ] {v['check']} *(self-assess)*")
+                lines.append(f"- [ ] {marker}{v['check']} *(self-assess)*")
         lines.append("")
 
     # A role may opt out of the compliance ceremony (e.g. the neutral fallback

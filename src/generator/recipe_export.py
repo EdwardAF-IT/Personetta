@@ -82,16 +82,8 @@ def _model_recommendation(composed: dict) -> dict:
     return result
 
 
-def build_recipe_export(
-    composed: dict, roles: list[dict], version: str | None = None
-) -> dict:
-    """Build the export document for an already-composed recipe.
-
-    Args:
-        composed: Output of ``compose_recipe``.
-        roles: The compose and mixin roles that produced it (for guideline sources).
-        version: Version to record; defaults to the installed package version.
-    """
+def _export_content(composed: dict, roles: list[dict]) -> dict:
+    """The hashed content of an export (everything except version and hash)."""
     name = composed["_recipe_name"]
     content: dict = {
         "recipe": name,
@@ -104,6 +96,34 @@ def build_recipe_export(
     }
     if isinstance(composed.get("limits"), dict) and composed["limits"]:
         content["limits"] = composed["limits"]
+    return content
+
+
+def recipe_identity(composed: dict, roles: list[dict]) -> dict | None:
+    """Version and hash exactly as ``recipe --format json`` reports them.
+
+    Returns None when the recipe cannot be exported (an item has no id), so
+    callers that format hand-built roles keep working without a header.
+    """
+    try:
+        content = _export_content(composed, roles)
+    except LoadError:
+        return None
+    return {"version": package_version(), "hash": content_hash(content)}
+
+
+def build_recipe_export(
+    composed: dict, roles: list[dict], version: str | None = None
+) -> dict:
+    """Build the export document for an already-composed recipe.
+
+    Args:
+        composed: Output of ``compose_recipe``.
+        roles: The compose and mixin roles that produced it (for guideline sources).
+        version: Version to record; defaults to the installed package version.
+    """
+    name = composed["_recipe_name"]
+    content = _export_content(composed, roles)
     return {
         "recipe": name,
         "version": version or package_version(),

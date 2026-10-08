@@ -37,3 +37,21 @@ def _format_model_recommendation(rec: dict) -> str:
     if rationale:
         line += f" — {rationale}"
     return line
+
+
+def identity_line(composed: dict) -> str | None:
+    """Header text carrying the recipe version and content hash, if known."""
+    identity = composed.get("_identity")
+    if not identity:
+        return None
+    return (
+        f"Personetta recipe `{composed.get('_recipe_name', 'unknown')}` "
+        f"v{identity['version']} · hash `{identity['hash']}` · "
+        "ids in [brackets] match `personetta recipe <name> --format json`"
+    )
+
+
+def id_marker(item: object) -> str:
+    """``[CS-4] `` prefix for an id-carrying guideline; empty for plain text."""
+    ident = getattr(item, "id", None)
+    return f"[{ident}] " if isinstance(ident, str) else ""

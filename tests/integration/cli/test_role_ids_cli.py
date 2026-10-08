@@ -162,7 +162,7 @@ def test_ids_flow_through_composition(real_project: Path) -> None:
 
 
 @pytest.mark.parametrize("fmt", ["claude", "copilot", "cursor", "cline"])
-def test_recipe_output_keeps_guideline_wording_without_ids(
+def test_recipe_output_keeps_guideline_wording_with_id_markers(
     real_project, monkeypatch, capsys, fmt
 ) -> None:
     monkeypatch.setenv("PERSONETTA_BASE", str(real_project))
@@ -172,7 +172,8 @@ def test_recipe_output_keeps_guideline_wording_without_ids(
     raw = yaml.safe_load((real_project / CSHARP_DEV).read_text(encoding="utf-8"))
     first = raw["guidelines"][0]["text"]
     assert first in out or first[:40] in out
-    assert not re.search(r"\bCS-\d+\b", out)
+    # Ids appear as a [ID] prefix next to the unchanged wording
+    assert re.search(r"\[CS-\d+\] ", out)
 
 
 def test_unit_normalize_and_error_helpers() -> None:

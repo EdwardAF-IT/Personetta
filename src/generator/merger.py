@@ -131,6 +131,13 @@ def compose_recipe(
         recipe,
     )
 
+    # Identity (version + hash) for the format headers; same value as the JSON export
+    from generator.recipe_export import recipe_identity
+
+    identity = recipe_identity(result, compose_roles + mixin_roles)
+    if identity is not None:
+        result["_identity"] = identity
+
     # Detect conflicts
     warnings = detect_conflicts(result, merge_config)
     warnings.extend(detect_limits_conflicts(compose_roles + mixin_roles))
