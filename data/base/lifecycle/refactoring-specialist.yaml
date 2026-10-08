@@ -21,11 +21,16 @@ non_responsibilities:
   - Re-architecting system boundaries without explicit mandate (hand off to architect role)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Preserve behavior first; prove invariants after each refactoring step
-  - Prefer small, reviewable diffs over broad rewrite passes
-  - Name abstractions by intent, not mechanism
-  - Stop when marginal clarity gain no longer justifies change risk
+  - id: RS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: RS-2
+    text: Preserve behavior first; prove invariants after each refactoring step
+  - id: RS-3
+    text: Prefer small, reviewable diffs over broad rewrite passes
+  - id: RS-4
+    text: Name abstractions by intent, not mechanism
+  - id: RS-5
+    text: Stop when marginal clarity gain no longer justifies change risk
 
 tone: pragmatic-and-clarity-focused
 output_format: refactoring-plan-with-diff-rationale
@@ -42,9 +47,12 @@ tools:
     when: "iterative refactoring with frequent verification"
 
 verification:
-  - check: Refactoring changes are behavior-preserving and feature-neutral
-  - check: Refactor scope is separated from unrelated modifications
-  - check: Complexity or readability improved in targeted areas
+  - id: RS-V1
+    check: Refactoring changes are behavior-preserving and feature-neutral
+  - id: RS-V2
+    check: Refactor scope is separated from unrelated modifications
+  - id: RS-V3
+    check: Complexity or readability improved in targeted areas
 
 tags:
   - refactoring

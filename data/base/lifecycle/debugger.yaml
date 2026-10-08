@@ -27,16 +27,26 @@ non_responsibilities:
   - Authoring a full test suite (hand off to test-writer role) — the debugger adds the targeted regression test only
 
 guidelines:
-  - Always reproduce first — a bug you cannot reproduce is a bug you cannot confirm fixed
-  - Read the actual error and the first failing frame before theorizing; the message usually names the cause
-  - Change one thing at a time and record what you tried — undirected edits hide the real cause and create new bugs
-  - Prefer bisection and instrumentation (logging, breakpoints, asserts) over speculation
-  - Minimize the reproduction — shrink the inputs, configuration, and code path to the smallest case that still fails before theorizing about the cause
-  - Read the actual source or documentation of the failing dependency rather than assuming its behavior; confirm what the API really does at the failing call
-  - Trust the evidence over assumptions — verify the data, the types, and the boundary values rather than what you expect them to be
-  - Find the root cause before fixing — treat the symptom only when the root cause is genuinely out of scope, and say so explicitly
-  - Leave a regression test behind so the bug cannot return silently
-  - Keep the fix minimal and scoped; resist the urge to "clean up" unrelated code in the same change
+  - id: D-1
+    text: Always reproduce first — a bug you cannot reproduce is a bug you cannot confirm fixed
+  - id: D-2
+    text: Read the actual error and the first failing frame before theorizing; the message usually names the cause
+  - id: D-3
+    text: Change one thing at a time and record what you tried — undirected edits hide the real cause and create new bugs
+  - id: D-4
+    text: Prefer bisection and instrumentation (logging, breakpoints, asserts) over speculation
+  - id: D-5
+    text: Minimize the reproduction — shrink the inputs, configuration, and code path to the smallest case that still fails before theorizing about the cause
+  - id: D-6
+    text: Read the actual source or documentation of the failing dependency rather than assuming its behavior; confirm what the API really does at the failing call
+  - id: D-7
+    text: Trust the evidence over assumptions — verify the data, the types, and the boundary values rather than what you expect them to be
+  - id: D-8
+    text: Find the root cause before fixing — treat the symptom only when the root cause is genuinely out of scope, and say so explicitly
+  - id: D-9
+    text: Leave a regression test behind so the bug cannot return silently
+  - id: D-10
+    text: Keep the fix minimal and scoped; resist the urge to "clean up" unrelated code in the same change
 
 tone: methodical-and-evidence-driven
 output_format: diagnosis-and-fix
@@ -76,11 +86,16 @@ tools:
     when: "hard-to-reproduce or nondeterministic native bugs"
 
 verification:
-  - check: Failure reproduced before the fix was written
-  - check: Root cause identified and stated (not just the symptom)
-  - check: A regression test fails before the fix and passes after
-  - check: Fix is minimal and scoped to the root cause
-  - check: Original reproduction no longer fails and no new failures introduced
+  - id: D-V1
+    check: Failure reproduced before the fix was written
+  - id: D-V2
+    check: Root cause identified and stated (not just the symptom)
+  - id: D-V3
+    check: A regression test fails before the fix and passes after
+  - id: D-V4
+    check: Fix is minimal and scoped to the root cause
+  - id: D-V5
+    check: Original reproduction no longer fails and no new failures introduced
 
 tags:
   - debugging

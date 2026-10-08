@@ -26,17 +26,28 @@ non_responsibilities:
   - Building diagram authoring tools or infrastructure
 
 guidelines:
-  - Always validate with mermaid-cli before marking complete — syntax errors block readers
-  - Consistency first — if a color or shape means something, use it the same way everywhere
-  - Complexity budget — state machine diagrams with >20 states need hierarchical breakdowns or multiple views
-  - Labels must be human-readable — avoid acronyms without definition; prefer 1-3 words per node
-  - Color carries meaning — use palette colors consistently; don't invent new colors mid-project
-  - Legends in every README — readers should understand the visual language without guessing
-  - Test diagrams render in markdown, GitHub, and Redoc — not all tools render all Mermaid features equally
-  - Screenshot fixtures for complex diagrams — catch visual drift on refactors before they ship
-  - Every diagram has metadata — title, purpose, audience, related_docs in YAML frontmatter
-  - Diagram density — if you can't trace a path without scrolling horizontally, split the view
-  - Node naming patterns — be consistent so readers can follow the visual language
+  - id: DQF-1
+    text: Always validate with mermaid-cli before marking complete — syntax errors block readers
+  - id: DQF-2
+    text: Consistency first — if a color or shape means something, use it the same way everywhere
+  - id: DQF-3
+    text: Complexity budget — state machine diagrams with >20 states need hierarchical breakdowns or multiple views
+  - id: DQF-4
+    text: Labels must be human-readable — avoid acronyms without definition; prefer 1-3 words per node
+  - id: DQF-5
+    text: Color carries meaning — use palette colors consistently; don't invent new colors mid-project
+  - id: DQF-6
+    text: Legends in every README — readers should understand the visual language without guessing
+  - id: DQF-7
+    text: Test diagrams render in markdown, GitHub, and Redoc — not all tools render all Mermaid features equally
+  - id: DQF-8
+    text: Screenshot fixtures for complex diagrams — catch visual drift on refactors before they ship
+  - id: DQF-9
+    text: Every diagram has metadata — title, purpose, audience, related_docs in YAML frontmatter
+  - id: DQF-10
+    text: Diagram density — if you can't trace a path without scrolling horizontally, split the view
+  - id: DQF-11
+    text: Node naming patterns — be consistent so readers can follow the visual language
 
 tools:
   - name: mermaid-cli
@@ -59,17 +70,28 @@ tools:
     when: "validation — ensure all colors match palette; find orphaned or inconsistent IDs"
 
 verification:
-  - check: All Mermaid files render without syntax errors (mermaid-cli)
-  - check: All diagrams use colors from mermaid-theme.json palette only
-  - check: State machine diagrams with >20 nodes have hierarchical breakdown or multi-view structure
-  - check: Every diagram has YAML frontmatter with title, purpose, audience
-  - check: All node labels fit within 1-3 words (no abbreviated acronyms without definition)
-  - check: Color meanings are consistent (same color = same concept across all diagrams)
-  - check: Diagram legends in README explain all shape and color conventions
-  - check: Cross-references between diagrams and markdown are valid (rg check)
-  - check: No undefined color hex values in diagram definitions
-  - check: Screenshot fixtures exist for complex diagrams and diff against recent renders
-  - check: Diagram density — no horizontal scrolling required to view complete state machine
+  - id: DQF-V1
+    check: All Mermaid files render without syntax errors (mermaid-cli)
+  - id: DQF-V2
+    check: All diagrams use colors from mermaid-theme.json palette only
+  - id: DQF-V3
+    check: State machine diagrams with >20 nodes have hierarchical breakdown or multi-view structure
+  - id: DQF-V4
+    check: Every diagram has YAML frontmatter with title, purpose, audience
+  - id: DQF-V5
+    check: All node labels fit within 1-3 words (no abbreviated acronyms without definition)
+  - id: DQF-V6
+    check: Color meanings are consistent (same color = same concept across all diagrams)
+  - id: DQF-V7
+    check: Diagram legends in README explain all shape and color conventions
+  - id: DQF-V8
+    check: Cross-references between diagrams and markdown are valid (rg check)
+  - id: DQF-V9
+    check: No undefined color hex values in diagram definitions
+  - id: DQF-V10
+    check: Screenshot fixtures exist for complex diagrams and diff against recent renders
+  - id: DQF-V11
+    check: Diagram density — no horizontal scrolling required to view complete state machine
 
 tags:
   - diagram-quality

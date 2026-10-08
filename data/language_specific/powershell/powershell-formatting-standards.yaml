@@ -18,40 +18,56 @@ responsibilities:
   - Enforce comment standards for functions and inline code
 
 guidelines:
-  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
+  - id: PFS-1
+    text: Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
   # Function structure
-  - Every function must have comment-based help with at least .SYNOPSIS and .DESCRIPTION; always explicitly return a value from functions
-  - "Constants in ALL_CAPS; inline comments start with a capital letter; non-trivial code must have a descriptive comment — end-of-line if short, above if longer"
+  - id: PFS-2
+    text: Every function must have comment-based help with at least .SYNOPSIS and .DESCRIPTION; always explicitly return a value from functions
+  - id: PFS-3
+    text: "Constants in ALL_CAPS; inline comments start with a capital letter; non-trivial code must have a descriptive comment — end-of-line if short, above if longer"
 
   # Parameter formatting
-  - "Short parameter list (few params, short names): inline — param ([int] $x, [int] $y); longer lists: open parenthesis on next line, parameters indented, each with a short inline comment"
-  - Always put a space between type cast and variable name for readability — [string] $Name not [string]$Name
+  - id: PFS-4
+    text: "Short parameter list (few params, short names): inline — param ([int] $x, [int] $y); longer lists: open parenthesis on next line, parameters indented, each with a short inline comment"
+  - id: PFS-5
+    text: Always put a space between type cast and variable name for readability — [string] $Name not [string]$Name
 
   # Brace placement
-  - "Always use braces {} for conditionals and loops; opening brace on its own line, aligned with the keyword — never at the end of the conditional line; closing brace aligns with the opening keyword"
-  - "Short conditional (<=1 comparator) + short block: inline — if ($x -eq 1) { return \"one\" }; non-short conditional (>1 comparator) + short body: body on one line below, indented; longer comparators: aligned on separate lines"
-  - Apply the same brace placement rules to for, foreach, while, switch, try/catch/finally, and function definitions
+  - id: PFS-6
+    text: "Always use braces {} for conditionals and loops; opening brace on its own line, aligned with the keyword — never at the end of the conditional line; closing brace aligns with the opening keyword"
+  - id: PFS-7
+    text: "Short conditional (<=1 comparator) + short block: inline — if ($x -eq 1) { return \"one\" }; non-short conditional (>1 comparator) + short body: body on one line below, indented; longer comparators: aligned on separate lines"
+  - id: PFS-8
+    text: Apply the same brace placement rules to for, foreach, while, switch, try/catch/finally, and function definitions
 
   # Function calls
-  - "Short calls (<4 params, fits within ~90 columns): keep on one line; long calls: break across lines with backtick continuation, indent parameters"
+  - id: PFS-9
+    text: "Short calls (<4 params, fits within ~90 columns): keep on one line; long calls: break across lines with backtick continuation, indent parameters"
 
   # Alignment
-  - Align similar assignments along the operator and parameters of consecutive similar function calls for visual consistency
+  - id: PFS-10
+    text: Align similar assignments along the operator and parameters of consecutive similar function calls for visual consistency
 
   # Math expressions
-  - Break long math expressions across lines, align operands for clarity
+  - id: PFS-11
+    text: Break long math expressions across lines, align operands for clarity
 
   # Strings
-  - Always use -f or .Format() for string building — never use string interpolation ("$var")
+  - id: PFS-12
+    text: Always use -f or .Format() for string building — never use string interpolation ("$var")
 
   # Operators and comparisons
-  - "Always put spaces around operators; prefer $var -eq $null style, not $null -eq $var"
+  - id: PFS-13
+    text: "Always put spaces around operators; prefer $var -eq $null style, not $null -eq $var"
 
 verification:
-  - check: Script passes PSScriptAnalyzer formatting rules
+  - id: PFS-V1
+    check: Script passes PSScriptAnalyzer formatting rules
     command: Invoke-ScriptAnalyzer -Path . -Recurse -Settings CodeFormatting
-  - check: One True Brace Style used consistently
-  - check: Function comment-based help present
+  - id: PFS-V2
+    check: One True Brace Style used consistently
+  - id: PFS-V3
+    check: Function comment-based help present
 
 examples:
   - scenario: Multi-line block with compound conditional

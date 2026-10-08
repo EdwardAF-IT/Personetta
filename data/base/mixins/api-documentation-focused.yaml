@@ -26,16 +26,26 @@ non_responsibilities:
   - Making API design decisions (only documenting decisions already made)
 
 guidelines:
-  - Complete coverage first — every endpoint in at least one process guide; find and document orphans
-  - Consistency is clarity — error codes, status codes, naming patterns must be predictable
-  - "Parameters define contracts — every parameter documented: type, required/optional, constraints, example"
-  - Responses are promises — document all possible status codes and response shapes for each endpoint
-  - Patterns reduce surprise — document recurring conventions so developers know what to expect
-  - Breaking changes must announce — deprecation path, migration guide, timeline clear and visible
-  - External integrations need sequences — webhook and callback flows deserve diagrams and examples
-  - Design decisions deserve explanation — why this status code, why this error structure, why this versioning
-  - Examples are contracts — every endpoint should have a working example that readers can copy
-  - Audit regularly — quarterly endpoint audit to catch undocumented or abandoned endpoints
+  - id: ADF-1
+    text: Complete coverage first — every endpoint in at least one process guide; find and document orphans
+  - id: ADF-2
+    text: Consistency is clarity — error codes, status codes, naming patterns must be predictable
+  - id: ADF-3
+    text: "Parameters define contracts — every parameter documented: type, required/optional, constraints, example"
+  - id: ADF-4
+    text: Responses are promises — document all possible status codes and response shapes for each endpoint
+  - id: ADF-5
+    text: Patterns reduce surprise — document recurring conventions so developers know what to expect
+  - id: ADF-6
+    text: Breaking changes must announce — deprecation path, migration guide, timeline clear and visible
+  - id: ADF-7
+    text: External integrations need sequences — webhook and callback flows deserve diagrams and examples
+  - id: ADF-8
+    text: Design decisions deserve explanation — why this status code, why this error structure, why this versioning
+  - id: ADF-9
+    text: Examples are contracts — every endpoint should have a working example that readers can copy
+  - id: ADF-10
+    text: Audit regularly — quarterly endpoint audit to catch undocumented or abandoned endpoints
 
 tools:
   - name: rg (ripgrep)
@@ -63,18 +73,30 @@ tools:
     when: "terminology audit — ensure parameter and concept names are consistent"
 
 verification:
-  - check: Every endpoint has documentation in at least one process guide
-  - check: Endpoint audit completed — no orphaned or undocumented endpoints
-  - check: All parameters documented (type, required/optional, constraints, example)
-  - check: All possible status codes and response shapes documented per endpoint
-  - check: Error codes consistent across all endpoints (same code = same meaning)
-  - check: Naming conventions enforced (camelCase parameters, kebab-case URLs, snake_case internal)
-  - check: Authentication and authorization requirements clear for each endpoint
-  - check: Deprecation paths documented with migration guidance and timeline
-  - check: Integration patterns documented (webhooks, callbacks, retry logic)
-  - check: Performance characteristics documented (latency, timeouts, rate limits)
-  - check: Every endpoint has a working example that readers can copy
-  - check: Cross-reference index complete — find which processes use each endpoint
+  - id: ADF-V1
+    check: Every endpoint has documentation in at least one process guide
+  - id: ADF-V2
+    check: Endpoint audit completed — no orphaned or undocumented endpoints
+  - id: ADF-V3
+    check: All parameters documented (type, required/optional, constraints, example)
+  - id: ADF-V4
+    check: All possible status codes and response shapes documented per endpoint
+  - id: ADF-V5
+    check: Error codes consistent across all endpoints (same code = same meaning)
+  - id: ADF-V6
+    check: Naming conventions enforced (camelCase parameters, kebab-case URLs, snake_case internal)
+  - id: ADF-V7
+    check: Authentication and authorization requirements clear for each endpoint
+  - id: ADF-V8
+    check: Deprecation paths documented with migration guidance and timeline
+  - id: ADF-V9
+    check: Integration patterns documented (webhooks, callbacks, retry logic)
+  - id: ADF-V10
+    check: Performance characteristics documented (latency, timeouts, rate limits)
+  - id: ADF-V11
+    check: Every endpoint has a working example that readers can copy
+  - id: ADF-V12
+    check: Cross-reference index complete — find which processes use each endpoint
 
 tags:
   - api-documentation

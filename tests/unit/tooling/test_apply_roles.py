@@ -20,7 +20,8 @@ type: layer
 responsibilities:
   - Exercise the audit scanner in tests.
 guidelines:
-  - Keep this line for preservation assertions.
+  - id: AF-1
+    text: Keep this line for preservation assertions.
 tags:
   - audit
 tools:

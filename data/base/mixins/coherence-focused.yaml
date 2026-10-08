@@ -18,12 +18,18 @@ responsibilities:
   - Name new constants, keys, and vocabularies in the project's existing registries rather than inline
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Search before you write — the second implementation of a concept is where drift starts, and it rarely looks like drift at the time
-  - One home per concept — parsing, formatting, validation, and vocabulary for a concept live together, and everything else references them
-  - Two similar implementations are a watch item, three are a finding — apply the rule in both directions and resist premature abstraction at two
-  - A unification ships with the test or gate that stops the drift regrowing; otherwise it is a cleanup that will need doing again
-  - Treat "the docs say X, the code does Y" as a bug to raise immediately, whichever side turns out to be right
+  - id: CF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: CF-2
+    text: Search before you write — the second implementation of a concept is where drift starts, and it rarely looks like drift at the time
+  - id: CF-3
+    text: One home per concept — parsing, formatting, validation, and vocabulary for a concept live together, and everything else references them
+  - id: CF-4
+    text: Two similar implementations are a watch item, three are a finding — apply the rule in both directions and resist premature abstraction at two
+  - id: CF-5
+    text: A unification ships with the test or gate that stops the drift regrowing; otherwise it is a cleanup that will need doing again
+  - id: CF-6
+    text: Treat "the docs say X, the code does Y" as a bug to raise immediately, whichever side turns out to be right
 
 tools:
   - name: ripgrep (rg)
@@ -37,9 +43,12 @@ tools:
     when: "pinning a unification so it cannot silently regrow"
 
 verification:
-  - check: No new parallel implementation of a concept that already has a home
-  - check: New constants, keys, and vocabularies added to the existing registry, not inline
-  - check: Any discovered documentation-vs-behavior drift raised as a finding
+  - id: CF-V1
+    check: No new parallel implementation of a concept that already has a home
+  - id: CF-V2
+    check: New constants, keys, and vocabularies added to the existing registry, not inline
+  - id: CF-V3
+    check: Any discovered documentation-vs-behavior drift raised as a finding
 
 tags:
   - coherence

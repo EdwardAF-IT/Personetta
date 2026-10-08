@@ -20,15 +20,24 @@ responsibilities:
   - Apply authentication/authorization, rate limiting, and output caching as first-class endpoint concerns
 
 guidelines:
-  - Prefer minimal APIs for small/focused services and controllers for larger surfaces; return typed results (Results<Ok<T>, NotFound>) so responses and OpenAPI stay accurate
-  - Validate at the boundary and return ProblemDetails via a centralized exception handler (IExceptionHandler / UseExceptionHandler); never leak stack traces to clients
-  - Order middleware deliberately — exception handler first, then HTTPS/HSTS, routing, CORS, authentication, authorization, then endpoints; a wrong order silently bypasses auth
-  - Match service lifetime to state — singleton for stateless/shared, scoped for per-request (e.g. DbContext), transient for lightweight; never inject scoped into singleton (captive dependency)
-  - Bind configuration with IOptions<T>/IOptionsSnapshot<T> and validate on startup with ValidateDataAnnotations().ValidateOnStart()
-  - Make every controller action and minimal-API handler async and accept a CancellationToken from the request
-  - Add health checks (AddHealthChecks) with liveness/readiness endpoints and expose OpenAPI for the API surface
-  - Apply ASP.NET Core rate limiting and output caching middleware instead of hand-rolling; secure endpoints by default and opt out explicitly with AllowAnonymous
-  - Keep controllers/handlers thin — delegate business logic to services; do not place data access or domain rules in the HTTP layer
+  - id: CSA-1
+    text: Prefer minimal APIs for small/focused services and controllers for larger surfaces; return typed results (Results<Ok<T>, NotFound>) so responses and OpenAPI stay accurate
+  - id: CSA-2
+    text: Validate at the boundary and return ProblemDetails via a centralized exception handler (IExceptionHandler / UseExceptionHandler); never leak stack traces to clients
+  - id: CSA-3
+    text: Order middleware deliberately — exception handler first, then HTTPS/HSTS, routing, CORS, authentication, authorization, then endpoints; a wrong order silently bypasses auth
+  - id: CSA-4
+    text: Match service lifetime to state — singleton for stateless/shared, scoped for per-request (e.g. DbContext), transient for lightweight; never inject scoped into singleton (captive dependency)
+  - id: CSA-5
+    text: Bind configuration with IOptions<T>/IOptionsSnapshot<T> and validate on startup with ValidateDataAnnotations().ValidateOnStart()
+  - id: CSA-6
+    text: Make every controller action and minimal-API handler async and accept a CancellationToken from the request
+  - id: CSA-7
+    text: Add health checks (AddHealthChecks) with liveness/readiness endpoints and expose OpenAPI for the API surface
+  - id: CSA-8
+    text: Apply ASP.NET Core rate limiting and output caching middleware instead of hand-rolling; secure endpoints by default and opt out explicitly with AllowAnonymous
+  - id: CSA-9
+    text: Keep controllers/handlers thin — delegate business logic to services; do not place data access or domain rules in the HTTP layer
 
 tools:
   - name: ASP.NET Core
@@ -42,11 +51,16 @@ tools:
     when: "integration-testing endpoints, middleware order, and auth without a live server"
 
 verification:
-  - check: Endpoints return ProblemDetails for error responses
-  - check: Middleware order places authentication before authorization and after routing
-  - check: No scoped services injected into singletons (no captive dependencies)
-  - check: Configuration options validated on startup
-  - check: Integration tests cover the pipeline
+  - id: CSA-V1
+    check: Endpoints return ProblemDetails for error responses
+  - id: CSA-V2
+    check: Middleware order places authentication before authorization and after routing
+  - id: CSA-V3
+    check: No scoped services injected into singletons (no captive dependencies)
+  - id: CSA-V4
+    check: Configuration options validated on startup
+  - id: CSA-V5
+    check: Integration tests cover the pipeline
     command: dotnet test --no-build
 
 tags:

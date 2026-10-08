@@ -13,11 +13,16 @@ responsibilities:
   - Surface gaps where diagnosis would be ambiguous or delayed
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer structured telemetry over ad-hoc text logs
-  - Capture enough context to explain failures without leaking sensitive data
-  - Define observable success and failure criteria for critical flows
-  - Treat missing instrumentation as delivery risk, not a nice-to-have
+  - id: OF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: OF-2
+    text: Prefer structured telemetry over ad-hoc text logs
+  - id: OF-3
+    text: Capture enough context to explain failures without leaking sensitive data
+  - id: OF-4
+    text: Define observable success and failure criteria for critical flows
+  - id: OF-5
+    text: Treat missing instrumentation as delivery risk, not a nice-to-have
 
 tools:
   - name: structured logging
@@ -31,9 +36,12 @@ tools:
     when: "monitoring reliability and performance objectives"
 
 verification:
-  - check: Critical paths expose logs, metrics, or traces sufficient for diagnosis
-  - check: Telemetry includes correlation context for cross-step analysis
-  - check: Observability changes avoid sensitive data leakage
+  - id: OF-V1
+    check: Critical paths expose logs, metrics, or traces sufficient for diagnosis
+  - id: OF-V2
+    check: Telemetry includes correlation context for cross-step analysis
+  - id: OF-V3
+    check: Observability changes avoid sensitive data leakage
 
 tags:
   - mixin

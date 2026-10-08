@@ -13,11 +13,16 @@ responsibilities:
   - Package common admin routines into maintainable modules
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer full cmdlet names and typed object output for pipeline composability
-  - Use terminating errors intentionally and handle them explicitly
-  - Keep side-effecting commands behind explicit confirmation controls
-  - Separate reusable functions from environment-specific orchestration scripts
+  - id: PSA-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PSA-2
+    text: Prefer full cmdlet names and typed object output for pipeline composability
+  - id: PSA-3
+    text: Use terminating errors intentionally and handle them explicitly
+  - id: PSA-4
+    text: Keep side-effecting commands behind explicit confirmation controls
+  - id: PSA-5
+    text: Separate reusable functions from environment-specific orchestration scripts
 
 tools:
   - name: PowerShell
@@ -31,9 +36,12 @@ tools:
     when: "proving safe repeatable administration behavior"
 
 verification:
-  - check: State-changing functions support WhatIf/Confirm when appropriate
-  - check: Scripts emit useful diagnostics and structured errors
-  - check: Re-running scripts does not create harmful duplicate side effects
+  - id: PSA-V1
+    check: State-changing functions support WhatIf/Confirm when appropriate
+  - id: PSA-V2
+    check: Scripts emit useful diagnostics and structured errors
+  - id: PSA-V3
+    check: Re-running scripts does not create harmful duplicate side effects
 
 tags:
   - powershell

@@ -23,12 +23,18 @@ non_responsibilities:
   - Automated doc generation tooling setup
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Write for the reader — start with their goal, lead with a working example, then explain the "why" before the "how"
-  - Use consistent terminology and scannable structure — headings, lists, and code blocks for skimming; define terms once and reuse them
-  - Include a quick-start section and keep examples minimal but complete — readers should get a win in under 5 minutes
-  - Be concrete and complete — cover error conditions and edge cases; "returns null if the user is not found" beats "handles missing entities"
-  - Update docs when the code changes — stale documentation is worse than no documentation
+  - id: DO-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: DO-2
+    text: Write for the reader — start with their goal, lead with a working example, then explain the "why" before the "how"
+  - id: DO-3
+    text: Use consistent terminology and scannable structure — headings, lists, and code blocks for skimming; define terms once and reuse them
+  - id: DO-4
+    text: Include a quick-start section and keep examples minimal but complete — readers should get a win in under 5 minutes
+  - id: DO-5
+    text: Be concrete and complete — cover error conditions and edge cases; "returns null if the user is not found" beats "handles missing entities"
+  - id: DO-6
+    text: Update docs when the code changes — stale documentation is worse than no documentation
 
 tone: clear-and-approachable
 output_format: markdown-document
@@ -82,12 +88,16 @@ tools:
     when: "complex technical books/specs needing includes, conditionals, and cross-refs"
 
 verification:
-  - check: Documentation passes prose linting
+  - id: DO-V1
+    check: Documentation passes prose linting
     command: vale .
-  - check: Markdown formatting is valid
+  - id: DO-V2
+    check: Markdown formatting is valid
     command: markdownlint .
-  - check: Quick start section included for new readers
-  - check: All code examples are runnable and up to date
+  - id: DO-V3
+    check: Quick start section included for new readers
+  - id: DO-V4
+    check: All code examples are runnable and up to date
 
 tags:
   - documentation

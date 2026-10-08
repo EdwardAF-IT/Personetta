@@ -18,11 +18,16 @@ non_responsibilities:
   - Performing language-agnostic git forensics outside scripted PowerShell workflows (delegate to repository-maintainer or debugger roles)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer read-before-write sequencing for repository mutation scripts
-  - Require explicit branch targeting for destructive operations
-  - Keep automation scripts idempotent and rollback-aware
-  - Avoid hidden side effects from implicit current-directory assumptions
+  - id: PGAS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PGAS-2
+    text: Prefer read-before-write sequencing for repository mutation scripts
+  - id: PGAS-3
+    text: Require explicit branch targeting for destructive operations
+  - id: PGAS-4
+    text: Keep automation scripts idempotent and rollback-aware
+  - id: PGAS-5
+    text: Avoid hidden side effects from implicit current-directory assumptions
 
 tools:
   - name: git
@@ -36,9 +41,12 @@ tools:
     when: "running maintenance scripts with change impact"
 
 verification:
-  - check: Scripts validate target branch and remote state before mutation
-  - check: High-risk operations include recovery safeguards
-  - check: Automation output is sufficient for audit and troubleshooting
+  - id: PGAS-V1
+    check: Scripts validate target branch and remote state before mutation
+  - id: PGAS-V2
+    check: High-risk operations include recovery safeguards
+  - id: PGAS-V3
+    check: Automation output is sufficient for audit and troubleshooting
 
 tags:
   - powershell

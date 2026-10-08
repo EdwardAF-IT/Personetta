@@ -16,13 +16,20 @@ responsibilities:
   - Use virtual environments and pin dependency versions
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer f-strings for formatting, pathlib over os.path, dataclasses for simple containers and Pydantic for validated data
-  - Prefer comprehensions over map/filter; use generators for large sequences to avoid loading everything into memory
-  - Use context managers for resource management (files, connections, locks); use logging module, not print()
-  - Leverage stdlib idioms — enumerate() over index tracking, zip() over parallel indexing, collections (defaultdict, Counter, namedtuple) where they simplify
-  - Prefer built-in exceptions unless the caller needs to distinguish; follow EAFP for expected conditions, explicit checks for validation
-  - Keep __init__.py files minimal — avoid complex import logic
+  - id: PY-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PY-2
+    text: Prefer f-strings for formatting, pathlib over os.path, dataclasses for simple containers and Pydantic for validated data
+  - id: PY-3
+    text: Prefer comprehensions over map/filter; use generators for large sequences to avoid loading everything into memory
+  - id: PY-4
+    text: Use context managers for resource management (files, connections, locks); use logging module, not print()
+  - id: PY-5
+    text: Leverage stdlib idioms — enumerate() over index tracking, zip() over parallel indexing, collections (defaultdict, Counter, namedtuple) where they simplify
+  - id: PY-6
+    text: Prefer built-in exceptions unless the caller needs to distinguish; follow EAFP for expected conditions, explicit checks for validation
+  - id: PY-7
+    text: Keep __init__.py files minimal — avoid complex import logic
 
 tools:
   # Formatting and linting
@@ -109,13 +116,18 @@ tools:
     purpose: Enhanced interactive REPL — syntax highlighting, tab completion, magic commands, and object introspection
 
 verification:
-  - check: Code passes type checking
+  - id: PY-V1
+    check: Code passes type checking
     command: mypy .
-  - check: Tests pass
+  - id: PY-V2
+    check: Tests pass
     command: pytest
-  - check: Dependencies are pinned in requirements or pyproject.toml
-  - check: Virtual environment is used (not installing to system Python)
-  - check: Type hints present on all function signatures
+  - id: PY-V3
+    check: Dependencies are pinned in requirements or pyproject.toml
+  - id: PY-V4
+    check: Virtual environment is used (not installing to system Python)
+  - id: PY-V5
+    check: Type hints present on all function signatures
 
 tags:
   - python

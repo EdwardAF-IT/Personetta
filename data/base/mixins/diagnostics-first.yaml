@@ -12,11 +12,16 @@ responsibilities:
   - Reduce repeated incidents caused by symptom-only remediation
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Capture baseline evidence before changing system state
-  - Change one variable at a time during investigation
-  - Record failed hypotheses and disproven assumptions
-  - Confirm fix impact in the original failing scenario
+  - id: DF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: DF-2
+    text: Capture baseline evidence before changing system state
+  - id: DF-3
+    text: Change one variable at a time during investigation
+  - id: DF-4
+    text: Record failed hypotheses and disproven assumptions
+  - id: DF-5
+    text: Confirm fix impact in the original failing scenario
 
 tools:
   - name: diagnostic logging
@@ -30,9 +35,12 @@ tools:
     when: "investigating complex or intermittent failures"
 
 verification:
-  - check: Evidence captured before remediation attempts
-  - check: Investigation records include tested hypotheses
-  - check: Fix is validated against original failure conditions
+  - id: DF-V1
+    check: Evidence captured before remediation attempts
+  - id: DF-V2
+    check: Investigation records include tested hypotheses
+  - id: DF-V3
+    check: Fix is validated against original failure conditions
 
 tags:
   - mixin

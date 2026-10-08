@@ -39,6 +39,12 @@ STRING_LIST_KEYS = frozenset(
     }
 )
 
+# Role guidelines are `- id: X` / `text: ...` mappings (stable ids, assigned in
+# the YAML); the loader turns each into a plain string that carries its id. The
+# raw file must therefore hold a mapping whose `text` is a string. A colon trap
+# inside `text:` is a YAML error, which test_every_shipped_yaml_parses catches.
+IDENTIFIED_KEYS = frozenset({"guidelines"})
+
 # Keys whose items are deliberately structured (mappings), so they are exempt
 # from the string rule and must not drift into bare strings.
 STRUCTURED_KEYS = frozenset(
@@ -100,6 +106,12 @@ def test_string_list_keys_hold_only_strings(project_root: Path) -> None:
             for index, item in enumerate(value):
                 if isinstance(item, str):
                     continue
+                if (
+                    key in IDENTIFIED_KEYS
+                    and isinstance(item, dict)
+                    and isinstance(item.get("text"), str)
+                ):
+                    continue
                 hint = ""
                 if isinstance(item, dict):
                     first = next(iter(item), "")
@@ -156,6 +168,8 @@ def test_flattened_list_items_are_hashable(project_root: Path) -> None:
             value = doc.get(key)
             if not isinstance(value, list):
                 continue
+            if key in IDENTIFIED_KEYS:
+                value = [i["text"] if isinstance(i, dict) else i for i in value]
             try:
                 set(value)
             except TypeError as exc:  # pragma: no cover - failure path

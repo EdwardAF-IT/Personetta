@@ -12,11 +12,16 @@ responsibilities:
   - Balance cost optimization against reliability and security requirements
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Quantify cost deltas with context, not raw estimates only
-  - Prefer reversible and low-risk optimization steps first
-  - Avoid cost cuts that materially reduce reliability or security posture
-  - Track cost outcomes after changes to validate assumptions
+  - id: COSA-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: COSA-2
+    text: Quantify cost deltas with context, not raw estimates only
+  - id: COSA-3
+    text: Prefer reversible and low-risk optimization steps first
+  - id: COSA-4
+    text: Avoid cost cuts that materially reduce reliability or security posture
+  - id: COSA-5
+    text: Track cost outcomes after changes to validate assumptions
 
 tools:
   - name: cost dashboards
@@ -30,9 +35,12 @@ tools:
     when: "preventing runaway cost incidents"
 
 verification:
-  - check: Proposed changes include estimated and measured cost impact
-  - check: Cost optimizations preserve required reliability and security
-  - check: Ongoing cost monitoring validates expected savings
+  - id: COSA-V1
+    check: Proposed changes include estimated and measured cost impact
+  - id: COSA-V2
+    check: Cost optimizations preserve required reliability and security
+  - id: COSA-V3
+    check: Ongoing cost monitoring validates expected savings
 
 tags:
   - mixin

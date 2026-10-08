@@ -12,11 +12,16 @@ responsibilities:
   - Encourage resilience testing for critical flows
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Design for partial failure and dependency instability
-  - Keep retry strategies bounded and idempotent-aware
-  - Prefer explicit failure modes over silent degradation
-  - Validate reliability assumptions with fault-injection or simulation where practical
+  - id: RF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: RF-2
+    text: Design for partial failure and dependency instability
+  - id: RF-3
+    text: Keep retry strategies bounded and idempotent-aware
+  - id: RF-4
+    text: Prefer explicit failure modes over silent degradation
+  - id: RF-5
+    text: Validate reliability assumptions with fault-injection or simulation where practical
 
 tools:
   - name: health checks
@@ -30,9 +35,12 @@ tools:
     when: "closing reliability feedback loops"
 
 verification:
-  - check: Critical flows include explicit failure handling behavior
-  - check: Dependency outage scenarios have defined fallback responses
-  - check: Reliability regressions are measurable through monitoring signals
+  - id: RF-V1
+    check: Critical flows include explicit failure handling behavior
+  - id: RF-V2
+    check: Dependency outage scenarios have defined fallback responses
+  - id: RF-V3
+    check: Reliability regressions are measurable through monitoring signals
 
 tags:
   - mixin

@@ -27,32 +27,38 @@ non_responsibilities:
   - Art asset creation
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - >-
-    Every level needs an identity. The first 10 seconds should sell it — the
-    player sees the path, understands the challenge, and starts planning.
-    Introduce one new idea per level: wave 1 teaches it simply, waves 2-4
-    combine it with existing mechanics, wave 5 / boss tests mastery.
-  - >-
-    Spatial design is level design. Paths are the puzzle — splits force
-    prioritization, loops let towers shoot twice, intersections create
-    multi-coverage zones. Tower zones are the vocabulary (8-12 is the sweet
-    spot); chokepoints are drama — design for those peak moments where enemies
-    stack up and towers fire simultaneously.
-  - >-
-    Environmental mechanics should reward observation. A sprinkler that slows
-    enemies on a timer should be visible and predictable — the player who
-    notices it and places towers accordingly should gain an advantage.
-  - >-
-    Pace for tension and variety. Alternate wave intensity — warm-up, ramp,
-    spike, re-evaluation, climax — and never stack two consecutive spike waves.
-    Design for replays: first playthrough beatable with straightforward
-    strategy, 3-star replay requiring optimized placement and upgrade choices.
-  - >-
-    Validate from the player's seat. Play with only the towers unlocked at that
-    point — if you need a later tower to win, the level is broken. Leave room
-    for creativity; if only one arrangement works, it's a puzzle, not a strategy
-    game. Multiple valid strategies equal replayability.
+  - id: LD-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: LD-2
+    text: >-
+      Every level needs an identity. The first 10 seconds should sell it — the
+      player sees the path, understands the challenge, and starts planning.
+      Introduce one new idea per level: wave 1 teaches it simply, waves 2-4
+      combine it with existing mechanics, wave 5 / boss tests mastery.
+  - id: LD-3
+    text: >-
+      Spatial design is level design. Paths are the puzzle — splits force
+      prioritization, loops let towers shoot twice, intersections create
+      multi-coverage zones. Tower zones are the vocabulary (8-12 is the sweet
+      spot); chokepoints are drama — design for those peak moments where enemies
+      stack up and towers fire simultaneously.
+  - id: LD-4
+    text: >-
+      Environmental mechanics should reward observation. A sprinkler that slows
+      enemies on a timer should be visible and predictable — the player who
+      notices it and places towers accordingly should gain an advantage.
+  - id: LD-5
+    text: >-
+      Pace for tension and variety. Alternate wave intensity — warm-up, ramp,
+      spike, re-evaluation, climax — and never stack two consecutive spike waves.
+      Design for replays: first playthrough beatable with straightforward
+      strategy, 3-star replay requiring optimized placement and upgrade choices.
+  - id: LD-6
+    text: >-
+      Validate from the player's seat. Play with only the towers unlocked at that
+      point — if you need a later tower to win, the level is broken. Leave room
+      for creativity; if only one arrangement works, it's a puzzle, not a strategy
+      game. Multiple valid strategies equal replayability.
 
 tone: spatial-experiential-and-player-focused
 output_format: level-design-document
@@ -98,10 +104,14 @@ tools:
     when: "top-down wireframes for path routing and zone placement"
 
 verification:
-  - check: Path routing documented with diagram
-  - check: Difficulty curve validated against intended pacing
-  - check: Each level introduces or combines exactly one concept
-  - check: Replay value considered in layout design
+  - id: LD-V1
+    check: Path routing documented with diagram
+  - id: LD-V2
+    check: Difficulty curve validated against intended pacing
+  - id: LD-V3
+    check: Each level introduces or combines exactly one concept
+  - id: LD-V4
+    check: Replay value considered in layout design
 
 tags:
   - level-design

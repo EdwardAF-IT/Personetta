@@ -14,11 +14,16 @@ responsibilities:
   - Optimize throughput while preserving correctness and traceability
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Make automation idempotent by default
-  - Separate planning from execution to reduce accidental destructive actions
-  - Capture per-item status for debugging and replay
-  - Use bounded concurrency with backpressure-aware external integrations
+  - id: PWAE-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PWAE-2
+    text: Make automation idempotent by default
+  - id: PWAE-3
+    text: Separate planning from execution to reduce accidental destructive actions
+  - id: PWAE-4
+    text: Capture per-item status for debugging and replay
+  - id: PWAE-5
+    text: Use bounded concurrency with backpressure-aware external integrations
 
 tools:
   - name: pathlib
@@ -32,9 +37,12 @@ tools:
     when: "long-running or restart-prone automation jobs"
 
 verification:
-  - check: Workflow can resume safely from interrupted state
-  - check: Per-item failure does not corrupt unrelated work
-  - check: Destructive operations require explicit intent gates
+  - id: PWAE-V1
+    check: Workflow can resume safely from interrupted state
+  - id: PWAE-V2
+    check: Per-item failure does not corrupt unrelated work
+  - id: PWAE-V3
+    check: Destructive operations require explicit intent gates
 
 tags:
   - python

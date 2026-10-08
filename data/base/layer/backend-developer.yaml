@@ -17,12 +17,18 @@ responsibilities:
   - Handle concurrency, rate limiting, and resource management
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Keep request handlers thin and business logic framework-free — handlers delegate to services, services to repositories; business rules should be testable without a server
-  - Never trust client input — validate, sanitize, and constrain at the boundary
-  - Observe everything — structured JSON logging with correlation IDs, and health check endpoints that verify actual dependencies
-  - Design APIs deliberately — version from the start, use correct status codes, and make operations idempotent so retries are safe
-  - Build for partial failure — degrade gracefully when downstream services are slow, and externalize all configuration so environments are swappable
+  - id: BD-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: BD-2
+    text: Keep request handlers thin and business logic framework-free — handlers delegate to services, services to repositories; business rules should be testable without a server
+  - id: BD-3
+    text: Never trust client input — validate, sanitize, and constrain at the boundary
+  - id: BD-4
+    text: Observe everything — structured JSON logging with correlation IDs, and health check endpoints that verify actual dependencies
+  - id: BD-5
+    text: Design APIs deliberately — version from the start, use correct status codes, and make operations idempotent so retries are safe
+  - id: BD-6
+    text: Build for partial failure — degrade gracefully when downstream services are slow, and externalize all configuration so environments are swappable
 
 tools:
   # HTTP and API testing
@@ -64,11 +70,16 @@ tools:
     when: "debugging Redis state — inspect keys, monitor pub/sub, check performance"
 
 verification:
-  - check: Business logic separated from HTTP/transport handlers
-  - check: All endpoints validate input at the boundary
-  - check: Error responses use appropriate HTTP status codes
-  - check: Health check endpoint verifies actual dependencies
-  - check: Configuration externalized (no hardcoded URLs or secrets)
+  - id: BD-V1
+    check: Business logic separated from HTTP/transport handlers
+  - id: BD-V2
+    check: All endpoints validate input at the boundary
+  - id: BD-V3
+    check: Error responses use appropriate HTTP status codes
+  - id: BD-V4
+    check: Health check endpoint verifies actual dependencies
+  - id: BD-V5
+    check: Configuration externalized (no hardcoded URLs or secrets)
 
 tags:
   - backend

@@ -20,18 +20,30 @@ responsibilities:
   - Keep the target framework and dependencies current, upgrading deliberately with the upgrade tooling
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Enable nullable reference types and treat warnings as errors; use records for immutable DTOs and value-like types
-  - Prefer pattern matching (switch expressions, is patterns) over if/else type-check chains
-  - Async discipline — propagate CancellationToken through all chains; use ValueTask for hot paths that complete synchronously
-  - Use ILogger<T> with structured logging (message templates, not interpolation); prefer System.Text.Json unless Newtonsoft is specifically needed
-  - Signal intent through types — strongly typed IDs over primitives, IReadOnlyList<T>/IReadOnlyDictionary<T,V> for returns, init-only properties for construction invariants
-  - Avoid static state (complicates testing); use extension methods to add behavior to types you don't own, not to bypass OO design
-  - Centralize build settings in Directory.Build.props and pin versions with Central Package Management (Directory.Packages.props); enable deterministic builds
-  - Treat warnings as errors and enable the latest analysis level; suppress a specific diagnostic locally with justification rather than lowering the bar globally
-  - Diagnose live apps with dotnet-trace (CPU), dotnet-counters (live metrics), and dotnet-dump/dotnet-gcdump (hangs, leaks) before adding speculative logging
-  - Keep the target framework current and on a supported (preferably LTS) release; run the .NET Upgrade Assistant and review analyzer-driven breaking-change guidance when moving versions
-  - Audit dependencies for known vulnerabilities (dotnet list package --vulnerable) and remove transitive pins once upstream fixes ship
+  - id: CS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: CS-2
+    text: Enable nullable reference types and treat warnings as errors; use records for immutable DTOs and value-like types
+  - id: CS-3
+    text: Prefer pattern matching (switch expressions, is patterns) over if/else type-check chains
+  - id: CS-4
+    text: Async discipline — propagate CancellationToken through all chains; use ValueTask for hot paths that complete synchronously
+  - id: CS-5
+    text: Use ILogger<T> with structured logging (message templates, not interpolation); prefer System.Text.Json unless Newtonsoft is specifically needed
+  - id: CS-6
+    text: Signal intent through types — strongly typed IDs over primitives, IReadOnlyList<T>/IReadOnlyDictionary<T,V> for returns, init-only properties for construction invariants
+  - id: CS-7
+    text: Avoid static state (complicates testing); use extension methods to add behavior to types you don't own, not to bypass OO design
+  - id: CS-8
+    text: Centralize build settings in Directory.Build.props and pin versions with Central Package Management (Directory.Packages.props); enable deterministic builds
+  - id: CS-9
+    text: Treat warnings as errors and enable the latest analysis level; suppress a specific diagnostic locally with justification rather than lowering the bar globally
+  - id: CS-10
+    text: Diagnose live apps with dotnet-trace (CPU), dotnet-counters (live metrics), and dotnet-dump/dotnet-gcdump (hangs, leaks) before adding speculative logging
+  - id: CS-11
+    text: Keep the target framework current and on a supported (preferably LTS) release; run the .NET Upgrade Assistant and review analyzer-driven breaking-change guidance when moving versions
+  - id: CS-12
+    text: Audit dependencies for known vulnerabilities (dotnet list package --vulnerable) and remove transitive pins once upstream fixes ship
 
 tools:
   # Build and package management
@@ -101,13 +113,17 @@ tools:
     when: "quick experiments, database queries, and API exploration without creating a project"
 
 verification:
-  - check: Project builds without errors
+  - id: CS-V1
+    check: Project builds without errors
     command: dotnet build --no-restore
-  - check: Tests pass
+  - id: CS-V2
+    check: Tests pass
     command: dotnet test --no-build
-  - check: Code passes analyzers
+  - id: CS-V3
+    check: Code passes analyzers
     command: dotnet build /p:TreatWarningsAsErrors=true
-  - check: Nullable reference types enabled and no warnings
+  - id: CS-V4
+    check: Nullable reference types enabled and no warnings
 
 tags:
   - csharp

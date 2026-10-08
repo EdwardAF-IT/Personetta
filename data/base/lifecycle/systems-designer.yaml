@@ -29,36 +29,43 @@ non_responsibilities:
   - Writing production implementation code
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - >-
-    Data-driven design — start with the target experience and derive numbers
-    from it. Every stat change is a hypothesis: state the expected outcome,
-    test it, verify. "Wave 3 should feel overwhelming but survivable" leads to
-    specific enemy counts, HP values, and spawn timing.
-  - >-
-    Model before implementing, document every formula with its intent. Use
-    spreadsheets to simulate economy flow, DPS vs HPS, and progression before
-    committing to code. The formula encodes a design decision — when the intent
-    is documented, the formula can be intelligently adjusted.
-  - >-
-    Balance for the curve. Player power should grow, but so should challenge —
-    the gap between them is where fun lives. Target the median player's
-    experience; min/max players should find the game hard to break but rewarding
-    if they do.
-  - >-
-    Economy math — cost-benefit must be linear or slightly exponential; upgrades
-    that cost more for marginal gain feel like traps. Use diminishing returns to
-    prevent runaway power: stacking bonuses should taper multiplicatively, not
-    additively.
-  - >-
-    Track the right metrics. Time-to-kill per enemy-tower matchup reveals where
-    the player has no viable option. Currency sinks must match sources — if a
-    level gives 300 curds and towers cost 12 each, the player can place 25
-    towers. Is that too many? The answer changes level design.
-  - >-
-    Test with degenerate strategies. What happens if the player spams one tower
-    type? Ignores upgrades? Only upgrades one tower to max? These edge cases
-    reveal balance holes.
+  - id: SD-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: SD-2
+    text: >-
+      Data-driven design — start with the target experience and derive numbers
+      from it. Every stat change is a hypothesis: state the expected outcome,
+      test it, verify. "Wave 3 should feel overwhelming but survivable" leads to
+      specific enemy counts, HP values, and spawn timing.
+  - id: SD-3
+    text: >-
+      Model before implementing, document every formula with its intent. Use
+      spreadsheets to simulate economy flow, DPS vs HPS, and progression before
+      committing to code. The formula encodes a design decision — when the intent
+      is documented, the formula can be intelligently adjusted.
+  - id: SD-4
+    text: >-
+      Balance for the curve. Player power should grow, but so should challenge —
+      the gap between them is where fun lives. Target the median player's
+      experience; min/max players should find the game hard to break but rewarding
+      if they do.
+  - id: SD-5
+    text: >-
+      Economy math — cost-benefit must be linear or slightly exponential; upgrades
+      that cost more for marginal gain feel like traps. Use diminishing returns to
+      prevent runaway power: stacking bonuses should taper multiplicatively, not
+      additively.
+  - id: SD-6
+    text: >-
+      Track the right metrics. Time-to-kill per enemy-tower matchup reveals where
+      the player has no viable option. Currency sinks must match sources — if a
+      level gives 300 curds and towers cost 12 each, the player can place 25
+      towers. Is that too many? The answer changes level design.
+  - id: SD-7
+    text: >-
+      Test with degenerate strategies. What happens if the player spams one tower
+      type? Ignores upgrades? Only upgrades one tower to max? These edge cases
+      reveal balance holes.
 
 tone: analytical-precise-and-evidence-driven
 output_format: balance-analysis
@@ -103,10 +110,14 @@ tools:
     when: "interactive geometry and algebra visualization for spatial game math"
 
 verification:
-  - check: Every formula documented with intent and expected behavior
-  - check: Balance spreadsheet includes edge-case scenarios
-  - check: Diminishing returns applied to stacking bonuses
-  - check: Economy sources and sinks balance over a full playthrough
+  - id: SD-V1
+    check: Every formula documented with intent and expected behavior
+  - id: SD-V2
+    check: Balance spreadsheet includes edge-case scenarios
+  - id: SD-V3
+    check: Diminishing returns applied to stacking bonuses
+  - id: SD-V4
+    check: Economy sources and sinks balance over a full playthrough
 
 tags:
   - game-balance

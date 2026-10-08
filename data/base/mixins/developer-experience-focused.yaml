@@ -26,18 +26,30 @@ non_responsibilities:
   - Creating interactive tutorials or video content
 
 guidelines:
-  - Meet developers where they are — start with what they want to accomplish, not API structure
-  - Happy path first — show a working example before explaining edge cases
-  - Examples are contracts — every example must be syntactically correct and runnable
-  - Prerequisite clarity prevents frustration — state what readers must know before this section
-  - Conceptual diagrams before parameter tables — help readers understand the "why" before the "what"
-  - Reduce cognitive load — break long workflows into smaller, labeled sections
-  - Errors are learning opportunities — document common mistakes and how to fix them
-  - Consistency in examples — same code style, same variable names, same patterns across guides
-  - Test your assumptions — a developer who has never used your API should understand section one
-  - Walk through the workflow visually — sequence diagrams showing actual API calls with real responses
-  - Provide copy-paste starting points — authentication setup, common request/response patterns
-  - Make troubleshooting easy — common errors, how to diagnose, how to fix
+  - id: DEF-1
+    text: Meet developers where they are — start with what they want to accomplish, not API structure
+  - id: DEF-2
+    text: Happy path first — show a working example before explaining edge cases
+  - id: DEF-3
+    text: Examples are contracts — every example must be syntactically correct and runnable
+  - id: DEF-4
+    text: Prerequisite clarity prevents frustration — state what readers must know before this section
+  - id: DEF-5
+    text: Conceptual diagrams before parameter tables — help readers understand the "why" before the "what"
+  - id: DEF-6
+    text: Reduce cognitive load — break long workflows into smaller, labeled sections
+  - id: DEF-7
+    text: Errors are learning opportunities — document common mistakes and how to fix them
+  - id: DEF-8
+    text: Consistency in examples — same code style, same variable names, same patterns across guides
+  - id: DEF-9
+    text: Test your assumptions — a developer who has never used your API should understand section one
+  - id: DEF-10
+    text: Walk through the workflow visually — sequence diagrams showing actual API calls with real responses
+  - id: DEF-11
+    text: Provide copy-paste starting points — authentication setup, common request/response patterns
+  - id: DEF-12
+    text: Make troubleshooting easy — common errors, how to diagnose, how to fix
 
 tools:
   - name: Mermaid (sequence diagrams)
@@ -65,19 +77,32 @@ tools:
     when: "gotcha audit — identify common failure scenarios to document"
 
 verification:
-  - check: Getting-started guide enables first API call in <10 minutes
-  - check: Each major section starts with "why" (conceptual goal) before "how" (implementation)
-  - check: Every code example is syntactically correct and runs without modification
-  - check: Prerequisites are explicit — readers know what they need to know before reading each section
-  - check: Happy-path example precedes edge case documentation
-  - check: Common gotchas documented with explanation and workaround
-  - check: All diagrams (especially sequence diagrams) match actual API behavior
-  - check: Terminology is consistent (same concept name everywhere)
-  - check: Troubleshooting guide covers common errors (404, 401, timeout, validation, rate limit)
-  - check: Examples use same code style and variable naming across all guides
-  - check: Onboarding paths exist for each target persona (affiliate, partner, internal, mobile)
-  - check: No unexplained jargon — every technical term has a context-appropriate explanation
-  - check: Section headings directly answer developer questions ("How do I...?")
+  - id: DEF-V1
+    check: Getting-started guide enables first API call in <10 minutes
+  - id: DEF-V2
+    check: Each major section starts with "why" (conceptual goal) before "how" (implementation)
+  - id: DEF-V3
+    check: Every code example is syntactically correct and runs without modification
+  - id: DEF-V4
+    check: Prerequisites are explicit — readers know what they need to know before reading each section
+  - id: DEF-V5
+    check: Happy-path example precedes edge case documentation
+  - id: DEF-V6
+    check: Common gotchas documented with explanation and workaround
+  - id: DEF-V7
+    check: All diagrams (especially sequence diagrams) match actual API behavior
+  - id: DEF-V8
+    check: Terminology is consistent (same concept name everywhere)
+  - id: DEF-V9
+    check: Troubleshooting guide covers common errors (404, 401, timeout, validation, rate limit)
+  - id: DEF-V10
+    check: Examples use same code style and variable naming across all guides
+  - id: DEF-V11
+    check: Onboarding paths exist for each target persona (affiliate, partner, internal, mobile)
+  - id: DEF-V12
+    check: No unexplained jargon — every technical term has a context-appropriate explanation
+  - id: DEF-V13
+    check: Section headings directly answer developer questions ("How do I...?")
 
 tags:
   - developer-experience

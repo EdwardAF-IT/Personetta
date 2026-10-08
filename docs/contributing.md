@@ -477,6 +477,21 @@ Then:
 2. Test manually
 3. Submit PR with documentation
 
+### Guideline and verification ids
+
+In role YAML (`data/base`, `data/language_specific`) every guideline and verification item carries a stable id, unique across all roles. Use the role's prefix, then a number; never reuse or renumber an id.
+
+```yaml
+guidelines:
+  - id: CS-13
+    text: Prefer pattern matching over if/else type-check chains
+verification:
+  - id: CS-V5
+    check: Project builds without warnings
+```
+
+`personetta validate` fails on a missing, malformed or duplicate id.
+
 ### Documentation Improvements
 
 **Always welcome!**

@@ -12,11 +12,16 @@ responsibilities:
   - Promote maintainable and support-friendly system behaviors
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Optimize for clear operator action under time pressure
-  - Keep diagnostics and remediation steps explicit and ordered
-  - Prefer observable operations over opaque automation magic
-  - Validate that emergency procedures are documented and runnable
+  - id: OPF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: OPF-2
+    text: Optimize for clear operator action under time pressure
+  - id: OPF-3
+    text: Keep diagnostics and remediation steps explicit and ordered
+  - id: OPF-4
+    text: Prefer observable operations over opaque automation magic
+  - id: OPF-5
+    text: Validate that emergency procedures are documented and runnable
 
 tools:
   - name: runbooks
@@ -30,9 +35,12 @@ tools:
     when: "reducing manual error in frequent operations"
 
 verification:
-  - check: Operational procedures are explicit, ordered, and testable
-  - check: Diagnostics and remediation ownership are clearly defined
-  - check: Day-2 workflows are runnable without tribal knowledge
+  - id: OPF-V1
+    check: Operational procedures are explicit, ordered, and testable
+  - id: OPF-V2
+    check: Diagnostics and remediation ownership are clearly defined
+  - id: OPF-V3
+    check: Day-2 workflows are runnable without tribal knowledge
 
 tags:
   - mixin

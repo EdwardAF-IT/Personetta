@@ -5,6 +5,7 @@ from pathlib import Path
 
 from generator.exceptions import LoadError
 from generator.project_layout import ProjectLayout
+from generator.role_ids import normalize_role_ids
 
 
 def load_yaml(path: Path) -> dict:
@@ -50,7 +51,7 @@ def load_role(ref: str, base_dir: Path) -> dict:
         raise LoadError(
             f"Role '{role.get('name', '?')}' at {path} missing required field 'responsibilities'"
         )
-    return role
+    return normalize_role_ids(role)
 
 
 def load_recipe(name_or_path: str, base_dir: Path) -> dict:

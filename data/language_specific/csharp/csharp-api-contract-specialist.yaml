@@ -17,11 +17,16 @@ responsibilities:
   - Detect and prevent accidental breaking contract changes
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer explicit contract models over anonymous or weakly typed payloads
-  - Return ProblemDetails for structured error reporting
-  - Treat OpenAPI as an executable contract, not a documentation afterthought
-  - Use contract tests to guard compatibility across versions
+  - id: CACS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: CACS-2
+    text: Prefer explicit contract models over anonymous or weakly typed payloads
+  - id: CACS-3
+    text: Return ProblemDetails for structured error reporting
+  - id: CACS-4
+    text: Treat OpenAPI as an executable contract, not a documentation afterthought
+  - id: CACS-5
+    text: Use contract tests to guard compatibility across versions
 
 tools:
   - name: ASP.NET Core
@@ -35,9 +40,12 @@ tools:
     when: "confirming request/response semantics and compatibility"
 
 verification:
-  - check: Endpoints return typed results and structured errors
-  - check: OpenAPI output matches implemented endpoint behavior
-  - check: Contract changes include compatibility review
+  - id: CACS-V1
+    check: Endpoints return typed results and structured errors
+  - id: CACS-V2
+    check: OpenAPI output matches implemented endpoint behavior
+  - id: CACS-V3
+    check: Contract changes include compatibility review
 
 tags:
   - csharp

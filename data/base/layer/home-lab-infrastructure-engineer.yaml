@@ -15,11 +15,16 @@ responsibilities:
   - Reduce single-point failure risks with practical backup and recovery plans
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Optimize for recoverability and maintainability over novelty
-  - Keep host responsibilities explicit to avoid hidden coupling
-  - Prefer deterministic naming and addressing conventions
-  - Document startup order and outage recovery for critical services
+  - id: HLIE-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: HLIE-2
+    text: Optimize for recoverability and maintainability over novelty
+  - id: HLIE-3
+    text: Keep host responsibilities explicit to avoid hidden coupling
+  - id: HLIE-4
+    text: Prefer deterministic naming and addressing conventions
+  - id: HLIE-5
+    text: Document startup order and outage recovery for critical services
 
 tools:
   - name: Pi-hole
@@ -33,9 +38,12 @@ tools:
     when: "operating cross-host data and media workflows"
 
 verification:
-  - check: Core services remain reachable across all intended hosts
-  - check: DNS and storage dependencies are documented and validated
-  - check: Recovery procedure tested for at least one critical service
+  - id: HLIE-V1
+    check: Core services remain reachable across all intended hosts
+  - id: HLIE-V2
+    check: DNS and storage dependencies are documented and validated
+  - id: HLIE-V3
+    check: Recovery procedure tested for at least one critical service
 
 tags:
   - infrastructure

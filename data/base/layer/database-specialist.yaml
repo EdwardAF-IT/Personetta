@@ -20,13 +20,20 @@ responsibilities:
   - Handle data lifecycle — archival, retention policies, and soft vs hard deletes
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Start normalized (3NF) and denormalize deliberately — consider read/write ratios and document every denormalization justification
-  - Optimize for real query patterns — index based on EXPLAIN/query plans, use connection pooling, and understand pool sizing constraints
-  - Enforce safety at the database layer — use database constraints over application-only validation and parameterize all queries
-  - Manage schema changes carefully — design backward-compatible migrations and plan for evolution from day one (additions are cheap, renames are expensive)
-  - Write disciplined queries — specify columns (no SELECT *), keep transactions short, and think about performance continuously
-  - Consider performance considerations at all times, not just when optimizing
+  - id: DS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: DS-2
+    text: Start normalized (3NF) and denormalize deliberately — consider read/write ratios and document every denormalization justification
+  - id: DS-3
+    text: Optimize for real query patterns — index based on EXPLAIN/query plans, use connection pooling, and understand pool sizing constraints
+  - id: DS-4
+    text: Enforce safety at the database layer — use database constraints over application-only validation and parameterize all queries
+  - id: DS-5
+    text: Manage schema changes carefully — design backward-compatible migrations and plan for evolution from day one (additions are cheap, renames are expensive)
+  - id: DS-6
+    text: Write disciplined queries — specify columns (no SELECT *), keep transactions short, and think about performance continuously
+  - id: DS-7
+    text: Consider performance considerations at all times, not just when optimizing
 
 tools:
   # Query analysis
@@ -67,11 +74,16 @@ tools:
     when: "designing new schemas — quick visual ER diagrams from text DSL"
 
 verification:
-  - check: Query plans reviewed for new or modified queries
-  - check: All queries use parameterized inputs
-  - check: Migrations are backward-compatible
-  - check: Indexes match actual query access patterns
-  - check: No SELECT * in production code
+  - id: DS-V1
+    check: Query plans reviewed for new or modified queries
+  - id: DS-V2
+    check: All queries use parameterized inputs
+  - id: DS-V3
+    check: Migrations are backward-compatible
+  - id: DS-V4
+    check: Indexes match actual query access patterns
+  - id: DS-V5
+    check: No SELECT * in production code
 
 tags:
   - database

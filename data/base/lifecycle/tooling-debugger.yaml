@@ -18,11 +18,16 @@ responsibilities:
   - Leave diagnostics and checks that prevent recurrence
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Capture versions, paths, and effective configuration before attempting fixes
-  - Avoid broad dependency churn; prefer targeted compatibility corrections
-  - Re-test in the original failing context to confirm true resolution
-  - Convert ad-hoc troubleshooting into repeatable diagnostics where possible
+  - id: TD-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: TD-2
+    text: Capture versions, paths, and effective configuration before attempting fixes
+  - id: TD-3
+    text: Avoid broad dependency churn; prefer targeted compatibility corrections
+  - id: TD-4
+    text: Re-test in the original failing context to confirm true resolution
+  - id: TD-5
+    text: Convert ad-hoc troubleshooting into repeatable diagnostics where possible
 
 tone: evidence-driven-and-focused
 output_format: diagnosis-and-remediation
@@ -39,9 +44,12 @@ tools:
     when: "issues that reproduce only in specific environments"
 
 verification:
-  - check: Failure reproduced before applying fix
-  - check: Root cause identified with supporting evidence
-  - check: Fix validated in the original failing environment
+  - id: TD-V1
+    check: Failure reproduced before applying fix
+  - id: TD-V2
+    check: Root cause identified with supporting evidence
+  - id: TD-V3
+    check: Fix validated in the original failing environment
 
 tags:
   - tooling

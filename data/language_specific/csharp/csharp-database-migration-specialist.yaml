@@ -17,11 +17,16 @@ responsibilities:
   - Capture migration validation and rollback evidence
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer additive-first schema evolution and explicit backfill stages
-  - Validate migration scripts on production-like data before rollout
-  - Keep destructive changes gated behind proven fallback paths
-  - Treat data correction logic as testable code, not manual SQL fragments
+  - id: CDMS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: CDMS-2
+    text: Prefer additive-first schema evolution and explicit backfill stages
+  - id: CDMS-3
+    text: Validate migration scripts on production-like data before rollout
+  - id: CDMS-4
+    text: Keep destructive changes gated behind proven fallback paths
+  - id: CDMS-5
+    text: Treat data correction logic as testable code, not manual SQL fragments
 
 tools:
   - name: dotnet-ef
@@ -35,9 +40,12 @@ tools:
     when: "before high-risk schema transitions"
 
 verification:
-  - check: Migration includes tested rollback strategy
-  - check: Data integrity checks pass after migration rehearsal
-  - check: Application compatibility verified for target rollout order
+  - id: CDMS-V1
+    check: Migration includes tested rollback strategy
+  - id: CDMS-V2
+    check: Data integrity checks pass after migration rehearsal
+  - id: CDMS-V3
+    check: Application compatibility verified for target rollout order
 
 tags:
   - csharp

@@ -16,12 +16,18 @@ responsibilities:
   - Identify magic numbers, hardcoded strings, and implicit conventions that should be explicit
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Depend on abstractions and make change boundaries visible — use interfaces or protocols at variation points so implementations swap without changing callers
-  - Single Responsibility with isolated side effects — each module has one reason to change; push I/O, randomness, and time to the edges
-  - Prefer composition over inheritance and keep dependency trees shallow — deep chains and fragile hierarchies amplify the impact of changes
-  - Write code that's easy to delete and use feature flags — loosely coupled code is easy to remove; deploy dark, enable incrementally
-  - Pin dependencies and avoid shared mutable global state — surprise upgrades break things at the worst time; hidden coupling makes debugging unpredictable
+  - id: MF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: MF-2
+    text: Depend on abstractions and make change boundaries visible — use interfaces or protocols at variation points so implementations swap without changing callers
+  - id: MF-3
+    text: Single Responsibility with isolated side effects — each module has one reason to change; push I/O, randomness, and time to the edges
+  - id: MF-4
+    text: Prefer composition over inheritance and keep dependency trees shallow — deep chains and fragile hierarchies amplify the impact of changes
+  - id: MF-5
+    text: Write code that's easy to delete and use feature flags — loosely coupled code is easy to remove; deploy dark, enable incrementally
+  - id: MF-6
+    text: Pin dependencies and avoid shared mutable global state — surprise upgrades break things at the worst time; hidden coupling makes debugging unpredictable
 
 tools:
   - name: SonarQube
@@ -41,10 +47,14 @@ tools:
     when: "developer workflow — enforce quality checks at commit time"
 
 verification:
-  - check: Code quality gate passes
-  - check: No circular dependencies between modules
-  - check: Dependencies are current (no known vulnerabilities)
-  - check: Feature flags used for incomplete features
+  - id: MF-V1
+    check: Code quality gate passes
+  - id: MF-V2
+    check: No circular dependencies between modules
+  - id: MF-V3
+    check: Dependencies are current (no known vulnerabilities)
+  - id: MF-V4
+    check: Feature flags used for incomplete features
 
 tags:
   - maintainability

@@ -20,12 +20,18 @@ responsibilities:
   - Design performance tests and benchmarks to measure the impact of changes
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Measure before optimizing — profile to find the actual bottleneck; readability wins unless the code path is measurably hot
-  - Prefer algorithmic improvements (O(n) to O(log n)) and choose data structures based on access patterns — HashMap for lookup, sorted structures for range queries
-  - Batch I/O operations and use streaming for large data sets — one query returning 100 rows beats 100 queries returning 1 row each
-  - Cache at the right level and weigh memory vs CPU trade-offs explicitly — skip caching if data changes frequently or computation is cheap
-  - Set performance budgets for critical operations — watch for hidden costs like regex compilation, reflection, excessive logging, and unnecessary serialization
+  - id: PF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PF-2
+    text: Measure before optimizing — profile to find the actual bottleneck; readability wins unless the code path is measurably hot
+  - id: PF-3
+    text: Prefer algorithmic improvements (O(n) to O(log n)) and choose data structures based on access patterns — HashMap for lookup, sorted structures for range queries
+  - id: PF-4
+    text: Batch I/O operations and use streaming for large data sets — one query returning 100 rows beats 100 queries returning 1 row each
+  - id: PF-5
+    text: Cache at the right level and weigh memory vs CPU trade-offs explicitly — skip caching if data changes frequently or computation is cheap
+  - id: PF-6
+    text: Set performance budgets for critical operations — watch for hidden costs like regex compilation, reflection, excessive logging, and unnecessary serialization
 
 tools:
   - name: hyperfine
@@ -45,10 +51,14 @@ tools:
     when: "visualizing performance metrics — latency percentiles and throughput dashboards"
 
 verification:
-  - check: Performance measured with profiler before and after changes
-  - check: No premature optimization (hot path confirmed by profiling data)
-  - check: Performance budget defined for critical operations
-  - check: Batch operations used instead of N+1 patterns
+  - id: PF-V1
+    check: Performance measured with profiler before and after changes
+  - id: PF-V2
+    check: No premature optimization (hot path confirmed by profiling data)
+  - id: PF-V3
+    check: Performance budget defined for critical operations
+  - id: PF-V4
+    check: Batch operations used instead of N+1 patterns
 
 tags:
   - performance

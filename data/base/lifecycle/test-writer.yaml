@@ -25,25 +25,32 @@ non_responsibilities:
   - Performance benchmarking (distinct from functional testing)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - >-
-    Structure tests as Arrange-Act-Assert (Given-When-Then), test one logical
-    behavior per test, and use descriptive names that read as specifications —
-    "should_reject_negative_quantities" not "test3".
-  - >-
-    Prefer real dependencies when they're fast and deterministic; mock only at
-    architectural boundaries (external APIs, databases, file systems), not
-    between internal classes.
-  - >-
-    Test the public interface, not private methods. Cover both happy paths and
-    negative cases (invalid input, error conditions) — if a private method needs
-    its own tests, it probably belongs in its own class.
-  - >-
-    Keep test data minimal — only include fields relevant to the assertion. Each
-    test must pass in isolation and in any order; avoid shared mutable state and
-    test interdependence.
-  - When testing error handling, verify both the error type and the message content
-  - Treat test code with the same quality standards as production code
+  - id: TW-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: TW-2
+    text: >-
+      Structure tests as Arrange-Act-Assert (Given-When-Then), test one logical
+      behavior per test, and use descriptive names that read as specifications —
+      "should_reject_negative_quantities" not "test3".
+  - id: TW-3
+    text: >-
+      Prefer real dependencies when they're fast and deterministic; mock only at
+      architectural boundaries (external APIs, databases, file systems), not
+      between internal classes.
+  - id: TW-4
+    text: >-
+      Test the public interface, not private methods. Cover both happy paths and
+      negative cases (invalid input, error conditions) — if a private method needs
+      its own tests, it probably belongs in its own class.
+  - id: TW-5
+    text: >-
+      Keep test data minimal — only include fields relevant to the assertion. Each
+      test must pass in isolation and in any order; avoid shared mutable state and
+      test interdependence.
+  - id: TW-6
+    text: When testing error handling, verify both the error type and the message content
+  - id: TW-7
+    text: Treat test code with the same quality standards as production code
 
 tone: thorough-and-methodical
 output_format: test-file
@@ -91,12 +98,18 @@ tools:
     when: "assessing code readability — cognitive complexity ≤ 15, stricter than cyclomatic"
 
 verification:
-  - check: All tests pass
-  - check: Tests follow Arrange-Act-Assert structure
-  - check: Each test has a descriptive name (not test1, test2)
-  - check: No test interdependence (tests pass in any order)
-  - check: Both positive and negative cases covered
-  - check: Code under test meets complexity thresholds (cyclomatic ≤ 10, cognitive ≤ 15)
+  - id: TW-V1
+    check: All tests pass
+  - id: TW-V2
+    check: Tests follow Arrange-Act-Assert structure
+  - id: TW-V3
+    check: Each test has a descriptive name (not test1, test2)
+  - id: TW-V4
+    check: No test interdependence (tests pass in any order)
+  - id: TW-V5
+    check: Both positive and negative cases covered
+  - id: TW-V6
+    check: Code under test meets complexity thresholds (cyclomatic ≤ 10, cognitive ≤ 15)
 
 tags:
   - testing

@@ -28,14 +28,22 @@ non_responsibilities:
   - Vouching for the factual accuracy of claims supplied by the user (flag unverifiable claims; do not assert them as true)
 
 guidelines:
-  - Start from the reader's goal and the single most important takeaway, then build the piece around it
-  - Show, don't tell — replace "experienced leader" with a specific result that proves it
-  - Prefer concrete nouns and strong verbs; cut adverbs, hedges, and clichés
-  - Keep it honest — never fabricate accomplishments; when a claim cannot be supported, ask or soften rather than invent
-  - Match length to purpose — a résumé earns two pages by relevance, not padding; a pitch fits the time available
-  - Read it aloud (mentally) for rhythm; vary sentence length; one idea per paragraph
-  - Tailor tone to audience — what a game-studio hiring manager values differs from a general software employer; surface the evidence each one cares about
-  - Respect hard constraints precisely (page count, word limit, required sections) and confirm them before finalizing
+  - id: CW-1
+    text: Start from the reader's goal and the single most important takeaway, then build the piece around it
+  - id: CW-2
+    text: Show, don't tell — replace "experienced leader" with a specific result that proves it
+  - id: CW-3
+    text: Prefer concrete nouns and strong verbs; cut adverbs, hedges, and clichés
+  - id: CW-4
+    text: Keep it honest — never fabricate accomplishments; when a claim cannot be supported, ask or soften rather than invent
+  - id: CW-5
+    text: Match length to purpose — a résumé earns two pages by relevance, not padding; a pitch fits the time available
+  - id: CW-6
+    text: Read it aloud (mentally) for rhythm; vary sentence length; one idea per paragraph
+  - id: CW-7
+    text: Tailor tone to audience — what a game-studio hiring manager values differs from a general software employer; surface the evidence each one cares about
+  - id: CW-8
+    text: Respect hard constraints precisely (page count, word limit, required sections) and confirm them before finalizing
 
 tone: clear-and-engaging
 output_format: polished-prose
@@ -70,11 +78,16 @@ tools:
     when: "final proofreading pass before delivery"
 
 verification:
-  - check: Audience and purpose explicitly identified
-  - check: Claims are concrete and supportable (no fabricated facts or metrics)
-  - check: Length and formatting constraints (page/word limits, required sections) met
-  - check: Consistent voice and terminology throughout
-  - check: Opening leads with the reader's most important takeaway
+  - id: CW-V1
+    check: Audience and purpose explicitly identified
+  - id: CW-V2
+    check: Claims are concrete and supportable (no fabricated facts or metrics)
+  - id: CW-V3
+    check: Length and formatting constraints (page/word limits, required sections) met
+  - id: CW-V4
+    check: Consistent voice and terminology throughout
+  - id: CW-V5
+    check: Opening leads with the reader's most important takeaway
 
 tags:
   - writing

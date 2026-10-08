@@ -7,6 +7,7 @@ import jsonschema
 import yaml
 
 from generator.project_layout import ProjectLayout
+from generator.role_ids import cross_role_id_errors, role_id_errors
 
 
 def load_schema(schema_path: Path) -> dict:
@@ -68,6 +69,7 @@ def validate_all(base_dir: Path) -> dict[str, list[str]]:
     role_schema = load_schema(role_schema_path)
     recipe_schema = load_schema(recipe_schema_path)
 
+    role_docs: list[tuple[str, dict]] = []
     for pattern in ["data/base/**/*.yaml", "data/language_specific/**/*.yaml"]:
         for path in sorted(base_dir.glob(pattern)):
             # Skip system roles (baseline, router) - they have a different structure
@@ -81,8 +83,13 @@ def validate_all(base_dir: Path) -> dict[str, list[str]]:
             rel = str(path.relative_to(base_dir))
             errors = validate_role(data, role_schema)
             errors.extend(duplicate_tool_name_errors(data))
+            errors.extend(role_id_errors(data))
+            role_docs.append((rel, data))
             if errors:
                 results[rel] = errors
+
+    for rel, id_errors in cross_role_id_errors(role_docs).items():
+        results.setdefault(rel, []).extend(id_errors)
 
     recipe_dir = base_dir / "recipes"
     if recipe_dir.exists():

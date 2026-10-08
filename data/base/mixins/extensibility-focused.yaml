@@ -15,18 +15,28 @@ responsibilities:
   - Evaluate whether configuration can replace code changes for common variations
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Open for extension, closed for modification — prefer interfaces and protocols over concrete types at extension boundaries; add behavior through new code
-  - Use the Strategy pattern and design events and hooks — pass the algorithm instead of hardcoding it; let external code react at well-defined points
-  - Wait for two concrete cases before abstracting, then make extension points discoverable — document them, name them clearly, and provide examples
-  - Use dependency injection and prefer configuration over code — allow swapping implementations without code changes for variations that don't involve new logic
-  - Design narrow plugin interfaces and protect invariants — a plugin should implement one concern; extension points should not allow callers to break core constraints
+  - id: EF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: EF-2
+    text: Open for extension, closed for modification — prefer interfaces and protocols over concrete types at extension boundaries; add behavior through new code
+  - id: EF-3
+    text: Use the Strategy pattern and design events and hooks — pass the algorithm instead of hardcoding it; let external code react at well-defined points
+  - id: EF-4
+    text: Wait for two concrete cases before abstracting, then make extension points discoverable — document them, name them clearly, and provide examples
+  - id: EF-5
+    text: Use dependency injection and prefer configuration over code — allow swapping implementations without code changes for variations that don't involve new logic
+  - id: EF-6
+    text: Design narrow plugin interfaces and protect invariants — a plugin should implement one concern; extension points should not allow callers to break core constraints
 
 verification:
-  - check: Extension points documented and discoverable
-  - check: Plugin interfaces are narrow (few methods)
-  - check: Core invariants protected from extension code
-  - check: Dependency injection used for replaceable components
+  - id: EF-V1
+    check: Extension points documented and discoverable
+  - id: EF-V2
+    check: Plugin interfaces are narrow (few methods)
+  - id: EF-V3
+    check: Core invariants protected from extension code
+  - id: EF-V4
+    check: Dependency injection used for replaceable components
 
 tags:
   - extensibility

@@ -19,12 +19,18 @@ responsibilities:
   - Assess whether operations can be parallelized or batched
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Design for statelessness — move session and state to external stores; use optimistic concurrency or idempotent operations instead of distributed locks
-  - Prefer async I/O and use queues to decouple — don't block threads on external systems; queues smooth load spikes between producers and consumers
-  - Design data for partitioning and prefer eventual consistency — avoid cross-partition queries and global sequences; strong consistency limits scaling
-  - Plan for back-pressure and keep operations small and bounded — large transactions block concurrency; define what happens when a consumer can't keep up
-  - Design cache strategies with invalidation in mind and consider geographic distribution — stale data at scale is worse than no cache; know where your users and data live
+  - id: SF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: SF-2
+    text: Design for statelessness — move session and state to external stores; use optimistic concurrency or idempotent operations instead of distributed locks
+  - id: SF-3
+    text: Prefer async I/O and use queues to decouple — don't block threads on external systems; queues smooth load spikes between producers and consumers
+  - id: SF-4
+    text: Design data for partitioning and prefer eventual consistency — avoid cross-partition queries and global sequences; strong consistency limits scaling
+  - id: SF-5
+    text: Plan for back-pressure and keep operations small and bounded — large transactions block concurrency; define what happens when a consumer can't keep up
+  - id: SF-6
+    text: Design cache strategies with invalidation in mind and consider geographic distribution — stale data at scale is worse than no cache; know where your users and data live
 
 tools:
   - name: k6
@@ -44,10 +50,14 @@ tools:
     when: "resource monitoring — dashboards for scaling decisions"
 
 verification:
-  - check: Load test results meet throughput targets
-  - check: Stateless design (no session affinity required)
-  - check: Database queries support partitioning/sharding
-  - check: Back-pressure handling present for async pipelines
+  - id: SF-V1
+    check: Load test results meet throughput targets
+  - id: SF-V2
+    check: Stateless design (no session affinity required)
+  - id: SF-V3
+    check: Database queries support partitioning/sharding
+  - id: SF-V4
+    check: Back-pressure handling present for async pipelines
 
 tags:
   - scalability

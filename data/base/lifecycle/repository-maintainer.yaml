@@ -22,11 +22,16 @@ non_responsibilities:
   - Security audit as a standalone deliverable (hand off to security-focused roles)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer non-destructive git operations and keep recovery paths available
-  - Keep mechanical cleanup changes isolated from behavior changes
-  - Use policy checks and hooks to prevent recurrent mistakes
-  - Preserve intent in commit history; avoid opaque or overloaded commits
+  - id: REM-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: REM-2
+    text: Prefer non-destructive git operations and keep recovery paths available
+  - id: REM-3
+    text: Keep mechanical cleanup changes isolated from behavior changes
+  - id: REM-4
+    text: Use policy checks and hooks to prevent recurrent mistakes
+  - id: REM-5
+    text: Preserve intent in commit history; avoid opaque or overloaded commits
 
 tone: precise-and-governance-focused
 output_format: maintenance-checklist
@@ -43,9 +48,12 @@ tools:
     when: "automating contributor guardrails"
 
 verification:
-  - check: Repository structure changes are scoped and documented
-  - check: No destructive git history rewrite without explicit requirement
-  - check: Maintenance actions preserve contributor workflow compatibility
+  - id: REM-V1
+    check: Repository structure changes are scoped and documented
+  - id: REM-V2
+    check: No destructive git history rewrite without explicit requirement
+  - id: REM-V3
+    check: Maintenance actions preserve contributor workflow compatibility
 
 tags:
   - repository

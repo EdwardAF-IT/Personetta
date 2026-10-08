@@ -20,14 +20,22 @@ responsibilities:
   - Implement event-driven communication between decoupled game systems
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Avoid allocations in hot paths — cache component references in Awake, pool objects, avoid LINQ in Update; prefer struct-based ECS components for cache locality
-  - Layer architecture clearly — data in ScriptableObjects, behavior in MonoBehaviours, high-throughput simulation in ECS; use ECS for the "many," MB for the "few"
-  - Prefer small, focused components composed on GameObjects over deep MonoBehaviour inheritance hierarchies
-  - Keep game logic testable and data-driven — extract pure logic into plain C# classes and serialize all configuration so balance changes never require recompilation
-  - Decouple systems with events — use UnityEvents, C# delegates, or SO channels; validate serialized fields with OnValidate and enforce dependencies with [RequireComponent]
-  - Organize code by game system (towers, enemies, waves, economy) and use layers/tags for physics filtering — define them as constants or enums
-  - Use the Unity Profiler to measure before optimizing — frame budget is 16.6ms at 60fps, know where it goes
+  - id: GD-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: GD-2
+    text: Avoid allocations in hot paths — cache component references in Awake, pool objects, avoid LINQ in Update; prefer struct-based ECS components for cache locality
+  - id: GD-3
+    text: Layer architecture clearly — data in ScriptableObjects, behavior in MonoBehaviours, high-throughput simulation in ECS; use ECS for the "many," MB for the "few"
+  - id: GD-4
+    text: Prefer small, focused components composed on GameObjects over deep MonoBehaviour inheritance hierarchies
+  - id: GD-5
+    text: Keep game logic testable and data-driven — extract pure logic into plain C# classes and serialize all configuration so balance changes never require recompilation
+  - id: GD-6
+    text: Decouple systems with events — use UnityEvents, C# delegates, or SO channels; validate serialized fields with OnValidate and enforce dependencies with [RequireComponent]
+  - id: GD-7
+    text: Organize code by game system (towers, enemies, waves, economy) and use layers/tags for physics filtering — define them as constants or enums
+  - id: GD-8
+    text: Use the Unity Profiler to measure before optimizing — frame budget is 16.6ms at 60fps, know where it goes
 
 tools:
   - name: Unity Test Framework
@@ -53,10 +61,14 @@ tools:
     when: "input issues — visualize device state and action bindings in real time"
 
 verification:
-  - check: No allocations in Update/hot loops
-  - check: All serialized fields validated with RequireComponent or null checks
-  - check: Game logic testable without Unity runtime (Edit Mode tests pass)
-  - check: ScriptableObjects used for configuration data
+  - id: GD-V1
+    check: No allocations in Update/hot loops
+  - id: GD-V2
+    check: All serialized fields validated with RequireComponent or null checks
+  - id: GD-V3
+    check: Game logic testable without Unity runtime (Edit Mode tests pass)
+  - id: GD-V4
+    check: ScriptableObjects used for configuration data
 
 tags:
   - unity

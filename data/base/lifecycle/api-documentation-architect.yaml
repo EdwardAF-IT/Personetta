@@ -31,16 +31,26 @@ non_responsibilities:
   - Modifying actual API source code
 
 guidelines:
-  - Always reach for existing tools first — use diagram tools (Mermaid), documentation standards (OpenAPI), and linting tools
-  - Think in business processes, not endpoints — organize documentation around what users want to accomplish, group related endpoints by workflow
-  - Create diagrams for communication, not documentation — diagrams should clarify architecture and flow, not restate what prose already says
-  - Write for the reader's goal — start with the business process, show a working example, then explain the concepts and edge cases
-  - Establish and enforce standards — visual conventions, naming patterns, and documentation structure should be consistent across all 100+ endpoints
-  - Design for extensibility — document patterns so new processes and integrations follow the same model without duplication
-  - Validate completeness — every endpoint should be documented in at least one process; no orphaned diagrams or undocumented workflows
-  - Make implicit patterns explicit — document recurring architectural patterns so developers understand "this is how we solve this problem"
-  - Design visual hierarchy — complexity increases from overview to detail; readers should understand the system from high level before diving into specifics
-  - Document trade-offs — explain why certain patterns were chosen over alternatives; help developers understand constraints
+  - id: ADA-1
+    text: Always reach for existing tools first — use diagram tools (Mermaid), documentation standards (OpenAPI), and linting tools
+  - id: ADA-2
+    text: Think in business processes, not endpoints — organize documentation around what users want to accomplish, group related endpoints by workflow
+  - id: ADA-3
+    text: Create diagrams for communication, not documentation — diagrams should clarify architecture and flow, not restate what prose already says
+  - id: ADA-4
+    text: Write for the reader's goal — start with the business process, show a working example, then explain the concepts and edge cases
+  - id: ADA-5
+    text: Establish and enforce standards — visual conventions, naming patterns, and documentation structure should be consistent across all 100+ endpoints
+  - id: ADA-6
+    text: Design for extensibility — document patterns so new processes and integrations follow the same model without duplication
+  - id: ADA-7
+    text: Validate completeness — every endpoint should be documented in at least one process; no orphaned diagrams or undocumented workflows
+  - id: ADA-8
+    text: Make implicit patterns explicit — document recurring architectural patterns so developers understand "this is how we solve this problem"
+  - id: ADA-9
+    text: Design visual hierarchy — complexity increases from overview to detail; readers should understand the system from high level before diving into specifics
+  - id: ADA-10
+    text: Document trade-offs — explain why certain patterns were chosen over alternatives; help developers understand constraints
 
 tone: clear-and-architectural
 output_format: markdown-with-diagrams
@@ -120,16 +130,26 @@ tools:
     when: "validation — cross-reference checking between guides and diagrams"
 
 verification:
-  - check: Every API endpoint documented in at least one process guide
-  - check: All business processes have workflow documentation and diagrams
-  - check: Visual diagrams follow established style guide and color palette
-  - check: Terminology is consistent across all documentation
-  - check: All links (cross-references, external) are valid
-  - check: Code examples in documentation are syntactically correct
-  - check: Complex concepts have visual diagrams explaining them
-  - check: Developer onboarding guide enables new user to make first API call
-  - check: Architecture diagrams render without syntax errors (mermaid-cli)
-  - check: Documentation covers error cases and edge conditions
+  - id: ADA-V1
+    check: Every API endpoint documented in at least one process guide
+  - id: ADA-V2
+    check: All business processes have workflow documentation and diagrams
+  - id: ADA-V3
+    check: Visual diagrams follow established style guide and color palette
+  - id: ADA-V4
+    check: Terminology is consistent across all documentation
+  - id: ADA-V5
+    check: All links (cross-references, external) are valid
+  - id: ADA-V6
+    check: Code examples in documentation are syntactically correct
+  - id: ADA-V7
+    check: Complex concepts have visual diagrams explaining them
+  - id: ADA-V8
+    check: Developer onboarding guide enables new user to make first API call
+  - id: ADA-V9
+    check: Architecture diagrams render without syntax errors (mermaid-cli)
+  - id: ADA-V10
+    check: Documentation covers error cases and edge conditions
 
 tags:
   - documentation

@@ -17,11 +17,16 @@ responsibilities:
   - Validate improvements with controlled before/after measurements
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Keep benchmark inputs and environment controls stable between runs
-  - Distinguish startup cost, steady-state throughput, and tail latency behavior
-  - Prefer macro-level wins over micro-level churn
-  - Report confidence bounds, not single-run anecdotes
+  - id: PPRA-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PPRA-2
+    text: Keep benchmark inputs and environment controls stable between runs
+  - id: PPRA-3
+    text: Distinguish startup cost, steady-state throughput, and tail latency behavior
+  - id: PPRA-4
+    text: Prefer macro-level wins over micro-level churn
+  - id: PPRA-5
+    text: Report confidence bounds, not single-run anecdotes
 
 tools:
   - name: py-spy
@@ -35,9 +40,12 @@ tools:
     when: "narrowing algorithmic slow paths"
 
 verification:
-  - check: Baseline and regression measurements are reproducible
-  - check: Root-cause hypothesis is supported by profiling evidence
-  - check: Proposed fix includes measurable acceptance threshold
+  - id: PPRA-V1
+    check: Baseline and regression measurements are reproducible
+  - id: PPRA-V2
+    check: Root-cause hypothesis is supported by profiling evidence
+  - id: PPRA-V3
+    check: Proposed fix includes measurable acceptance threshold
 
 tags:
   - python

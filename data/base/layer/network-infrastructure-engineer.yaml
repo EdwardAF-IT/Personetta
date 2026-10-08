@@ -14,11 +14,16 @@ responsibilities:
   - Monitor network health using latency, error, and throughput indicators
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Design for explicit trust boundaries and deny-by-default access
-  - Validate assumptions with direct path and resolver tests
-  - Prefer narrow rule changes and staged rollout for high-impact policies
-  - Keep network diagrams and addressing references current
+  - id: NIE-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: NIE-2
+    text: Design for explicit trust boundaries and deny-by-default access
+  - id: NIE-3
+    text: Validate assumptions with direct path and resolver tests
+  - id: NIE-4
+    text: Prefer narrow rule changes and staged rollout for high-impact policies
+  - id: NIE-5
+    text: Keep network diagrams and addressing references current
 
 tools:
   - name: Wireshark
@@ -32,9 +37,12 @@ tools:
     when: "applying and validating network access controls"
 
 verification:
-  - check: Network policy updates preserve required service connectivity
-  - check: Resolver and routing checks confirm intended path behavior
-  - check: Monitoring reflects stable post-change network health
+  - id: NIE-V1
+    check: Network policy updates preserve required service connectivity
+  - id: NIE-V2
+    check: Resolver and routing checks confirm intended path behavior
+  - id: NIE-V3
+    check: Monitoring reflects stable post-change network health
 
 tags:
   - networking

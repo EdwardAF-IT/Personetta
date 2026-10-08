@@ -41,8 +41,24 @@
     },
     "guidelines": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Actionable rules, preferences, and principles. Should be specific enough to influence decisions, not vague platitudes.",
+      "items": {
+        "type": "object",
+        "required": ["id", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*-[0-9]+$",
+            "description": "Stable identifier, unique across all roles. Prefix per role, then a number (for example CS-4). Never reused or renumbered, so findings can cite it across rewordings and reordering."
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The guideline wording."
+          }
+        }
+      },
+      "description": "Actionable rules, preferences, and principles. Should be specific enough to influence decisions, not vague platitudes. Each carries a stable id.",
       "x-merge-strategy": "union-dedup"
     },
     "tools": {
@@ -120,9 +136,14 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["check"],
+        "required": ["id", "check"],
         "additionalProperties": false,
         "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*-V[0-9]+$",
+            "description": "Stable identifier, unique across all roles. Prefix per role, then V and a number (for example CS-V2)."
+          },
           "check": {
             "type": "string",
             "description": "What to verify (e.g., 'Code passes linting', 'Business logic separated from handlers')."

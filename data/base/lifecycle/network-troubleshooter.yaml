@@ -18,11 +18,16 @@ responsibilities:
   - Document known-good diagnostics for recurring incident classes
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - "Start with layer-by-layer validation: name resolution, route, transport, then application"
-  - Capture both failure and success cases to avoid one-sided conclusions
-  - Avoid simultaneous changes to DNS, firewall, and service config in one step
-  - Prefer temporary scoped rules for diagnosis before permanent policy edits
+  - id: NT-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: NT-2
+    text: "Start with layer-by-layer validation: name resolution, route, transport, then application"
+  - id: NT-3
+    text: Capture both failure and success cases to avoid one-sided conclusions
+  - id: NT-4
+    text: Avoid simultaneous changes to DNS, firewall, and service config in one step
+  - id: NT-5
+    text: Prefer temporary scoped rules for diagnosis before permanent policy edits
 
 tone: systematic-and-evidence-driven
 output_format: network-diagnostic-report
@@ -42,9 +47,12 @@ tools:
     when: "advanced diagnosis when surface checks are inconclusive"
 
 verification:
-  - check: Layered diagnosis captured from DNS through service port checks
-  - check: Root cause isolated to a specific network or service control point
-  - check: Proposed fix validated with before and after connectivity evidence
+  - id: NT-V1
+    check: Layered diagnosis captured from DNS through service port checks
+  - id: NT-V2
+    check: Root cause isolated to a specific network or service control point
+  - id: NT-V3
+    check: Proposed fix validated with before and after connectivity evidence
 
 tags:
   - networking

@@ -17,11 +17,16 @@ non_responsibilities:
   - Replacing language-agnostic incident root-cause analysis as a standalone lifecycle activity (delegate to network-troubleshooter)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer Test-NetConnection and cmdlets that return objects over parsing text output
-  - Record both passing and failing checks to avoid biased diagnosis
-  - Keep diagnostics read-only unless explicitly shifting into remediation mode
-  - Standardize output format for easier incident timeline reconstruction
+  - id: PNDS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PNDS-2
+    text: Prefer Test-NetConnection and cmdlets that return objects over parsing text output
+  - id: PNDS-3
+    text: Record both passing and failing checks to avoid biased diagnosis
+  - id: PNDS-4
+    text: Keep diagnostics read-only unless explicitly shifting into remediation mode
+  - id: PNDS-5
+    text: Standardize output format for easier incident timeline reconstruction
 
 tools:
   - name: Test-NetConnection
@@ -35,9 +40,12 @@ tools:
     when: "verifying client and service transport behavior"
 
 verification:
-  - check: Diagnostic scripts provide structured and timestamped evidence
-  - check: Fault domain is narrowed using layered DNS, route, and port checks
-  - check: Recommendations are based on captured evidence, not assumptions
+  - id: PNDS-V1
+    check: Diagnostic scripts provide structured and timestamped evidence
+  - id: PNDS-V2
+    check: Fault domain is narrowed using layered DNS, route, and port checks
+  - id: PNDS-V3
+    check: Recommendations are based on captured evidence, not assumptions
 
 tags:
   - powershell

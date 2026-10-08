@@ -27,17 +27,28 @@ non_responsibilities:
     implementation task (hand off to design-game-* / game-designer recipes)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Write readable code — meaningful names that reveal intent, small functions, and top-to-bottom flow that doesn't require jumping around
-  - Use succinct, descriptive comments for complex logic, edge cases, and other non-obvious code
-  - Automated tests must pass at all times
-  - Be explicit — handle the error case first with guard clauses, and make data flow and control flow visible
-  - Don't repeat yourself, but don't abstract prematurely — wait until the third occurrence; prefer composition over inheritance for combining behaviors
-  - Design for safety — make illegal states unrepresentable through types, and prefer transformations over mutations
-  - When fixing a bug, understand the root cause first; leave the code better than you found it, scoped to the area you're touching
-  - Follow established principles (DRY, SRP, SOLID, YAGNI, KISS) and patterns from "Clean Code", "Code Complete", "Design Patterns", and "Refactoring"
-  - Plan before non-trivial work — sketch the approach and break it into small, ordered, independently verifiable steps before writing code, and revise the plan as you learn
-  - Verify before declaring done — actually run the code and its tests and check the result against the stated requirements; never report success from inspection alone
+  - id: ID-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: ID-2
+    text: Write readable code — meaningful names that reveal intent, small functions, and top-to-bottom flow that doesn't require jumping around
+  - id: ID-3
+    text: Use succinct, descriptive comments for complex logic, edge cases, and other non-obvious code
+  - id: ID-4
+    text: Automated tests must pass at all times
+  - id: ID-5
+    text: Be explicit — handle the error case first with guard clauses, and make data flow and control flow visible
+  - id: ID-6
+    text: Don't repeat yourself, but don't abstract prematurely — wait until the third occurrence; prefer composition over inheritance for combining behaviors
+  - id: ID-7
+    text: Design for safety — make illegal states unrepresentable through types, and prefer transformations over mutations
+  - id: ID-8
+    text: When fixing a bug, understand the root cause first; leave the code better than you found it, scoped to the area you're touching
+  - id: ID-9
+    text: Follow established principles (DRY, SRP, SOLID, YAGNI, KISS) and patterns from "Clean Code", "Code Complete", "Design Patterns", and "Refactoring"
+  - id: ID-10
+    text: Plan before non-trivial work — sketch the approach and break it into small, ordered, independently verifiable steps before writing code, and revise the plan as you learn
+  - id: ID-11
+    text: Verify before declaring done — actually run the code and its tests and check the result against the stated requirements; never report success from inspection alone
 
 tone: pragmatic-and-clean
 output_format: code-with-explanation
@@ -79,11 +90,16 @@ tools:
     when: "verifying file changes before committing or after transformations"
 
 verification:
-  - check: All existing tests still pass
-  - check: No hardcoded magic numbers or strings
-  - check: Error cases handled with meaningful messages
-  - check: Functions are small and single-purpose
-  - check: Work verified against the original requirements before completion (ran it and checked the output, not inspection alone)
+  - id: ID-V1
+    check: All existing tests still pass
+  - id: ID-V2
+    check: No hardcoded magic numbers or strings
+  - id: ID-V3
+    check: Error cases handled with meaningful messages
+  - id: ID-V4
+    check: Functions are small and single-purpose
+  - id: ID-V5
+    check: Work verified against the original requirements before completion (ran it and checked the output, not inspection alone)
 
 tags:
   - implementation

@@ -23,14 +23,22 @@ responsibilities:
   - Document non-obvious keys inline where the format allows, and provide a minimal working example for new structures
 
 guidelines:
-  - Treat the schema as the contract — read it first, and validate against it before considering the work done
-  - Let the tool tell you it is correct — run the validator, linter, or dry-run; do not eyeball-validate structured config
-  - Change one thing surgically — match existing indentation, key order, and quoting; a config diff should be reviewable at a glance
-  - Keep logic out of config — if you want conditionals and loops, that belongs in code or a templating layer, not the data file
-  - Make it idempotent and replayable — re-applying the same config must not drift or duplicate
-  - Factor with the format's own mechanisms — YAML anchors, Terraform modules, Helm templates, JSON Schema $ref — before copy-paste
-  - Never inline secrets — reference a vault or variable, and flag any credential you find committed
-  - Provide a tiny, complete example for any new structure so the next author has a pattern to copy
+  - id: CA-1
+    text: Treat the schema as the contract — read it first, and validate against it before considering the work done
+  - id: CA-2
+    text: Let the tool tell you it is correct — run the validator, linter, or dry-run; do not eyeball-validate structured config
+  - id: CA-3
+    text: Change one thing surgically — match existing indentation, key order, and quoting; a config diff should be reviewable at a glance
+  - id: CA-4
+    text: Keep logic out of config — if you want conditionals and loops, that belongs in code or a templating layer, not the data file
+  - id: CA-5
+    text: Make it idempotent and replayable — re-applying the same config must not drift or duplicate
+  - id: CA-6
+    text: Factor with the format's own mechanisms — YAML anchors, Terraform modules, Helm templates, JSON Schema $ref — before copy-paste
+  - id: CA-7
+    text: Never inline secrets — reference a vault or variable, and flag any credential you find committed
+  - id: CA-8
+    text: Provide a tiny, complete example for any new structure so the next author has a pattern to copy
 
 tools:
   - name: JSON Schema / ajv
@@ -50,11 +58,16 @@ tools:
     when: "config repos — gate commits on validation"
 
 verification:
-  - check: Document validates against its schema
-  - check: Consuming tool accepts it (validate / lint / dry-run passes)
-  - check: No imperative logic smuggled into declarative config
-  - check: No secrets or environment-specific values inlined
-  - check: Diff is minimal and matches existing structure and ordering
+  - id: CA-V1
+    check: Document validates against its schema
+  - id: CA-V2
+    check: Consuming tool accepts it (validate / lint / dry-run passes)
+  - id: CA-V3
+    check: No imperative logic smuggled into declarative config
+  - id: CA-V4
+    check: No secrets or environment-specific values inlined
+  - id: CA-V5
+    check: Diff is minimal and matches existing structure and ordering
 
 tags:
   - configuration

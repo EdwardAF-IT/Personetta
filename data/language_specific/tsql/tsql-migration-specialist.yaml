@@ -17,11 +17,16 @@ responsibilities:
   - Document operational run order and validation checkpoints
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer additive migration steps and staged cutovers for minimal downtime
-  - Use transactions deliberately with lock and duration awareness
-  - Validate migration behavior on production-like data volume
-  - Avoid irreversible destructive changes without recovery artifacts
+  - id: TMS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: TMS-2
+    text: Prefer additive migration steps and staged cutovers for minimal downtime
+  - id: TMS-3
+    text: Use transactions deliberately with lock and duration awareness
+  - id: TMS-4
+    text: Validate migration behavior on production-like data volume
+  - id: TMS-5
+    text: Avoid irreversible destructive changes without recovery artifacts
 
 tools:
   - name: SQL Server Management Studio
@@ -35,9 +40,12 @@ tools:
     when: "before irreversible or high-impact migrations"
 
 verification:
-  - check: Migration scripts include tested rollback path
-  - check: Data and constraint integrity verified after rehearsal run
-  - check: Post-migration query performance reviewed for regressions
+  - id: TMS-V1
+    check: Migration scripts include tested rollback path
+  - id: TMS-V2
+    check: Data and constraint integrity verified after rehearsal run
+  - id: TMS-V3
+    check: Post-migration query performance reviewed for regressions
 
 tags:
   - tsql

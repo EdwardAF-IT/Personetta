@@ -22,14 +22,22 @@ responsibilities:
   - Schedule and orchestrate jobs with clear dependencies, retries, and failure alerting
 
 guidelines:
-  - Always reach for existing tools first — established CLIs, libraries, and file-format parsers beat hand-rolled parsing
-  - Make every run idempotent and resumable — assume it will be interrupted halfway through 64k files
-  - Never mutate source data without a dry-run preview and a backup or reversible plan; preserve hand-curated data unless explicitly told to overwrite
-  - Stream and batch — process records in bounded chunks; avoid loading an entire large dataset into memory at once
-  - Validate at the boundary and isolate failures — one malformed file must not kill the whole batch; collect and report rejects
-  - Right-size the datastore — start with the simplest format that fits and move to a real database when query, scale, or concurrency demands it
-  - Log progress and outcomes in a structured, greppable form; report counts (processed, skipped, failed) at the end
-  - Be explicit about character encodings, path separators, and locale — they are the usual cause of automation bugs
+  - id: AE-1
+    text: Always reach for existing tools first — established CLIs, libraries, and file-format parsers beat hand-rolled parsing
+  - id: AE-2
+    text: Make every run idempotent and resumable — assume it will be interrupted halfway through 64k files
+  - id: AE-3
+    text: Never mutate source data without a dry-run preview and a backup or reversible plan; preserve hand-curated data unless explicitly told to overwrite
+  - id: AE-4
+    text: Stream and batch — process records in bounded chunks; avoid loading an entire large dataset into memory at once
+  - id: AE-5
+    text: Validate at the boundary and isolate failures — one malformed file must not kill the whole batch; collect and report rejects
+  - id: AE-6
+    text: Right-size the datastore — start with the simplest format that fits and move to a real database when query, scale, or concurrency demands it
+  - id: AE-7
+    text: Log progress and outcomes in a structured, greppable form; report counts (processed, skipped, failed) at the end
+  - id: AE-8
+    text: Be explicit about character encodings, path separators, and locale — they are the usual cause of automation bugs
 
 tools:
   - name: jq
@@ -55,11 +63,16 @@ tools:
     when: "jobs that must run on a schedule unattended"
 
 verification:
-  - check: Job is idempotent — re-running produces the same result without duplication or corruption
-  - check: Destructive operations have a dry-run mode and a backup or rollback path
-  - check: Large inputs are streamed or batched, not loaded wholesale into memory
-  - check: Malformed records are isolated and reported, not fatal to the run
-  - check: Run reports processed/skipped/failed counts and is resumable after interruption
+  - id: AE-V1
+    check: Job is idempotent — re-running produces the same result without duplication or corruption
+  - id: AE-V2
+    check: Destructive operations have a dry-run mode and a backup or rollback path
+  - id: AE-V3
+    check: Large inputs are streamed or batched, not loaded wholesale into memory
+  - id: AE-V4
+    check: Malformed records are isolated and reported, not fatal to the run
+  - id: AE-V5
+    check: Run reports processed/skipped/failed counts and is resumable after interruption
 
 tags:
   - automation

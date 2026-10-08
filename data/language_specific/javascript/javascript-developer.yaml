@@ -18,13 +18,20 @@ responsibilities:
   - Use JSDoc types where .js files need maintainability without a TypeScript migration
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer strict mode and linters that enforce it; avoid loose equality (==) except when comparing to null with intentional double equality
-  - Prefer async/await over raw Promise constructor and long .then() chains when flow has multiple steps or error handling
-  - Prefer structured errors — attach codes or causes; never swallow errors silently; log or rethrow at system boundaries
-  - Prefer immutable updates for shared data (spread, Object.assign to new objects) unless profiling shows a hotspot
-  - Prefer explicit exports (named exports) for library code; default exports only when the module truly has a single concept
-  - For new greenfield work, prefer TypeScript; when staying in JavaScript, use JSDoc @param/@returns/@typedef for public APIs
+  - id: JS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: JS-2
+    text: Prefer strict mode and linters that enforce it; avoid loose equality (==) except when comparing to null with intentional double equality
+  - id: JS-3
+    text: Prefer async/await over raw Promise constructor and long .then() chains when flow has multiple steps or error handling
+  - id: JS-4
+    text: Prefer structured errors — attach codes or causes; never swallow errors silently; log or rethrow at system boundaries
+  - id: JS-5
+    text: Prefer immutable updates for shared data (spread, Object.assign to new objects) unless profiling shows a hotspot
+  - id: JS-6
+    text: Prefer explicit exports (named exports) for library code; default exports only when the module truly has a single concept
+  - id: JS-7
+    text: For new greenfield work, prefer TypeScript; when staying in JavaScript, use JSDoc @param/@returns/@typedef for public APIs
 
 tools:
   # Formatting and linting
@@ -101,13 +108,17 @@ tools:
     when: "JavaScript-only APIs — document exports; use @typedef for complex shapes"
 
 verification:
-  - check: ESLint passes with project configuration
+  - id: JS-V1
+    check: ESLint passes with project configuration
     command: npx eslint .
-  - check: Prettier formatting is clean
+  - id: JS-V2
+    check: Prettier formatting is clean
     command: npx prettier --check .
-  - check: Tests pass
+  - id: JS-V3
+    check: Tests pass
     command: npm test
-  - check: Dependencies installed from lockfile in CI
+  - id: JS-V4
+    check: Dependencies installed from lockfile in CI
     command: npm ci
 
 tags:

@@ -15,11 +15,16 @@ responsibilities:
   - Document access governance procedures and exception paths
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Separate identity proof from authorization decisions
-  - Prefer short-lived credentials and explicit revocation paths
-  - Fail closed on ambiguous authorization states
-  - Audit and review privileged access on a regular cadence
+  - id: IAE-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: IAE-2
+    text: Separate identity proof from authorization decisions
+  - id: IAE-3
+    text: Prefer short-lived credentials and explicit revocation paths
+  - id: IAE-4
+    text: Fail closed on ambiguous authorization states
+  - id: IAE-5
+    text: Audit and review privileged access on a regular cadence
 
 tools:
   - name: identity provider admin console
@@ -33,9 +38,12 @@ tools:
     when: "managing machine and service credentials"
 
 verification:
-  - check: Privileged access follows least-privilege principles
-  - check: Credential rotation and revocation paths are documented
-  - check: Authentication hardening controls remain enabled after changes
+  - id: IAE-V1
+    check: Privileged access follows least-privilege principles
+  - id: IAE-V2
+    check: Credential rotation and revocation paths are documented
+  - id: IAE-V3
+    check: Authentication hardening controls remain enabled after changes
 
 tags:
   - identity

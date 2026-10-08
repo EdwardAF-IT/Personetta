@@ -17,12 +17,18 @@ responsibilities:
   - Manage client-side routing and navigation state
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Compose small, focused components — prefer composition over inheritance and keep state as close to where it's used as possible
-  - Handle every async state and give immediate feedback — loading spinners, error messages, empty states; never leave users wondering if their action registered
-  - Build on a solid foundation — design mobile-first, use semantic HTML for accessibility and SEO
-  - Keep components lean — extract business logic to hooks/services and debounce expensive operations
-  - Support keyboard navigation for all interactive elements and lazy-load non-visible content
+  - id: FD-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: FD-2
+    text: Compose small, focused components — prefer composition over inheritance and keep state as close to where it's used as possible
+  - id: FD-3
+    text: Handle every async state and give immediate feedback — loading spinners, error messages, empty states; never leave users wondering if their action registered
+  - id: FD-4
+    text: Build on a solid foundation — design mobile-first, use semantic HTML for accessibility and SEO
+  - id: FD-5
+    text: Keep components lean — extract business logic to hooks/services and debounce expensive operations
+  - id: FD-6
+    text: Support keyboard navigation for all interactive elements and lazy-load non-visible content
 
 tools:
   # Browser and auditing
@@ -74,13 +80,18 @@ tools:
     when: "unit testing in Vite projects — Jest-compatible API with native ESM"
 
 verification:
-  - check: Lighthouse audit scores acceptable
+  - id: FD-V1
+    check: Lighthouse audit scores acceptable
     command: npx lighthouse --output json --quiet
-  - check: No accessibility violations
+  - id: FD-V2
+    check: No accessibility violations
     command: npx axe-core .
-  - check: Components work in isolation (Storybook or equivalent)
-  - check: All async states handled (loading, error, empty, success)
-  - check: Keyboard navigation works for all interactive elements
+  - id: FD-V3
+    check: Components work in isolation (Storybook or equivalent)
+  - id: FD-V4
+    check: All async states handled (loading, error, empty, success)
+  - id: FD-V5
+    check: Keyboard navigation works for all interactive elements
 
 tags:
   - frontend

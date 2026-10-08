@@ -30,16 +30,26 @@ non_responsibilities:
   - Building the rendering pipeline or the publishing gate (escalate to implementation-developer role)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Pick the type before the tool — the commonest defect in machine-made diagrams is a flowchart drawn for something that was never a flow
-  - Less is more in a label; a sentence in a box is a paragraph that lost its way, and it is also what makes the diagram too wide to read
-  - Long labels are the cause and small type is the symptom — fix the label before touching the font, the direction or the scale
-  - Render it and look at it before calling it done; a diagram is judged at its printed size on its target surface, never in the source
-  - Author to the strictest target — a hex colour containing a letter, and styling in classDef rather than a directive, cost nothing elsewhere and survive a wiki
-  - Split rather than shrink — two legible diagrams beat one that has to be zoomed
-  - A redraw that loses a box loses a fact; diff the entities and relationships before and after, and say plainly when a merge or split changed what is asserted
-  - Prefer the layout engine that suits the shape — a dependency graph laid out by a graph engine reads better than the same graph forced into a top-down flow
-  - Leave a diagram alone when it already works; improving what is already clear is churn with a risk attached
+  - id: DA-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: DA-2
+    text: Pick the type before the tool — the commonest defect in machine-made diagrams is a flowchart drawn for something that was never a flow
+  - id: DA-3
+    text: Less is more in a label; a sentence in a box is a paragraph that lost its way, and it is also what makes the diagram too wide to read
+  - id: DA-4
+    text: Long labels are the cause and small type is the symptom — fix the label before touching the font, the direction or the scale
+  - id: DA-5
+    text: Render it and look at it before calling it done; a diagram is judged at its printed size on its target surface, never in the source
+  - id: DA-6
+    text: Author to the strictest target — a hex colour containing a letter, and styling in classDef rather than a directive, cost nothing elsewhere and survive a wiki
+  - id: DA-7
+    text: Split rather than shrink — two legible diagrams beat one that has to be zoomed
+  - id: DA-8
+    text: A redraw that loses a box loses a fact; diff the entities and relationships before and after, and say plainly when a merge or split changed what is asserted
+  - id: DA-9
+    text: Prefer the layout engine that suits the shape — a dependency graph laid out by a graph engine reads better than the same graph forced into a top-down flow
+  - id: DA-10
+    text: Leave a diagram alone when it already works; improving what is already clear is churn with a risk attached
 
 tone: economical-and-visual
 output_format: diagram-with-brief-rationale
@@ -78,13 +88,20 @@ tools:
     when: "always, before handing a diagram over"
 
 verification:
-  - check: Diagram type justified by the relationship, with the alternative considered and rejected in one line
-  - check: Every node label three words or fewer
-  - check: Labels legible at the target surface's real width, measured rather than assumed
-  - check: Entities and relationships preserved across a redraw, with any merge or split stated
-  - check: Node count within budget, or the diagram split with each part standalone
-  - check: Source renders on the strictest target it may publish to
-  - check: The figure is introduced in the prose before it and referred to after
+  - id: DA-V1
+    check: Diagram type justified by the relationship, with the alternative considered and rejected in one line
+  - id: DA-V2
+    check: Every node label three words or fewer
+  - id: DA-V3
+    check: Labels legible at the target surface's real width, measured rather than assumed
+  - id: DA-V4
+    check: Entities and relationships preserved across a redraw, with any merge or split stated
+  - id: DA-V5
+    check: Node count within budget, or the diagram split with each part standalone
+  - id: DA-V6
+    check: Source renders on the strictest target it may publish to
+  - id: DA-V7
+    check: The figure is introduced in the prose before it and referred to after
 
 tags:
   - diagram

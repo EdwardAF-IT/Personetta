@@ -30,15 +30,24 @@ non_responsibilities:
   - Building the rendering or publishing pipeline (escalate to implementation-developer role)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Render and look; a diagram that reads well on a monitor can print at a third of the size, and the source shows neither
-  - Lead with the cause, not the symptom — labels averaging eleven words is actionable, the text being too small is not
-  - Saying a diagram does not look good is not a finding; a finding names what a reader cannot do and the smallest change that lets them
-  - Judge the diagram against its job — a figure enhances the prose around it rather than replacing it, so it may be terser than a standalone picture
-  - A flowchart with back-edges and several inbound edges per node is a graph that was drawn wrong; say so rather than tidying its layout
-  - Be restrained about adding figures — at most one per section unless the section is a walkthrough, and only where the relationship is genuinely hard to hold in prose
-  - Say which diagrams are already good and should be left alone; a review that flags everything gets ignored, and churn carries its own risk
-  - Rank by reading cost so a large corpus can be worked as a queue rather than a wall
+  - id: DIR-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: DIR-2
+    text: Render and look; a diagram that reads well on a monitor can print at a third of the size, and the source shows neither
+  - id: DIR-3
+    text: Lead with the cause, not the symptom — labels averaging eleven words is actionable, the text being too small is not
+  - id: DIR-4
+    text: Saying a diagram does not look good is not a finding; a finding names what a reader cannot do and the smallest change that lets them
+  - id: DIR-5
+    text: Judge the diagram against its job — a figure enhances the prose around it rather than replacing it, so it may be terser than a standalone picture
+  - id: DIR-6
+    text: A flowchart with back-edges and several inbound edges per node is a graph that was drawn wrong; say so rather than tidying its layout
+  - id: DIR-7
+    text: Be restrained about adding figures — at most one per section unless the section is a walkthrough, and only where the relationship is genuinely hard to hold in prose
+  - id: DIR-8
+    text: Say which diagrams are already good and should be left alone; a review that flags everything gets ignored, and churn carries its own risk
+  - id: DIR-9
+    text: Rank by reading cost so a large corpus can be worked as a queue rather than a wall
 
 tone: art-directed-and-measured
 output_format: structured-review
@@ -75,13 +84,20 @@ tools:
     when: "reviewing more than a handful of diagrams"
 
 verification:
-  - check: Every diagram judged from a render at its target width, not from source
-  - check: Each diagram's question stated in one sentence, with a ruling on whether it is answered quickly
-  - check: Legibility reported as measured numbers with the cause identified
-  - check: Type-fit judged for every diagram, with a better type named where it applies
-  - check: Findings ranked by reading cost
-  - check: Diagrams that should be left alone named explicitly
-  - check: Any proposed new figure justified by what the reader is currently doing without it
+  - id: DIR-V1
+    check: Every diagram judged from a render at its target width, not from source
+  - id: DIR-V2
+    check: Each diagram's question stated in one sentence, with a ruling on whether it is answered quickly
+  - id: DIR-V3
+    check: Legibility reported as measured numbers with the cause identified
+  - id: DIR-V4
+    check: Type-fit judged for every diagram, with a better type named where it applies
+  - id: DIR-V5
+    check: Findings ranked by reading cost
+  - id: DIR-V6
+    check: Diagrams that should be left alone named explicitly
+  - id: DIR-V7
+    check: Any proposed new figure justified by what the reader is currently doing without it
 
 tags:
   - diagram

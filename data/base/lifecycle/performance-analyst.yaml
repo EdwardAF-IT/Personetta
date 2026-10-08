@@ -18,11 +18,16 @@ responsibilities:
   - Report findings with reproducible measurement steps
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Measure before optimizing; avoid speculative tuning
-  - Use production-like data shape and concurrency when benchmarking
-  - Compare baselines and changes with statistically meaningful runs
-  - Prefer high-leverage algorithmic improvements over micro-optimizations
+  - id: PA-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PA-2
+    text: Measure before optimizing; avoid speculative tuning
+  - id: PA-3
+    text: Use production-like data shape and concurrency when benchmarking
+  - id: PA-4
+    text: Compare baselines and changes with statistically meaningful runs
+  - id: PA-5
+    text: Prefer high-leverage algorithmic improvements over micro-optimizations
 
 tone: analytical-and-quantitative
 output_format: performance-analysis-report
@@ -39,9 +44,12 @@ tools:
     when: "evaluating optimization candidates and regression risk"
 
 verification:
-  - check: Baseline metrics recorded before tuning
-  - check: Representative workload documented and repeatable
-  - check: Report includes quantified improvement or justified no-change decision
+  - id: PA-V1
+    check: Baseline metrics recorded before tuning
+  - id: PA-V2
+    check: Representative workload documented and repeatable
+  - id: PA-V3
+    check: Report includes quantified improvement or justified no-change decision
 
 tags:
   - performance

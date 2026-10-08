@@ -18,55 +18,85 @@ responsibilities:
   - Write migration scripts that are safe, idempotent, and backward-compatible
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: TS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
   # Set-based thinking
-  - Think in sets, not loops — prefer a single set-based UPDATE/INSERT over iterating rows with WHILE; cursors are almost never the right answer
-  - Use MERGE cautiously — it has subtle concurrency issues; separate INSERT/UPDATE is often safer
-  - Use OUTPUT clause to capture affected rows without a separate SELECT
+  - id: TS-2
+    text: Think in sets, not loops — prefer a single set-based UPDATE/INSERT over iterating rows with WHILE; cursors are almost never the right answer
+  - id: TS-3
+    text: Use MERGE cautiously — it has subtle concurrency issues; separate INSERT/UPDATE is often safer
+  - id: TS-4
+    text: Use OUTPUT clause to capture affected rows without a separate SELECT
 
   # Query design
-  - Always specify columns in SELECT — never SELECT *; qualify all column references with table alias in multi-table queries
-  - Use EXISTS over COUNT(*) > 0 (short-circuits); prefer UNION ALL over UNION when duplicates are acceptable (UNION implies a sort)
-  - "Prefer WHERE over HAVING for non-aggregate filters — HAVING runs after GROUP BY"
-  - Use TOP with ORDER BY (TOP alone returns arbitrary rows); use OFFSET/FETCH for pagination instead of ROW_NUMBER subqueries on modern SQL Server
+  - id: TS-5
+    text: Always specify columns in SELECT — never SELECT *; qualify all column references with table alias in multi-table queries
+  - id: TS-6
+    text: Use EXISTS over COUNT(*) > 0 (short-circuits); prefer UNION ALL over UNION when duplicates are acceptable (UNION implies a sort)
+  - id: TS-7
+    text: "Prefer WHERE over HAVING for non-aggregate filters — HAVING runs after GROUP BY"
+  - id: TS-8
+    text: Use TOP with ORDER BY (TOP alone returns arbitrary rows); use OFFSET/FETCH for pagination instead of ROW_NUMBER subqueries on modern SQL Server
 
   # Data types
-  - Use NVARCHAR for user-facing Unicode text, VARCHAR only for system/ASCII data; size columns intentionally — NVARCHAR(100) beats NVARCHAR(MAX) when the max is known, reserve MAX for genuinely unbounded content
-  - Use DATETIME2 over DATETIME for better precision and range; use DECIMAL/NUMERIC with explicit precision for financial calculations — never FLOAT or REAL
-  - Use BIT for boolean values, not INT or CHAR(1)
+  - id: TS-9
+    text: Use NVARCHAR for user-facing Unicode text, VARCHAR only for system/ASCII data; size columns intentionally — NVARCHAR(100) beats NVARCHAR(MAX) when the max is known, reserve MAX for genuinely unbounded content
+  - id: TS-10
+    text: Use DATETIME2 over DATETIME for better precision and range; use DECIMAL/NUMERIC with explicit precision for financial calculations — never FLOAT or REAL
+  - id: TS-11
+    text: Use BIT for boolean values, not INT or CHAR(1)
 
   # NULL handling
-  - "Understand three-valued logic — NULL is not equal to anything, including NULL; always use IS NULL / IS NOT NULL, never = NULL"
-  - Use ISNULL or COALESCE intentionally — COALESCE follows ANSI and handles multiple arguments, ISNULL is faster for two values; use NULLIF to convert sentinel values to NULL
-  - Be aware that NULL in an IN list is silently ignored — NOT IN with NULLs returns no rows
+  - id: TS-12
+    text: "Understand three-valued logic — NULL is not equal to anything, including NULL; always use IS NULL / IS NOT NULL, never = NULL"
+  - id: TS-13
+    text: Use ISNULL or COALESCE intentionally — COALESCE follows ANSI and handles multiple arguments, ISNULL is faster for two values; use NULLIF to convert sentinel values to NULL
+  - id: TS-14
+    text: Be aware that NULL in an IN list is silently ignored — NOT IN with NULLs returns no rows
 
   # Stored procedure design
-  - Use SET NOCOUNT ON and SET XACT_ABORT ON at the top of every procedure; validate inputs before doing any work
-  - Define parameter defaults where sensible; use table-valued parameters (TVPs) for passing collections instead of CSV strings or XML
-  - Return meaningful result sets, not status codes in output parameters, for query procedures
+  - id: TS-15
+    text: Use SET NOCOUNT ON and SET XACT_ABORT ON at the top of every procedure; validate inputs before doing any work
+  - id: TS-16
+    text: Define parameter defaults where sensible; use table-valued parameters (TVPs) for passing collections instead of CSV strings or XML
+  - id: TS-17
+    text: Return meaningful result sets, not status codes in output parameters, for query procedures
 
   # Error handling
-  - Use TRY/CATCH for all procedures that modify data; always check XACT_STATE() in CATCH before deciding to ROLLBACK or COMMIT
-  - Use THROW to re-raise errors (preserves original context); use RAISERROR only for custom business-rule errors
-  - Log error details (ERROR_MESSAGE, ERROR_LINE, ERROR_PROCEDURE) when appropriate
+  - id: TS-18
+    text: Use TRY/CATCH for all procedures that modify data; always check XACT_STATE() in CATCH before deciding to ROLLBACK or COMMIT
+  - id: TS-19
+    text: Use THROW to re-raise errors (preserves original context); use RAISERROR only for custom business-rule errors
+  - id: TS-20
+    text: Log error details (ERROR_MESSAGE, ERROR_LINE, ERROR_PROCEDURE) when appropriate
 
   # Transaction management
-  - Keep transactions as short as possible — do reads and validation outside the transaction; use explicit transactions for multi-statement modifications (single statements are auto-committed)
-  - SQL Server does not support true nested transactions, only savepoints — name transactions only when nesting requires it
+  - id: TS-21
+    text: Keep transactions as short as possible — do reads and validation outside the transaction; use explicit transactions for multi-statement modifications (single statements are auto-committed)
+  - id: TS-22
+    text: SQL Server does not support true nested transactions, only savepoints — name transactions only when nesting requires it
 
   # Indexing awareness
-  - Write queries that use existing indexes — filter on leading key columns; use INCLUDE columns to cover queries and avoid key lookups
-  - Avoid wrapping indexed columns in functions (WHERE YEAR(DateCol) = 2024 cannot use an index); beware implicit conversions — comparing NVARCHAR to VARCHAR forces a scan
-  - Use filtered indexes for queries on well-known subsets (WHERE IsActive = 1)
+  - id: TS-23
+    text: Write queries that use existing indexes — filter on leading key columns; use INCLUDE columns to cover queries and avoid key lookups
+  - id: TS-24
+    text: Avoid wrapping indexed columns in functions (WHERE YEAR(DateCol) = 2024 cannot use an index); beware implicit conversions — comparing NVARCHAR to VARCHAR forces a scan
+  - id: TS-25
+    text: Use filtered indexes for queries on well-known subsets (WHERE IsActive = 1)
 
   # Window functions and CTEs
-  - Use window functions (ROW_NUMBER, RANK, LAG, LEAD, SUM OVER) for ranking, running totals, and row comparisons; use CTEs for readability — they're syntax sugar, not materialized
-  - Use recursive CTEs for hierarchical data (org charts, BOMs); avoid deeply nested subqueries — refactor into CTEs
+  - id: TS-26
+    text: Use window functions (ROW_NUMBER, RANK, LAG, LEAD, SUM OVER) for ranking, running totals, and row comparisons; use CTEs for readability — they're syntax sugar, not materialized
+  - id: TS-27
+    text: Use recursive CTEs for hierarchical data (org charts, BOMs); avoid deeply nested subqueries — refactor into CTEs
 
   # Modern SQL Server features
-  - Use STRING_AGG over FOR XML PATH for string concatenation (2017+); use JSON functions (OPENJSON, FOR JSON) for data interchange
-  - Use CROSS APPLY and OUTER APPLY for per-row function evaluation and lateral joins
-  - Use SEQUENCE objects over IDENTITY when IDs need pre-INSERT generation; use temporal tables for built-in change tracking
+  - id: TS-28
+    text: Use STRING_AGG over FOR XML PATH for string concatenation (2017+); use JSON functions (OPENJSON, FOR JSON) for data interchange
+  - id: TS-29
+    text: Use CROSS APPLY and OUTER APPLY for per-row function evaluation and lateral joins
+  - id: TS-30
+    text: Use SEQUENCE objects over IDENTITY when IDs need pre-INSERT generation; use temporal tables for built-in change tracking
 
 tools:
   # Development environments
@@ -118,11 +148,16 @@ tools:
     when: "schema drift detection and generating migration scripts between environments"
 
 verification:
-  - check: No SELECT * in production queries
-  - check: All queries use parameterized inputs (no string concatenation)
-  - check: Stored procedures include SET NOCOUNT ON and error handling
-  - check: Indexes reviewed for new query patterns
-  - check: Execution plans checked for scans on large tables
+  - id: TS-V1
+    check: No SELECT * in production queries
+  - id: TS-V2
+    check: All queries use parameterized inputs (no string concatenation)
+  - id: TS-V3
+    check: Stored procedures include SET NOCOUNT ON and error handling
+  - id: TS-V4
+    check: Indexes reviewed for new query patterns
+  - id: TS-V5
+    check: Execution plans checked for scans on large tables
 
 tags:
   - tsql

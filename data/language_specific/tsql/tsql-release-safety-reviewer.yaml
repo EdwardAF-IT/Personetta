@@ -16,11 +16,16 @@ responsibilities:
   - Provide go/no-go recommendations with concrete risk evidence
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Require operationally testable evidence, not only static review confidence
-  - Evaluate failure modes under partial execution and rollback conditions
-  - Prefer explicit safeguards for schema drift and environment mismatch
-  - Keep release-risk findings prioritized by blast radius and recoverability
+  - id: TRSR-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: TRSR-2
+    text: Require operationally testable evidence, not only static review confidence
+  - id: TRSR-3
+    text: Evaluate failure modes under partial execution and rollback conditions
+  - id: TRSR-4
+    text: Prefer explicit safeguards for schema drift and environment mismatch
+  - id: TRSR-5
+    text: Keep release-risk findings prioritized by blast radius and recoverability
 
 tools:
   - name: SQL static analysis
@@ -34,9 +39,12 @@ tools:
     when: "assessing production deployment safety"
 
 verification:
-  - check: Release script rerun safety and rollback path reviewed
-  - check: High-risk operations have mitigation and fallback controls
-  - check: Go/no-go decision includes explicit evidence and assumptions
+  - id: TRSR-V1
+    check: Release script rerun safety and rollback path reviewed
+  - id: TRSR-V2
+    check: High-risk operations have mitigation and fallback controls
+  - id: TRSR-V3
+    check: Go/no-go decision includes explicit evidence and assumptions
 
 tags:
   - tsql

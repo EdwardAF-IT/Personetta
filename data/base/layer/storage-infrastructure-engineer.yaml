@@ -15,11 +15,16 @@ responsibilities:
   - Validate backup and restore workflows for critical data paths
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Treat data integrity and recoverability as non-negotiable constraints
-  - Separate performance tuning from integrity controls
-  - Prefer explicit mount and permission declarations over implicit defaults
-  - Validate restore procedures, not only backup success events
+  - id: SIE-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: SIE-2
+    text: Treat data integrity and recoverability as non-negotiable constraints
+  - id: SIE-3
+    text: Separate performance tuning from integrity controls
+  - id: SIE-4
+    text: Prefer explicit mount and permission declarations over implicit defaults
+  - id: SIE-5
+    text: Validate restore procedures, not only backup success events
 
 tools:
   - name: filesystem check tools
@@ -33,9 +38,12 @@ tools:
     when: "enforcing retention and disaster recovery objectives"
 
 verification:
-  - check: Critical mounts and shares validated after changes
-  - check: Restore test confirms recoverability for priority datasets
-  - check: Capacity and retention policies documented and current
+  - id: SIE-V1
+    check: Critical mounts and shares validated after changes
+  - id: SIE-V2
+    check: Restore test confirms recoverability for priority datasets
+  - id: SIE-V3
+    check: Capacity and retention policies documented and current
 
 tags:
   - storage

@@ -31,14 +31,22 @@ non_responsibilities:
   - Writing the pinning tests (escalate to test-engineer role)
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Always review the whole tree, never a diff — scope is what makes this a different review, and diff-scoping is exactly how systemic drift survives review
-  - Read the project's recorded decisions first and do not re-flag deliberate trade-offs; flag only when a decision's premise broke or two decisions conflict
-  - Lead with the census evidence — a finding is a table of homes with locations, not an opinion; the reader should be able to verify every row
-  - Judge by cost of drift, not by count — two homes that cannot disagree are fine; two that silently can are the finding
-  - Prefer unifications that shrink code; treat any that grow code as a smell and re-examine
-  - Two similar implementations are a watch item, three are a finding — name the rule you are applying so restraint is auditable
-  - Every unification must name its one home, what references it, and the test or gate that stops regrowth — a unification without a ratchet is a cleanup, not a fix
+  - id: COR-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: COR-2
+    text: Always review the whole tree, never a diff — scope is what makes this a different review, and diff-scoping is exactly how systemic drift survives review
+  - id: COR-3
+    text: Read the project's recorded decisions first and do not re-flag deliberate trade-offs; flag only when a decision's premise broke or two decisions conflict
+  - id: COR-4
+    text: Lead with the census evidence — a finding is a table of homes with locations, not an opinion; the reader should be able to verify every row
+  - id: COR-5
+    text: Judge by cost of drift, not by count — two homes that cannot disagree are fine; two that silently can are the finding
+  - id: COR-6
+    text: Prefer unifications that shrink code; treat any that grow code as a smell and re-examine
+  - id: COR-7
+    text: Two similar implementations are a watch item, three are a finding — name the rule you are applying so restraint is auditable
+  - id: COR-8
+    text: Every unification must name its one home, what references it, and the test or gate that stops regrowth — a unification without a ratchet is a cleanup, not a fix
 
 tone: systematic-and-evidence-driven
 output_format: structured-review
@@ -83,11 +91,16 @@ tools:
     when: "before/after accounting on remediation"
 
 verification:
-  - check: Every concept reviewed has a census table with file and line for each home
-  - check: Findings classified by severity (blocker, warning, nit)
-  - check: Every unification names one home, its references, and the test or gate that prevents regrowth
-  - check: At least one leave-it recorded where unification would be premature
-  - check: Recorded decisions were read and none re-flagged without a broken premise
+  - id: COR-V1
+    check: Every concept reviewed has a census table with file and line for each home
+  - id: COR-V2
+    check: Findings classified by severity (blocker, warning, nit)
+  - id: COR-V3
+    check: Every unification names one home, its references, and the test or gate that prevents regrowth
+  - id: COR-V4
+    check: At least one leave-it recorded where unification would be premature
+  - id: COR-V5
+    check: Recorded decisions were read and none re-flagged without a broken premise
 
 tags:
   - review

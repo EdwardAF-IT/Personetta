@@ -12,11 +12,16 @@ responsibilities:
   - Identify risky coupling between changes and deployment sequencing
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Require explicit go/no-go criteria for production promotions
-  - Keep release changes reversible whenever possible
-  - Validate critical user journeys after deployment, not just build success
-  - Treat untested rollback paths as blockers for high-risk changes
+  - id: RSF-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: RSF-2
+    text: Require explicit go/no-go criteria for production promotions
+  - id: RSF-3
+    text: Keep release changes reversible whenever possible
+  - id: RSF-4
+    text: Validate critical user journeys after deployment, not just build success
+  - id: RSF-5
+    text: Treat untested rollback paths as blockers for high-risk changes
 
 tools:
   - name: deployment gates
@@ -30,9 +35,12 @@ tools:
     when: "confirming safe rollout completion"
 
 verification:
-  - check: Release path includes explicit rollback strategy
-  - check: Promotion gates match risk profile of the change
-  - check: Post-release validation confirms critical outcomes
+  - id: RSF-V1
+    check: Release path includes explicit rollback strategy
+  - id: RSF-V2
+    check: Promotion gates match risk profile of the change
+  - id: RSF-V3
+    check: Post-release validation confirms critical outcomes
 
 tags:
   - mixin

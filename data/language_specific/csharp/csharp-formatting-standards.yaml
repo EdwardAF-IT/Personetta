@@ -18,45 +18,65 @@ responsibilities:
   - Enforce XML documentation and inline comment standards
 
 guidelines:
-  - Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
+  - id: CFS-1
+    text: Always use automated formatting and analysis tools to enforce style rules before making manual formatting corrections
   # Method and class structure
-  - All public methods and classes must have XML doc comments with <summary>; all public method parameters must have <param> documentation
-  - Always use expression-bodied members (=>) only for true one-liners — if it needs a line break, use a block body; constants use PascalCase and are declared const or static readonly as appropriate
-  - "Inline comments start with a capital letter and a space after //; non-trivial code must have a descriptive comment — end-of-line if short, above the code if longer"
+  - id: CFS-2
+    text: All public methods and classes must have XML doc comments with <summary>; all public method parameters must have <param> documentation
+  - id: CFS-3
+    text: Always use expression-bodied members (=>) only for true one-liners — if it needs a line break, use a block body; constants use PascalCase and are declared const or static readonly as appropriate
+  - id: CFS-4
+    text: "Inline comments start with a capital letter and a space after //; non-trivial code must have a descriptive comment — end-of-line if short, above the code if longer"
 
   # Parameter and argument formatting
-  - "Short parameter/argument list (<4 items, fits within ~90 columns): keep on one line; longer lists: one per line, indented"
-  - "Always use named arguments for boolean parameters to make intent clear — Load(useCache: true) not Load(true)"
+  - id: CFS-5
+    text: "Short parameter/argument list (<4 items, fits within ~90 columns): keep on one line; longer lists: one per line, indented"
+  - id: CFS-6
+    text: "Always use named arguments for boolean parameters to make intent clear — Load(useCache: true) not Load(true)"
 
   # Brace placement (Allman style)
-  - "Allman style — opening brace on own line, aligned with the keyword; closing brace aligned with opening keyword; never end-of-line braces"
-  - "Simple property accessors may be single-line — public string Name { get; set; }; apply consistently to all block structures (if, else, for, foreach, while, switch, try/catch/finally, using, lock, class, method)"
+  - id: CFS-7
+    text: "Allman style — opening brace on own line, aligned with the keyword; closing brace aligned with opening keyword; never end-of-line braces"
+  - id: CFS-8
+    text: "Simple property accessors may be single-line — public string Name { get; set; }; apply consistently to all block structures (if, else, for, foreach, while, switch, try/catch/finally, using, lock, class, method)"
 
   # Conditional structure
-  - "Short conditional + short body may be single line — if (x == 1) return \"one\"; compound conditionals: break each condition onto its own line, aligned"
-  - Always use braces for multi-statement blocks; prefer early returns (guard clauses) to reduce nesting
+  - id: CFS-9
+    text: "Short conditional + short body may be single line — if (x == 1) return \"one\"; compound conditionals: break each condition onto its own line, aligned"
+  - id: CFS-10
+    text: Always use braces for multi-statement blocks; prefer early returns (guard clauses) to reduce nesting
 
   # Alignment
-  - Align similar declarations, assignments, LINQ/fluent chains, switch expression arms, and consecutive method calls along their respective operators for visual consistency
+  - id: CFS-11
+    text: Align similar declarations, assignments, LINQ/fluent chains, switch expression arms, and consecutive method calls along their respective operators for visual consistency
 
   # Line length and breaking
-  - Target ~90 columns maximum line length
-  - "LINQ chains: one method per line when >2 operations, dot-aligned; ternary: inline if short, else break across three lines; lambda: inline if short, block body if multi-statement"
+  - id: CFS-12
+    text: Target ~90 columns maximum line length
+  - id: CFS-13
+    text: "LINQ chains: one method per line when >2 operations, dot-aligned; ternary: inline if short, else break across three lines; lambda: inline if short, block body if multi-statement"
 
   # String formatting
-  - "Use string interpolation ($\"\") for simple cases (1-2 variables); use string.Format() for complex cases with multiple variables, alignment, or format specifiers"
-  - "Never use + concatenation; use StringBuilder for loops that accumulate strings; use raw string literals (\"\"\") for multi-line or special-character-heavy strings"
+  - id: CFS-14
+    text: "Use string interpolation ($\"\") for simple cases (1-2 variables); use string.Format() for complex cases with multiple variables, alignment, or format specifiers"
+  - id: CFS-15
+    text: "Never use + concatenation; use StringBuilder for loops that accumulate strings; use raw string literals (\"\"\") for multi-line or special-character-heavy strings"
 
   # Operators and spacing
-  - "Spaces around binary operators (=, ==, !=, &&, ||, +, -); no space between unary operator and operand; space after keywords (if, for, while) but not after method names before parentheses"
-  - "Null comparisons: prefer is null and is not null over == null and != null"
+  - id: CFS-16
+    text: "Spaces around binary operators (=, ==, !=, &&, ||, +, -); no space between unary operator and operand; space after keywords (if, for, while) but not after method names before parentheses"
+  - id: CFS-17
+    text: "Null comparisons: prefer is null and is not null over == null and != null"
 
 verification:
-  - check: Code is formatted per .editorconfig
+  - id: CFS-V1
+    check: Code is formatted per .editorconfig
     command: dotnet format --verify-no-changes
-  - check: StyleCop analyzers pass
+  - id: CFS-V2
+    check: StyleCop analyzers pass
     command: dotnet build /p:TreatWarningsAsErrors=true
-  - check: Allman brace style used consistently
+  - id: CFS-V3
+    check: Allman brace style used consistently
 
 examples:
   - scenario: Allman brace placement for method with compound conditional

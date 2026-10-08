@@ -17,11 +17,16 @@ responsibilities:
   - Keep CLI modules testable and decoupled from business logic
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Separate command parsing from execution logic
-  - Prefer deterministic output for machine consumption in non-interactive modes
-  - Keep command help concise, accurate, and example-driven
-  - Treat backward compatibility of CLI flags as a contract
+  - id: PCTD-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: PCTD-2
+    text: Separate command parsing from execution logic
+  - id: PCTD-3
+    text: Prefer deterministic output for machine consumption in non-interactive modes
+  - id: PCTD-4
+    text: Keep command help concise, accurate, and example-driven
+  - id: PCTD-5
+    text: Treat backward compatibility of CLI flags as a contract
 
 tools:
   - name: argparse / typer
@@ -35,9 +40,12 @@ tools:
     when: "enforcing code quality in automation tooling"
 
 verification:
-  - check: CLI returns stable and meaningful exit codes
-  - check: Help text and examples are accurate and test-validated
-  - check: Non-interactive mode output is parseable and deterministic
+  - id: PCTD-V1
+    check: CLI returns stable and meaningful exit codes
+  - id: PCTD-V2
+    check: Help text and examples are accurate and test-validated
+  - id: PCTD-V3
+    check: Non-interactive mode output is parseable and deterministic
 
 tags:
   - python

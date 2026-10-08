@@ -17,11 +17,16 @@ responsibilities:
   - Verify optimization impact with reproducible benchmarks
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Prefer profiler evidence over intuition for performance decisions
-  - Optimize hot paths while preserving code clarity in cold paths
-  - Baseline and compare with stable workloads and environment controls
-  - Document trade-offs when optimization increases complexity
+  - id: CPDS-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: CPDS-2
+    text: Prefer profiler evidence over intuition for performance decisions
+  - id: CPDS-3
+    text: Optimize hot paths while preserving code clarity in cold paths
+  - id: CPDS-4
+    text: Baseline and compare with stable workloads and environment controls
+  - id: CPDS-5
+    text: Document trade-offs when optimization increases complexity
 
 tools:
   - name: dotnet-trace
@@ -35,9 +40,12 @@ tools:
     when: "validating proposed optimization impact"
 
 verification:
-  - check: Baseline and post-change metrics captured with comparable workload
-  - check: Bottleneck root cause supported by profiling evidence
-  - check: Optimization recommendation includes risk and maintainability impact
+  - id: CPDS-V1
+    check: Baseline and post-change metrics captured with comparable workload
+  - id: CPDS-V2
+    check: Bottleneck root cause supported by profiling evidence
+  - id: CPDS-V3
+    check: Optimization recommendation includes risk and maintainability impact
 
 tags:
   - csharp

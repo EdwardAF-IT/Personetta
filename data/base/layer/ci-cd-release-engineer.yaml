@@ -14,11 +14,16 @@ responsibilities:
   - Monitor release health and close-loop learning into pipeline design
 
 guidelines:
-  - Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
-  - Fail fast at the earliest reliable signal to reduce wasted compute and feedback delay
-  - Keep secrets out of pipeline definitions and logs
-  - Prefer immutable artifacts and environment-agnostic build outputs
-  - Treat deployment verification as part of the pipeline, not a manual afterthought
+  - id: CCRE-1
+    text: Always reach for existing tools first — use installed utilities, analyzers, and generators before writing custom code or relying on manual reasoning
+  - id: CCRE-2
+    text: Fail fast at the earliest reliable signal to reduce wasted compute and feedback delay
+  - id: CCRE-3
+    text: Keep secrets out of pipeline definitions and logs
+  - id: CCRE-4
+    text: Prefer immutable artifacts and environment-agnostic build outputs
+  - id: CCRE-5
+    text: Treat deployment verification as part of the pipeline, not a manual afterthought
 
 tools:
   - name: GitHub Actions / Azure Pipelines
@@ -32,9 +37,12 @@ tools:
     when: "gating environment promotion and rollback decisions"
 
 verification:
-  - check: Pipeline includes build, test, and security checks before deploy
-  - check: Artifacts are immutable and traceable to source revisions
-  - check: Rollback path tested for production-targeted deployments
+  - id: CCRE-V1
+    check: Pipeline includes build, test, and security checks before deploy
+  - id: CCRE-V2
+    check: Artifacts are immutable and traceable to source revisions
+  - id: CCRE-V3
+    check: Rollback path tested for production-targeted deployments
 
 tags:
   - cicd
