@@ -11,9 +11,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
+from pathlib import Path
 
 from generator.cli.commands._helpers import get_base_dir, resolve_install_target
 from generator.loader import list_recipes
+from generator.routing.context import (
+    ContextResult,
+    DEFAULT_LIFECYCLE,
+    LIFECYCLES,
+    resolve_context,
+)
 from generator.routing.engine import (
     DEFAULT_MIN_CONFIDENCE,
     DEFAULT_TIMEOUT,
@@ -53,8 +61,47 @@ def _print_human(outcome, top: int) -> None:
             )
 
 
+def _is_context_mode(args: argparse.Namespace) -> bool:
+    """True when the caller asked for language/lifecycle resolution."""
+    return any(
+        getattr(args, name, None) is not None
+        for name in ("repo", "language", "lifecycle")
+    )
+
+
+def _cmd_route_context(args: argparse.Namespace) -> int:
+    """Resolve a recipe from repo/language/lifecycle; exit 2 when nothing fits."""
+    try:
+        base_dir = get_base_dir()
+        result = resolve_context(
+            repo=Path(args.repo or ".").resolve(),
+            language_spec=args.language,
+            lifecycle=args.lifecycle or DEFAULT_LIFECYCLE,
+            recipe_names={r["name"] for r in list_recipes(base_dir)},
+            base_dir=base_dir,
+        )
+    except Exception as exc:  # noqa: BLE001 - contract: never a traceback on stdout
+        result = ContextResult(False, f"route failed: {exc}")
+    doc = result.to_dict()
+    if args.json:
+        print(json.dumps(doc, indent=2))
+    elif result.ok:
+        print("{0}  ({1})".format(doc["recipe"], doc["reason"]))
+    else:
+        print(doc["reason"])
+    return 0 if result.ok else 2
+
+
 def cmd_route(args: argparse.Namespace) -> int:
     """Classify ``args.prompt`` and optionally apply the switch."""
+    if _is_context_mode(args):
+        return _cmd_route_context(args)
+    if not args.prompt or not args.format:
+        print(
+            "route: a prompt and --format are required (or use --repo/--language/--lifecycle)",
+            file=sys.stderr,
+        )
+        return 2
     base_dir = get_base_dir()
     target = resolve_install_target(args.target)
     strategy = get_routing_strategy(args.format)
@@ -96,11 +143,30 @@ def add_route_parser(subparsers: argparse._SubParsersAction) -> None:
         "route",
         help="Classify a prompt and (with --apply) switch the active persona",
     )
-    parser.add_argument("prompt", help="The user prompt text to classify")
+    parser.add_argument(
+        "prompt", nargs="?", default=None, help="The user prompt text to classify"
+    )
+    parser.add_argument(
+        "--repo",
+        default=None,
+        help="Context mode: repo to detect languages from (default: cwd)",
+    )
+    parser.add_argument(
+        "--language",
+        default=None,
+        help="Context mode: comma list (csharp,typescript,python,powershell,tsql); "
+        "omit to detect from --repo",
+    )
+    parser.add_argument(
+        "--lifecycle",
+        default=None,
+        choices=list(LIFECYCLES),
+        help="Context mode: implement (default), review, test, debug or design",
+    )
     parser.add_argument(
         "--format",
         "-f",
-        required=True,
+        default=None,
         choices=["cursor", "copilot", "claude", "cline"],
         help="Target tool",
     )
