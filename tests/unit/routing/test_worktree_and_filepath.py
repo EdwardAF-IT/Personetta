@@ -90,3 +90,13 @@ def test_git_context_unexpected_output(tmp_path, monkeypatch):
     done = subprocess.CompletedProcess([], 0, stdout="only-one-line\n", stderr="")
     monkeypatch.setattr(worktree.subprocess, "run", lambda *a, **k: done)
     assert worktree.git_context(tmp_path) is None
+
+
+def test_existing_dir_gives_up_at_filesystem_root(tmp_path, monkeypatch):
+    monkeypatch.setattr(Path, "is_dir", lambda self: False)
+    assert worktree._existing_dir(tmp_path) is None
+    assert worktree.git_context(tmp_path) is None
+
+
+def test_resolve_against_keeps_absolute_paths(tmp_path):
+    assert worktree._resolve_against(tmp_path / "x", str(tmp_path)) == tmp_path.resolve()
