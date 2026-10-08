@@ -15,3 +15,5 @@ mixins:
   - performance-focused
   - scalability-focused
   - language-specific/javascript/javascript-formatting-standards
+  - class-design
+  - language-specific/javascript/javascript-class-design

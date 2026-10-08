@@ -1,0 +1,70 @@
+name: python-class-design
+description: >
+  Python size limits for the class-design rules (CD-1 to CD-5). Unit kinds:
+  module (one .py file), class, dataclass, function (including methods).
+  Calibrated against the C# set (30-line method, 10 branch points); code lines
+  exclude blank lines, comments and docstrings.
+  Sources: pylint design and format checker defaults (pylint.readthedocs.io,
+  all-options) — max-args 5, max-positional-arguments 5, max-branches 12,
+  max-statements 50, max-attributes 7, max-public-methods 20, max-module-lines
+  1000; ruff (docs.astral.sh/ruff/settings) — mccabe max-complexity 10 and the
+  same pylint-derived defaults; Google Python Style Guide 3.18 — "prefer small
+  and focused functions ... if a function exceeds about 40 lines, think about
+  whether it can be broken up".
+  lines_per_function 25 — Python has no brace lines at all, so a 25-line body
+  carries what a 30-line Allman C# method does; Google's 40 is a prompt to
+  think, not a limit, and pylint's 50 statements is far looser than the
+  C# reference.
+  branch_points_per_function 10 — counted as in C# (if, elif, case, and, or,
+  conditional expression, except, loops, comprehension clauses); ruff's mccabe
+  default of 10 is the matching tool check, pylint's 12 branches is looser.
+  parameters_per_function 4 — excluding self and cls, including keyword-only;
+  pylint and ruff default to 5, tightened to CD-5's 3-4 because keyword-only
+  parameters already make a dataclass or options object cheap.
+  fields_per_dataclass 12 — the record analogue (dataclass, NamedTuple,
+  pydantic model); record width is a property of the data shape, not the
+  syntax, so the C# record calibration carries over.
+  methods_per_class 12 — pylint's 20 counts public methods only; this counts
+  all of them, and 12 methods at the function limit fit code_lines_per_class.
+  attributes_per_class 7 — pylint's max-attributes default, already in the
+  spirit of small units, kept as is.
+  code_lines_per_class 150 — the C# 200 scaled for Python's density.
+  code_lines_per_module 250 — a Python module often holds several functions or
+  classes, so it is the unit of cohesion (the analogue of a C# type); pylint's
+  1000-line module default is a ceiling for legacy code, not a design target.
+  lines_per_file 500 — the raw ceiling including docstrings and comments, half
+  pylint's default.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Keep Python modules, classes and functions within the limits block, redesigning (CD-4) as a unit approaches one
+
+limits:
+  language: python
+  lines_per_function: 25
+  branch_points_per_function: 10
+  parameters_per_function: 4
+  fields_per_dataclass: 12
+  methods_per_class: 12
+  attributes_per_class: 7
+  code_lines_per_class: 150
+  code_lines_per_module: 250
+  lines_per_file: 500
+
+guidelines:
+  - id: PYCD-1
+    text: "Python functions and methods stay within 25 code lines (excluding docstrings, comments and blank lines), 10 branch points (if, elif, case, and, or, conditional expressions, except, loops) and 4 parameters besides self or cls"
+  - id: PYCD-2
+    text: "Python classes stay within 150 code lines, 12 methods and 7 instance attributes; a dataclass or other record type carries at most 12 fields"
+  - id: PYCD-3
+    text: "Python modules stay within 250 code lines and a file within 500 lines in total"
+
+verification:
+  - id: PYCD-V1
+    check: No Python module, class or function exceeds its limit in the python limits block
+
+tags:
+  - python
+  - class-design
+  - size-limits

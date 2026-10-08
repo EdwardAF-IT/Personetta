@@ -15,3 +15,5 @@ mixins:
   - performance-focused
   - maintainability-focused
   - language-specific/csharp/csharp-formatting-standards
+  - class-design
+  - language-specific/csharp/csharp-class-design

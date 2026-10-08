@@ -58,6 +58,31 @@ def _tool_conflict_pairs_from_config(merge_config: dict | None) -> list[set[str]
     return [{"pylint", "ruff"}]
 
 
+def detect_limits_conflicts(roles: list[dict]) -> list[MergeWarning]:
+    """Warn when roles carry limits blocks for more than one language.
+
+    The merge keeps the first block (priority strategy); this makes the
+    discarded languages visible instead of silent.
+    """
+    owners: dict[str, str] = {}
+    for role in roles:
+        limits = role.get("limits")
+        if isinstance(limits, dict) and limits.get("language"):
+            owners.setdefault(str(limits["language"]), str(role.get("name", "?")))
+    if len(owners) < 2:
+        return []
+    kept, *dropped = owners
+    return [
+        MergeWarning(
+            severity="warning",
+            message=(
+                f"Limits for more than one language ({', '.join(owners)}); "
+                f"keeping {kept!r} from {owners[kept]!r}, ignoring {', '.join(dropped)}"
+            ),
+        )
+    ]
+
+
 def detect_conflicts(
     composed: dict,
     merge_config: dict | None = None,

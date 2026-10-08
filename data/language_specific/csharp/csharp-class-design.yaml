@@ -1,0 +1,50 @@
+name: csharp-class-design
+description: >
+  C# size limits for the class-design rules (CD-1 to CD-5). Unit kinds: type
+  (class, record, struct, interface), member, method, record, file.
+  Source: these are the settled calibration numbers from Maestro's size guard
+  (tests/Maestro.QualityTests/file-size-guard/thresholds.json), worked out over
+  several months of real use and fixed by the Maestro contract; they are the
+  reference every other language is calibrated against.
+  type_code_lines 200 — code lines per type, excluding blank, comment and using
+  lines; about one screen of members a reader can hold at once.
+  members_per_type 15 — past this a type usually has a second reason to change.
+  lines_per_method 30 — the tightest method length Maestro found workable with
+  Allman braces.
+  branch_points_per_method 10 — counts if, else if, case, &&, ||, ?:, catch and
+  loops; equivalent to a cyclomatic complexity of 11.
+  positional_parameters_per_record 12 — records are data shapes, so they may be
+  wider than the 3-4 argument rule (CD-5) allows for methods.
+  lines_per_file 1000 — a ceiling for the whole file, catching generated or
+  multi-type files the per-type limit does not see.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Keep C# types, methods, records and files within the limits block, redesigning (CD-4) as a unit approaches one
+
+limits:
+  language: csharp
+  type_code_lines: 200
+  members_per_type: 15
+  lines_per_method: 30
+  branch_points_per_method: 10
+  positional_parameters_per_record: 12
+  lines_per_file: 1000
+
+guidelines:
+  - id: CSCD-1
+    text: "C# types stay within 200 code lines (excluding blank, comment and using lines) and 15 members"
+  - id: CSCD-2
+    text: "C# methods stay within 30 lines and 10 branch points (if, else if, case, &&, ||, ?:, catch, loops)"
+  - id: CSCD-3
+    text: "C# records take at most 12 positional parameters; a C# file stays within 1000 lines"
+
+verification:
+  - id: CSCD-V1
+    check: No C# type, method, record or file exceeds its limit in the csharp limits block
+
+tags:
+  - csharp
+  - class-design
+  - size-limits

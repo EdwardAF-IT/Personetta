@@ -17,6 +17,7 @@ _DEFAULT_FIELD_STRATEGIES: dict[str, str] = {
     "output_format": "priority",
     "context": "deep-merge",
     "tags": "union",
+    "limits": "priority",
 }
 
 # Default keys for union-by-key deduplication

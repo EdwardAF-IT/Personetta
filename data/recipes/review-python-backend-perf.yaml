@@ -13,3 +13,5 @@ compose:
 mixins:
   - performance-focused
   - readability-focused
+  - class-design
+  - language-specific/python/python-class-design

@@ -19,6 +19,7 @@ field_strategies:
   output_format:       { strategy: priority,       description: "First role in compose order wins" }
   context:             { strategy: deep-merge,     description: "Recursively merge objects, later values override on key conflict" }
   tags:                { strategy: union,          description: "Combine all, deduplicate exact matches" }
+  limits:              { strategy: priority,       description: "First role carrying a limits block wins (one <lang>-class-design role per recipe)" }
 
 conflict_detection:
   - type: responsibility-contradiction
@@ -36,6 +37,11 @@ conflict_detection:
   - type: tone-mismatch
     description: Multiple roles specify different tones
     severity: info
+    action: use_first
+
+  - type: limits-language-mismatch
+    description: More than one composed role carries a limits block, for different languages
+    severity: warning
     action: use_first
 
   - type: guideline-contradiction

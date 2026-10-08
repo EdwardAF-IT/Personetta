@@ -8,3 +8,7 @@ compose:
   - base/lifecycle/test-writer
   - base/layer/backend-developer
   - language-specific/python/python-developer
+
+mixins:
+  - class-design
+  - language-specific/python/python-class-design

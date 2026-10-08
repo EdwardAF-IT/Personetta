@@ -11,3 +11,5 @@ compose:
 mixins:
   - diagnostics-first
   - reliability-focused
+  - class-design
+  - language-specific/python/python-class-design

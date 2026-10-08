@@ -15,3 +15,5 @@ mixins:
   - performance-focused
   - scalability-focused
   - language-specific/tsql/tsql-formatting-standards
+  - class-design
+  - language-specific/tsql/tsql-class-design

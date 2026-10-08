@@ -55,7 +55,7 @@ def test_export_validates_against_committed_schema(
     assert doc["version"] == package_version()
     assert doc["composed_from"][0] == "implementation-developer"
     assert doc["guidelines"] and doc["verification"]
-    assert "limits" not in doc
+    assert doc["limits"]["language"] == "csharp"
 
 
 @pytest.mark.parametrize("name", ["implement-csharp", "review-python", "design-diagram"])

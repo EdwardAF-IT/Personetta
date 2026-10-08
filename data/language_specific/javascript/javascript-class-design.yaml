@@ -1,0 +1,64 @@
+name: javascript-class-design
+description: >
+  JavaScript and TypeScript size limits for the class-design rules (CD-1 to
+  CD-5). Unit kinds: module (one file), class, function (including methods,
+  arrow functions and React function components). Calibrated against the C#
+  set (30-line method, 10 branch points); code lines exclude blank and
+  comment-only lines (ESLint skipBlankLines and skipComments true).
+  Sources: ESLint rule docs (eslint.org/docs/latest/rules) — max-lines default
+  300 with the docs noting "recommendations usually range from 100 to 500",
+  max-lines-per-function default 50, complexity default 20, max-params default
+  3, max-classes-per-file default 1.
+  lines_per_function 25 — ESLint's 50 counts blanks and comments and is looser
+  than the C# reference; Prettier's same-line braces make JS/TS about one line
+  per block denser than Allman C#, so 25 carries the logic of a 30-line C#
+  method.
+  branch_points_per_function 10 — same constructs as C# plus ??; ESLint's
+  default of 20 is twice the C# reference and McCabe's original 10 is the
+  common recommendation.
+  parameters_per_function 3 — ESLint's own default, and the options-object
+  idiom (destructured parameter) is how JS/TS takes wider inputs (CD-5).
+  members_per_class 15 — member count does not depend on brace style, so the
+  C# calibration carries over directly; no JS linter sets one.
+  code_lines_per_class 160 — the C# 200 scaled by the same 25/30 density ratio.
+  classes_per_module 1 — ESLint max-classes-per-file default; one class per
+  module matches one type per file in C#.
+  code_lines_per_module 200 — a module is the JS/TS unit of cohesion (the
+  analogue of a C# type); ESLint's 300 raw lines is about 200 code lines once
+  blanks and comments are excluded, so this restates the default, not loosens it.
+  lines_per_file 300 — ESLint's max-lines default as the raw ceiling, catching
+  comment or JSX bulk the code-line limit does not see.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Keep JavaScript/TypeScript modules, classes and functions within the limits block, redesigning (CD-4) as a unit approaches one
+
+limits:
+  language: javascript
+  lines_per_function: 25
+  branch_points_per_function: 10
+  parameters_per_function: 3
+  members_per_class: 15
+  code_lines_per_class: 160
+  classes_per_module: 1
+  code_lines_per_module: 200
+  lines_per_file: 300
+
+guidelines:
+  - id: JSCD-1
+    text: "JS/TS functions (including methods and components) stay within 25 code lines, 10 branch points (if, else if, case, &&, ||, ??, ?:, catch, loops) and 3 parameters; wider inputs become one options object"
+  - id: JSCD-2
+    text: "JS/TS classes stay within 160 code lines and 15 members; a module holds at most 1 class"
+  - id: JSCD-3
+    text: "JS/TS modules stay within 200 code lines (excluding blank and comment lines) and a file within 300 lines in total"
+
+verification:
+  - id: JSCD-V1
+    check: No JavaScript/TypeScript module, class or function exceeds its limit in the javascript limits block
+
+tags:
+  - javascript
+  - typescript
+  - class-design
+  - size-limits

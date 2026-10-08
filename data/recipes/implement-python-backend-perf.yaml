@@ -12,3 +12,5 @@ compose:
 mixins:
   - performance-focused
   - language-specific/python/python-formatting-standards
+  - class-design
+  - language-specific/python/python-class-design

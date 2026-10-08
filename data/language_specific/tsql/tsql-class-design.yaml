@@ -1,0 +1,61 @@
+name: tsql-class-design
+description: >
+  T-SQL size limits for the class-design rules (CD-1 to CD-5). Unit kinds:
+  stored procedure, function (inline table-valued or scalar), view, script file
+  (one database object or one migration). Calibrated against the C# set
+  (30-line method, 10 branch points); code lines exclude blank lines, comments
+  and the header block.
+  Sources: Brent Ozar, "Not to write any procedure over 50 lines" (2020),
+  restating Joe Celko's one-printed-page rule and NASA's "restrict functions to
+  a single printed page"; the Pennsylvania DHS SQL Server coding standard
+  (four pages without DBA justification); Visual Expert SQL Server code rules
+  (line length). SQL linters (SQLFluff, SQL Server code analysis) set no size
+  or complexity defaults, so no linter number exists to calibrate against.
+  code_lines_per_procedure 50 — Celko and Ozar's one page; T-SQL is formatted
+  vertically (one column or predicate per line), so one statement runs 10-20
+  lines and 50 lines is three or four steps, the same "a few steps on one
+  screen" as a 30-line C# method.
+  code_lines_per_function 30 — functions should be one inline statement;
+  scalar and multi-statement functions are performance hazards, so they get
+  the tighter C#-sized limit.
+  code_lines_per_view 50 — one SELECT, at the procedure's one-page size.
+  control_flow_branches_per_procedure 6 — counts IF, ELSE IF, WHILE, GOTO and
+  CATCH only; CASE expressions and AND/OR predicates are set logic and do not
+  count. Tighter than C#'s 10 because procedural branching in T-SQL usually
+  means row-by-row thinking that belongs in a set-based predicate.
+  parameters_per_procedure 6 — above CD-5's 3-4 because T-SQL calls name their
+  arguments (EXEC p @Name = ...) and search procedures carry optional filters;
+  wider inputs become a table-valued parameter.
+  objects_per_file 1 — the SQL Server database project convention: one
+  object per file, the analogue of one type per file.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Keep T-SQL procedures, functions, views and script files within the limits block, redesigning (CD-4) as a unit approaches one
+
+limits:
+  language: tsql
+  code_lines_per_procedure: 50
+  code_lines_per_function: 30
+  code_lines_per_view: 50
+  control_flow_branches_per_procedure: 6
+  parameters_per_procedure: 6
+  objects_per_file: 1
+
+guidelines:
+  - id: TSCD-1
+    text: "T-SQL stored procedures stay within 50 code lines, 6 control-flow branches (IF, ELSE IF, WHILE, GOTO, CATCH; CASE and predicates do not count) and 6 parameters; wider inputs become a table-valued parameter"
+  - id: TSCD-2
+    text: "T-SQL functions stay within 30 code lines and views within 50 code lines"
+  - id: TSCD-3
+    text: "A T-SQL script file defines at most 1 database object"
+
+verification:
+  - id: TSCD-V1
+    check: No T-SQL procedure, function, view or script file exceeds its limit in the tsql limits block
+
+tags:
+  - tsql
+  - class-design
+  - size-limits

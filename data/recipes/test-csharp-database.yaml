@@ -7,3 +7,7 @@ compose:
   - base/lifecycle/test-writer
   - base/layer/database-specialist
   - language-specific/csharp/csharp-developer
+
+mixins:
+  - class-design
+  - language-specific/csharp/csharp-class-design

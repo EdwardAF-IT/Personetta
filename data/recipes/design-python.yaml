@@ -15,3 +15,5 @@ mixins:
   - performance-focused
   - scalability-focused
   - language-specific/python/python-formatting-standards
+  - class-design
+  - language-specific/python/python-class-design

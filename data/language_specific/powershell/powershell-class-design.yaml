@@ -1,0 +1,67 @@
+name: powershell-class-design
+description: >
+  PowerShell size limits for the class-design rules (CD-1 to CD-5). Unit kinds:
+  function (advanced function or cmdlet), script file (.ps1), module (.psm1 and
+  the files it dot-sources). Calibrated against the C# set (30-line method, 10
+  branch points); code lines exclude blank lines and comment-based help.
+  Sources: PSScriptAnalyzer ships no size or complexity rule, so the community
+  thresholds come from PSCodeHealth (pscodehealth.readthedocs.io/Metrics) —
+  function LinesOfCode warning above 30 and fail above 60 (set 50% above
+  industry norms to allow for parameter-attribute boilerplate), Complexity
+  warning above 15, module LinesOfCodeTotal warning above 1000; PSComplexity
+  (PowerShell Gallery) reads cyclomatic complexity above 7 as high; the
+  PowerShell Practice and Style guide (poshcode) sets 115-character lines but
+  no size or parameter limits.
+  lines_per_function 30 — PSCodeHealth's warning threshold, counting the param
+  block but not comment-based help, so the boilerplate allowance is already
+  inside it; matches the C# reference rather than PSCodeHealth's 60 fail line.
+  branch_points_per_function 10 — counts if, elseif, switch clauses, -and,
+  -or, catch, trap and loops; below PSCodeHealth's warning of 15 because
+  PowerShell control flow has the same shape as C#.
+  parameters_per_function 5 — named parameters, excluding common parameters
+  (-Verbose, -WhatIf, -Confirm ...); one above CD-5 because PowerShell callers
+  always name arguments, and wider inputs become a splatted hashtable or a
+  [pscustomobject] or class parameter.
+  positional_parameters_per_function 2 — positional binding is where call sites
+  become unreadable; mark at most two parameters with Position.
+  public_functions_per_file 1 — the common module layout (one public function
+  per .ps1, dot-sourced by the .psm1), the analogue of one type per file.
+  lines_per_script_file 300 — a stand-alone script stays within ten functions'
+  worth of code.
+  functions_per_module 15 — a module is PowerShell's type-like unit of
+  cohesion, so the C# members-per-type calibration carries over.
+  code_lines_per_module 500 — half PSCodeHealth's 1000-line module warning;
+  about 15 functions at the function limit.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Keep PowerShell functions, script files and modules within the limits block, redesigning (CD-4) as a unit approaches one
+
+limits:
+  language: powershell
+  lines_per_function: 30
+  branch_points_per_function: 10
+  parameters_per_function: 5
+  positional_parameters_per_function: 2
+  public_functions_per_file: 1
+  lines_per_script_file: 300
+  functions_per_module: 15
+  code_lines_per_module: 500
+
+guidelines:
+  - id: PSCD-1
+    text: "PowerShell functions stay within 30 lines (including param, excluding comment-based help and blank lines) and 10 branch points (if, elseif, switch clauses, -and, -or, catch, trap, loops)"
+  - id: PSCD-2
+    text: "PowerShell functions take at most 5 parameters besides common parameters, at most 2 of them positional; wider inputs become a splatted hashtable or an object parameter"
+  - id: PSCD-3
+    text: "A PowerShell script file holds at most 1 public function and 300 lines; a module stays within 15 functions and 500 code lines"
+
+verification:
+  - id: PSCD-V1
+    check: No PowerShell function, script file or module exceeds its limit in the powershell limits block
+
+tags:
+  - powershell
+  - class-design
+  - size-limits

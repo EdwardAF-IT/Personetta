@@ -1,0 +1,45 @@
+name: class-design
+description: >
+  Language-neutral class and unit design rules: one purpose per unit, one
+  reason to change, top-down reading order, size limits treated as a redesign
+  signal, and narrow argument lists. The numbers live in the matching
+  <lang>-class-design role's limits block; this mixin carries the rule text
+  (ids CD-1 to CD-5) that Maestro cites in briefs and review findings.
+version: "1.0.0"
+type: mixin
+
+responsibilities:
+  - Keep every unit (type, module, function) focused on one purpose and one reason to change
+  - Treat a unit approaching its language's size limit as a signal to redesign, not to work around the limit
+  - Keep argument lists narrow, moving wider inputs into a record or options type
+
+guidelines:
+  - id: CD-1
+    text: A unit (type, module, function) has a one-sentence purpose; if the sentence needs "and", split it.
+  - id: CD-2
+    text: "One reason to change: a unit changes for one kind of requirement."
+  - id: CD-3
+    text: "Reads top-down: a reader follows it without jumping around."
+  - id: CD-4
+    text: >-
+      **A size limit means a redesign, not a workaround.** A unit near its limit got there by accretion.
+      When a change would push it toward the limit: design for the unit as it will be after the change,
+      do the redesign as its own step with tests that pin today's behavior first, and when the redesign
+      is bigger than the task, stop and say so. Never: partial files, holder or "services" classes,
+      delegation shims whose only purpose is line count, joined lines, raised baselines.
+  - id: CD-5
+    text: >-
+      Methods take 3-4 arguments at most; wider inputs become a record or options type (records may
+      carry more positional parameters, see the language limits).
+
+verification:
+  - id: CD-V1
+    check: Every new or changed unit has a one-sentence purpose without "and"
+  - id: CD-V2
+    check: No unit exceeds its language limits, and none was kept under them by partial files, holder classes, line-count shims, joined lines or raised baselines
+
+tags:
+  - class-design
+  - size-limits
+  - mixin
+  - crosscutting

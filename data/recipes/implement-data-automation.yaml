@@ -12,3 +12,5 @@ mixins:
   - readability-focused
   - maintainability-focused
   - performance-focused
+  - class-design
+  - language-specific/python/python-class-design

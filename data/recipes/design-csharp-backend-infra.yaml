@@ -13,3 +13,5 @@ compose:
 mixins:
   - security-aware
   - extensibility-focused
+  - class-design
+  - language-specific/csharp/csharp-class-design

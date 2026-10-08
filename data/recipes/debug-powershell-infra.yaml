@@ -11,3 +11,5 @@ compose:
 mixins:
   - diagnostics-first
   - language-specific/powershell/powershell-formatting-standards
+  - class-design
+  - language-specific/powershell/powershell-class-design

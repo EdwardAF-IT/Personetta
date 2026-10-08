@@ -8,3 +8,7 @@ compose:
   - base/lifecycle/test-writer
   - base/layer/infrastructure-engineer
   - language-specific/powershell/powershell-developer
+
+mixins:
+  - class-design
+  - language-specific/powershell/powershell-class-design

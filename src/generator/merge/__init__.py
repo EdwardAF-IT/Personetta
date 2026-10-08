@@ -22,7 +22,12 @@ from .strategies import (
 from .model_requirements import aggregate_model_requirements
 
 # Export conflict detection
-from .conflict_detection import MergeWarning, Severity, detect_conflicts
+from .conflict_detection import (
+    MergeWarning,
+    Severity,
+    detect_conflicts,
+    detect_limits_conflicts,
+)
 
 __all__ = [
     # Strategies
@@ -41,4 +46,5 @@ __all__ = [
     "Severity",
     "MergeWarning",
     "detect_conflicts",
+    "detect_limits_conflicts",
 ]

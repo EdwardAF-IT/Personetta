@@ -158,6 +158,22 @@
       "x-merge-strategy": "union-by-key",
       "x-merge-key": "check"
     },
+    "limits": {
+      "type": "object",
+      "required": ["language"],
+      "minProperties": 2,
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "properties": {
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Language the limits apply to (the language_specific folder name, e.g. csharp, javascript)."
+        }
+      },
+      "additionalProperties": { "type": "integer", "minimum": 1 },
+      "description": "Per-language size limits, carried by <lang>-class-design roles. Each key names the language's own unit kind and measure (e.g. lines_per_function, code_lines_per_module) and holds a positive integer. Sources and reasoning for each number belong in the role description.",
+      "x-merge-strategy": "priority"
+    },
     "model_requirements": {
       "type": "object",
       "additionalProperties": false,

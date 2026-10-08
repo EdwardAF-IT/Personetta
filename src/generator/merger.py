@@ -11,6 +11,7 @@ from generator.merge import (
     Severity,
     aggregate_model_requirements,
     detect_conflicts,
+    detect_limits_conflicts,
     merge_roles,
 )
 
@@ -132,5 +133,6 @@ def compose_recipe(
 
     # Detect conflicts
     warnings = detect_conflicts(result, merge_config)
+    warnings.extend(detect_limits_conflicts(compose_roles + mixin_roles))
 
     return result, warnings

@@ -15,3 +15,5 @@ mixins:
   - maintainability-focused
   - security-aware
   - language-specific/powershell/powershell-formatting-standards
+  - class-design
+  - language-specific/powershell/powershell-class-design

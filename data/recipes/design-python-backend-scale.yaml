@@ -10,3 +10,5 @@ compose:
 
 mixins:
   - scalability-focused
+  - class-design
+  - language-specific/python/python-class-design

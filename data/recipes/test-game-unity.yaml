@@ -8,3 +8,7 @@ compose:
   - base/lifecycle/test-writer
   - base/layer/game-developer
   - language-specific/csharp/csharp-developer
+
+mixins:
+  - class-design
+  - language-specific/csharp/csharp-class-design

@@ -11,3 +11,5 @@ compose:
 
 mixins:
   - performance-focused
+  - class-design
+  - language-specific/csharp/csharp-class-design
