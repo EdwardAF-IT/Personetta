@@ -216,3 +216,12 @@ def test_hook_install_survives_corrupt_and_foreign_settings(tmp_path):
     assert hook_install.uninstall_hook(tmp_path)
     kept = json.loads(settings.read_text(encoding="utf-8"))
     assert kept["hooks"]["PreToolUse"][0]["hooks"][0]["command"] == "other"
+
+
+def test_recipe_json_stdout_is_utf8_on_a_narrow_console(monkeypatch):
+    raw = io.BytesIO()
+    console = io.TextIOWrapper(raw, encoding="cp1252", errors="strict")
+    monkeypatch.setattr(sys, "stdout", console)
+    assert _main(monkeypatch, "recipe", "test-csharp", "--format", "json") == 0
+    console.flush()
+    assert json.loads(raw.getvalue().decode("utf-8"))["recipe"] == "test-csharp"

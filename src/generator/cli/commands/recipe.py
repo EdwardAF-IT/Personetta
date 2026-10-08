@@ -94,6 +94,9 @@ def _cmd_recipe_json(args: argparse.Namespace, base_dir: Path) -> int:
         return 1
     text = render_export(document)
     if not args.output:
+        # UTF-8 regardless of the console code page (the export contains non-ASCII)
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8")
         sys.stdout.write(text)
         return 0
     out_path = Path(args.output)
