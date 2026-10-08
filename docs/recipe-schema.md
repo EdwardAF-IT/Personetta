@@ -307,6 +307,10 @@ you-should-not:
 **Purpose:** Detailed guidance for specific situations  
 **Merge Strategy:** Append + deduplicate
 
+> In role files under `data/`, each guideline is an `{id, text}` mapping, not a bare string, and
+> `personetta validate` rejects a missing or duplicate id. The bare-string form below is the
+> shorthand for ad-hoc recipes. See [Ids, hashes and limits](concepts.md#ids-hashes-and-limits).
+
 ```yaml
 guidelines:
   - "Use async/await for I/O operations to prevent blocking"
@@ -412,6 +416,9 @@ output-format: Structured design document
 **Type:** Array of strings  
 **Purpose:** Checklist to validate output quality  
 **Merge Strategy:** Append + deduplicate
+
+> In role files under `data/`, each item is `{id, check, command?}` and must carry a unique id
+> (see the note under `guidelines`).
 
 ```yaml
 verification:

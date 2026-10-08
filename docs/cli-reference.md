@@ -37,7 +37,8 @@ graph TB
     Manage --> List[list<br/>List recipes]
     Manage --> Current[current<br/>Show active recipe]
     
-    Info --> Recipe[recipe<br/>Preview recipe]
+    Info --> Recipe[recipe<br/>Preview or export recipe]
+    Info --> Route[route<br/>Resolve recipe by context]
     Info --> Validate[validate<br/>Validate recipes]
     
     Utils --> Version[--version<br/>Show version]
@@ -290,8 +291,17 @@ personetta set-active <recipe> [--format <tool>] [options]
 
 **Optional:**
 - `--format <tool>` - Target tool (`cursor`, `copilot`, `claude`, `cline`); defaults to the auto-detected host agent
-- `--target <location>` - Target location (`global` [default], `project`)
+- `--target <location>` - Target location (`global` [default], `project [path]`). Bare `project` means the checkout root, not the current subdirectory
+- `--global` - Allow writing the machine-global active file from inside a linked git worktree
 - `--whatif` - Dry-run; show what would change without writing
+
+**Per-worktree activation:** the global active file is shared by every session
+on the machine. Inside a linked git worktree `set-active` therefore **refuses**
+the global write (exit `2`) unless you pass `--global`. Use `--target project`
+instead: it writes that worktree's own `.claude/rules/personetta-active.md`
+(the harness loads project rules alongside global ones), so two worktrees never
+share an active file. The recipe is taken from the user-wide cache, so the
+project does not need its own install.
 
 **Format resolution (when `--format` is omitted):** Personetta resolves the
 target in order — (1) the explicit `--format` flag; (2) the **host agent**, via
@@ -313,6 +323,12 @@ personetta set-active review-csharp --format copilot
 
 # Activate in project-local install
 personetta set-active test-python --format cursor --target project
+
+# Per-worktree activation (inside a git worktree)
+personetta set-active implement-csharp --format claude --target project
+
+# Deliberately write the global file from inside a worktree
+personetta set-active implement-csharp --format claude --global
 
 # Preview without writing
 personetta set-active implement-python --whatif
@@ -551,10 +567,10 @@ personetta recipe <name> --format <tool> [options]
 
 **Required:**
 - `<name>` - Recipe name
-- `--format <tool>` - Output format
+- `--format <tool>` - Output format: `cursor`, `copilot`, `claude`, `cline` or `json`
 
 **Optional:**
-- `--output <file>` - Write to file instead of stdout
+- `--output <file>`, `-o` - Write to file instead of stdout
 - `--verbose` - Show composition details
 
 **Examples:**
@@ -571,7 +587,25 @@ personetta recipe implement-python --format cursor --output preview.md
 
 # Show composition steps
 personetta recipe implement-python --format cursor --verbose
+
+# Self-contained JSON export (for committing as a snapshot)
+personetta recipe implement-csharp --format json -o .maestro/recipes/implement-csharp.json
 ```
+
+**`--format json`** writes one document per recipe: `recipe`, `version`,
+`hash`, `composed_from`, `model_recommendation`, `guidelines` (each with a
+stable `id`, `text` and `source` role), `limits` (when the recipe composes a
+class-design role), `verification` (each with an `id`, `check`, optional
+`command`), `tone` and `output_format`. It validates against
+`data/schemas/recipe-export.schema.json`, is deterministic (same input, same
+bytes) and references nothing outside itself. `--install` is not supported
+with `json`; exit `1` on a merge conflict or a missing id. See
+[Ids, hashes and limits](concepts.md#ids-hashes-and-limits).
+
+**Format headers:** the `claude`, `copilot`, `cursor` and `cline` outputs open
+with a line carrying the recipe name, version and content hash, and each
+guideline is prefixed with its id in brackets (`[CS-4] ...`). The ids and hash
+match the JSON export, so the readable file and the snapshot agree.
 
 **Output:**
 ```
@@ -614,7 +648,76 @@ data/recipes/my-recipe.yaml:
 1 error(s) in 1 file(s).
 ```
 
-Exit code is `0` on success, `1` if any file has errors.
+Exit code is `0` on success, `1` if any file has errors. Every guideline and
+verification item must carry an `id`; a missing or duplicate id (within a role,
+or across the roles a recipe composes) is an error.
+
+---
+
+### `route`
+
+Pick a recipe for a piece of work. Two modes.
+
+**Prompt mode** (existing): classify prompt text and optionally switch the
+active persona.
+
+```bash
+personetta route "fix the failing pytest" --format claude [--apply]
+```
+
+**Context mode**: resolve the recipe from language and lifecycle, with no prompt.
+It is selected by any of `--repo`, `--language` or `--lifecycle`.
+
+```bash
+personetta route --json --repo <path> [--language csharp,typescript] [--lifecycle review]
+```
+
+- `--repo <path>` - Repo to detect languages from (default: current directory)
+- `--language <list>` - Comma list: `csharp`, `javascript` (alias `typescript`, `ts`, `js`), `python`, `powershell`, `tsql` (alias `sql`). Omit to detect from the repo (manifests and source files, most files first)
+- `--lifecycle <name>` - `implement` (default), `review`, `test`, `debug` or `design`
+- `--json` - Print JSON instead of one line
+
+Output (the recipe is `<lifecycle>-<language>`):
+
+```json
+{ "recipe": "implement-csharp", "language": "csharp", "version": "1.1.2",
+  "hash": "sha256:...", "reason": "detected csharp,javascript, lifecycle implement",
+  "also": [ { "recipe": "implement-javascript", "language": "javascript", "version": "...", "hash": "..." } ] }
+```
+
+The first language is the primary; the rest are listed under `also`. When
+nothing fits (unsupported language, empty repo, no recipe) the output is
+`{ "recipe": null, "reason": "..." }`. Never a traceback.
+
+| Exit | Meaning |
+|------|---------|
+| `0` | A recipe was found |
+| `2` | Nothing fits (the caller uses its own fallback) |
+
+---
+
+### `route-hook`
+
+The Claude Code hook that switches the active persona automatically.
+
+```bash
+personetta route-hook --install --format claude [--target project <path>]
+personetta route-hook --status | --uninstall
+```
+
+`--install` registers two hooks in `settings.json` (an idempotent upsert):
+
+- **`UserPromptSubmit`** - classifies the prompt text (as `route --apply`).
+- **`PreToolUse`** on `Edit|Write|MultiEdit|NotebookEdit` - **file routing**:
+  maps the file's extension to a language and switches the *worktree's own*
+  `.claude/rules/personetta-active.md` to `<lifecycle>-<language>`, so one
+  worktree holding C# and TypeScript gets the right role for each file.
+
+File routing is cheap and idempotent: it writes nothing when the extension is
+unknown, the file is outside a git checkout (it never falls back to a global
+write), the recipe is not in the cache, or the active recipe already matches.
+`PERSONETTA_ROUTE_LIFECYCLE` picks the lifecycle (default `implement`);
+`PERSONETTA_ROUTE_MODE=off` or `PERSONETTA_ROUTE_DISABLED=1` disables it.
 
 ---
 
@@ -905,6 +1008,9 @@ personetta --version                                      # Show version
 | `3` | Validation error |
 | `4` | File I/O error |
 | `5` | Recipe not found |
+
+`route` exits `2` when nothing fits, and `set-active` exits `2` when it refuses a
+global write from a worktree (see those commands).
 
 **Use in scripts:**
 

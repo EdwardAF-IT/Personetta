@@ -14,6 +14,7 @@ This guide explains how Personetta works under the hood. Understanding these con
 - [The Generation Pipeline](#the-generation-pipeline)
 - [Multi-Tool Support](#multi-tool-support)
 - [Cache and State](#cache-and-state)
+- [Ids, Hashes and Limits](#ids-hashes-and-limits)
 
 ---
 
@@ -570,6 +571,57 @@ Cache is regenerated during:
 - `personetta install '*'` - Regenerates all cached recipes
 - Recipe YAML file modification - Next install detects changes
 - Schema changes - Forces full rebuild
+
+---
+
+## Ids, Hashes and Limits
+
+Consumers such as Maestro need to cite a rule, prove two documents used the same text, and notice
+when a stored copy has gone stale. Three mechanisms provide that.
+
+### Stable ids
+
+Every guideline and verification item in a role YAML carries an id written by hand in the file
+(`CS-4`, `CD-1`, verification `CS-V5`), never generated at export. An id survives rewording and
+reordering, is unique across all roles, and is never reused or renumbered. `personetta validate`
+fails on a missing, malformed or duplicate id. The `claude`, `copilot`, `cursor` and `cline`
+outputs show each id in brackets (`[CS-4] ...`).
+
+### Content hash
+
+`personetta recipe <name> --format json` reports a `sha256:` hash of the recipe's composed content.
+
+- **Hashed:** recipe name, composed role names, model recommendation, every guideline (id, text,
+  source role), every verification item, limits, tone and output format, serialized as canonical
+  JSON (sorted keys).
+- **Not hashed:** the `version` field and the hash itself, plus anything outside the export:
+  YAML comments, key order, whitespace and formatting in the source files.
+
+So reordering YAML keys or editing a comment leaves the hash unchanged, and changing one
+guideline's wording changes it. A consumer holding a committed snapshot compares its `hash` with
+`personetta route --json` (or a fresh export) to detect that the snapshot is older than the
+installed recipe. The export is self-contained, so a snapshot needs nothing from the cache.
+The same version and hash appear in the header of the installed `claude`, `copilot`, `cursor`
+and `cline` files.
+
+### Limits and the class-design mixin
+
+Size and shape limits are data, not prose:
+
+- The language-neutral `class-design` mixin carries the rule text, ids `CD-1` to `CD-5`: one
+  purpose per unit, one reason to change, top-down reading, **a size limit means a redesign, not a
+  workaround**, and 3-4 arguments per method.
+- A `<lang>-class-design` role (csharp, javascript covering TypeScript, python, powershell, tsql)
+  holds a `limits` block with that language's numbers and its own unit kinds. Each number's
+  source and reasoning is in the role's description. C# is the calibration point: 200 code lines
+  per type, 15 members, 30 lines and 10 branch points per method, 1,000 lines per file.
+- Both are composed into every recipe family for that language (implement, review, test, debug,
+  design), so the export of `implement-csharp` carries a `limits` object.
+
+**Merge rule:** `limits` merges with the `priority` strategy: the first role in compose order that
+carries a `limits` block wins whole; blocks are never mixed field by field. A recipe should compose
+one `<lang>-class-design` role. If it composes limits for more than one language, the first is kept
+and the merge reports a warning naming the ignored languages.
 
 ---
 

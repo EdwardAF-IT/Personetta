@@ -75,9 +75,10 @@ personetta set-active review-python --format claude
 |---------|---------|
 | `personetta install '*' --format <tool>` | Install all recipes (wildcards supported: `'test-*'`, `'*python*'`) |
 | `personetta list` | List available roles and recipes |
-| `personetta set-active <recipe> --format <tool>` | Switch the active persona |
+| `personetta set-active <recipe> --format <tool>` | Switch the active persona (`--target project` for a git worktree's own file) |
 | `personetta current` | Show the active recipe |
-| `personetta recipe <name> --format <tool>` | Print one composed recipe |
+| `personetta recipe <name> --format <tool>` | Print one composed recipe (`--format json` for the hashed, id-carrying export) |
+| `personetta route --json --repo <path> [--language ..] [--lifecycle ..]` | Resolve the recipe for a repo and lifecycle (exit 2 when nothing fits) |
 | `personetta validate` | Validate all YAML against the JSON Schemas |
 | `personetta verify` | Check install health (version, PATH, recipe data) |
 | `personetta remove '<pattern>' --format <tool>` | Remove installed recipes |
