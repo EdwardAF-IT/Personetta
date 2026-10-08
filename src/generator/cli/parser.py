@@ -225,8 +225,8 @@ def build_parser() -> argparse.ArgumentParser:
         "--format",
         "-f",
         required=True,
-        choices=list(FORMAT_NAMES),
-        help=f"Output format: {', '.join(FORMAT_NAMES)}",
+        choices=[*FORMAT_NAMES, "json"],
+        help=f"Output format: {', '.join(FORMAT_NAMES)}, or json (self-contained export with version, hash and guideline ids)",
     )
     recipe_parser.add_argument(
         "--install",

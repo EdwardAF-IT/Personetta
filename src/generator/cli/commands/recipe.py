@@ -14,6 +14,7 @@ from generator.cli.commands._helpers import (
 from generator.loader import load_merge_config, load_recipe, load_recipe_roles
 from generator.merger import compose_recipe
 from generator.output_formats import format_role
+from generator.recipe_export import export_recipe, render_export
 from generator.cursor_layout import install_single_cursor_recipe_to_cache
 from generator.copilot_layout import install_single_copilot_recipe_to_cache
 from generator.claude_layout import install_single_claude_recipe_to_cache
@@ -82,6 +83,26 @@ def _install_to_cache(fmt: str, base_dir: Path, target: Path, recipe_name: str) 
         return install_output(format_role({}, fmt), fmt, recipe_name, target)
 
 
+def _cmd_recipe_json(args: argparse.Namespace, base_dir: Path) -> int:
+    """Write the self-contained JSON export (stdout, or -o file)."""
+    if args.install:
+        print("[ERROR] --install does not support --format json", file=sys.stderr)
+        return 1
+    document, warnings = export_recipe(args.name, base_dir)
+    if _print_warnings(warnings) > 0:
+        print("Conflict(s) detected. Fix before exporting this recipe.", file=sys.stderr)
+        return 1
+    text = render_export(document)
+    if not args.output:
+        sys.stdout.write(text)
+        return 0
+    out_path = Path(args.output)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(text, encoding="utf-8", newline="\n")
+    print(f"Written to {out_path}")
+    return 0
+
+
 def cmd_recipe(args: argparse.Namespace) -> int:
     """Generate recipe output in specified format.
 
@@ -97,6 +118,9 @@ def cmd_recipe(args: argparse.Namespace) -> int:
         Exit code (0 for success, 1 for error)
     """
     base_dir = get_base_dir()
+
+    if args.format == "json":
+        return _cmd_recipe_json(args, base_dir)
 
     # Load and compose recipe
     composed, warnings = _load_and_compose_recipe(args.name, base_dir)
