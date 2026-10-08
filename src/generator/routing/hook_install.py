@@ -19,6 +19,10 @@ from pathlib import Path
 HOOK_MARKER = "personetta route-hook"
 WRAPPER_NAME = "route-hook.sh"
 HOOK_EVENT = "UserPromptSubmit"
+# File-routed activation: switch the worktree's role by the file a tool touches.
+FILE_HOOK_EVENT = "PreToolUse"
+FILE_HOOK_MATCHER = "Edit|Write|MultiEdit|NotebookEdit"
+_EVENTS = {HOOK_EVENT: "", FILE_HOOK_EVENT: FILE_HOOK_MATCHER}
 
 
 def wrapper_path(install_root: Path) -> Path:
@@ -95,8 +99,8 @@ def _entry_is_ours(entry: dict) -> bool:
 
 def is_installed(install_root: Path) -> bool:
     data = _load_settings(settings_path(install_root))
-    entries = data.get("hooks", {}).get(HOOK_EVENT, [])
-    return any(_entry_is_ours(e) for e in entries)
+    hooks = data.get("hooks", {})
+    return any(_entry_is_ours(e) for event in _EVENTS for e in hooks.get(event, []))
 
 
 def install_hook(
@@ -117,22 +121,23 @@ def install_hook(
     path = settings_path(install_root)
     data = _load_settings(path)
     hooks = data.setdefault("hooks", {})
-    event = hooks.setdefault(HOOK_EVENT, [])
+    for event_name, matcher in _EVENTS.items():
+        event = hooks.setdefault(event_name, [])
 
-    # Drop any prior personetta entry, then add a fresh one (idempotent upsert).
-    event[:] = [e for e in event if not _entry_is_ours(e)]
-    event.append(
-        {
-            "matcher": "",
-            "hooks": [
-                {
-                    "type": "command",
-                    "command": _hook_command(install_root),
-                    "timeout": timeout,
-                }
-            ],
-        }
-    )
+        # Drop any prior personetta entry, then add a fresh one (idempotent upsert).
+        event[:] = [e for e in event if not _entry_is_ours(e)]
+        event.append(
+            {
+                "matcher": matcher,
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": _hook_command(install_root),
+                        "timeout": timeout,
+                    }
+                ],
+            }
+        )
     _write_settings(path, data)
     return path
 
@@ -142,17 +147,18 @@ def uninstall_hook(install_root: Path) -> bool:
     removed = False
     path = settings_path(install_root)
     data = _load_settings(path)
-    event = data.get("hooks", {}).get(HOOK_EVENT, [])
-    if event:
+    for event_name in _EVENTS:
+        event = data.get("hooks", {}).get(event_name, [])
         kept = [e for e in event if not _entry_is_ours(e)]
-        if len(kept) != len(event):
+        if event and len(kept) != len(event):
             removed = True
-            data["hooks"][HOOK_EVENT] = kept
+            data["hooks"][event_name] = kept
             if not kept:
-                del data["hooks"][HOOK_EVENT]
-            if not data["hooks"]:
-                del data["hooks"]
-            _write_settings(path, data)
+                del data["hooks"][event_name]
+    if removed:
+        if not data["hooks"]:
+            del data["hooks"]
+        _write_settings(path, data)
 
     wrapper = wrapper_path(install_root)
     if wrapper.is_file():

@@ -20,7 +20,12 @@ from pathlib import Path
 from typing import Callable
 
 from generator.layout_base import LayoutStrategy
-from generator.claude_layout import ClaudeLayout, set_active_claude
+from generator.claude_layout import (
+    ACTIVE_NAME as CLAUDE_ACTIVE_NAME,
+    ClaudeLayout,
+    find_cached_claude_recipe,
+    set_active_claude,
+)
 from generator.cursor_layout import CursorLayout, set_active_cursor
 from generator.copilot_layout import CopilotLayout, set_active_copilot
 from generator.cline_layout import ClineLayout, set_active_cline
@@ -68,6 +73,10 @@ class RoutingStrategy(ABC):
         """Point the active persona at ``recipe``. Raises FileNotFoundError if uncached."""
         raise NotImplementedError
 
+    def active_file(self, target: Path) -> Path | None:
+        """The active-persona file under ``target``, when the tool has a single one."""
+        return None
+
     def emit_routing_artifacts(
         self, target: Path, recipes: list[dict], base_dir: Path
     ) -> list[Path]:
@@ -78,15 +87,35 @@ class RoutingStrategy(ABC):
 class ClaudeRoutingStrategy(RoutingStrategy):
     """Claude Code: real runtime switch via the UserPromptSubmit hook."""
 
-    def __init__(self) -> None:
+    def __init__(self, *, user_cache_fallback: bool = False) -> None:
         super().__init__(ClaudeLayout())
+        self._fallback = user_cache_fallback
 
     @property
     def supports_runtime_switch(self) -> bool:
         return True
 
     def switch(self, target: Path, recipe: str, base_dir: Path) -> Path:
-        return set_active_claude(base_dir, target, recipe)
+        return set_active_claude(
+            base_dir, target, recipe, user_cache_fallback=self._fallback
+        )
+
+    def is_cached(self, target: Path, recipe: str) -> bool:
+        if not self._fallback:
+            return super().is_cached(target, recipe)
+        found = find_cached_claude_recipe(target, recipe, user_cache_fallback=True)
+        return found is not None
+
+    def recipe_body(self, target: Path, recipe: str) -> str:
+        found = None
+        if self._fallback:
+            found = find_cached_claude_recipe(target, recipe, user_cache_fallback=True)
+        if found is None:
+            return super().recipe_body(target, recipe)
+        return found.read_text(encoding="utf-8")
+
+    def active_file(self, target: Path) -> Path | None:
+        return self._layout.rules_dir(target) / CLAUDE_ACTIVE_NAME
 
 
 class CursorRoutingStrategy(RoutingStrategy):

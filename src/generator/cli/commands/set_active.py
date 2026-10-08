@@ -6,6 +6,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from generator.worktree import git_context
 from generator.cli.commands._helpers import (
     emit_cursor_user_sync,
     get_base_dir,
@@ -82,11 +83,49 @@ def _set_active_for_format(
     elif fmt == "copilot":
         return set_active_copilot(base_dir, target, recipe_name)
     elif fmt == "claude":
-        return set_active_claude(base_dir, target, recipe_name)
+        # A project/worktree target reuses the user-wide recipe cache.
+        return set_active_claude(base_dir, target, recipe_name, user_cache_fallback=True)
     elif fmt == "cline":
         return set_active_cline(base_dir, target, recipe_name)
     else:
         raise RuntimeError(f"Unhandled set-active format: {fmt}")
+
+
+EXIT_REFUSED = 2
+
+
+def _targets_global(raw_target: list[str] | None, target: Path) -> bool:
+    """True when the resolved install root is the user-wide home directory."""
+    if raw_target is not None and raw_target[0] != "global":
+        return False
+    return target.resolve() == Path.home().resolve()
+
+
+def _worktree_project_root(raw_target: list[str] | None, target: Path) -> Path:
+    """Bare ``--target project`` means the checkout root, not the current subdirectory."""
+    if raw_target != ["project"]:
+        return target
+    context = git_context(target)
+    return context.root if context else target
+
+
+def _refuse_global_in_worktree(args: argparse.Namespace, target: Path) -> bool:
+    """Print the refusal and return True when a global write would leak across worktrees."""
+    if getattr(args, "use_global", False):
+        return False
+    if not _targets_global(args.target, target):
+        return False
+    context = git_context(Path.cwd())
+    if context is None or not context.is_linked_worktree:
+        return False
+    print(
+        "[ERROR] Refusing to write the machine-global active persona from inside "
+        f"the git worktree {context.root}: every worktree would share it. "
+        "Use '--target project' for this worktree's own .claude/rules, "
+        "or pass '--global' to write the global file anyway.",
+        file=sys.stderr,
+    )
+    return True
 
 
 def cmd_set_active(args: argparse.Namespace) -> int:
@@ -100,13 +139,16 @@ def cmd_set_active(args: argparse.Namespace) -> int:
         args: Parsed command-line arguments with:
             - name: Recipe name to activate
             - format: Output format (optional; resolved when omitted)
-            - target: Installation target (optional)
+            - target: Installation target (optional); ``project`` = this checkout
+            - use_global: Allow the global file from inside a linked git worktree
             - whatif: Dry-run mode (optional)
 
     Returns:
-        Exit code (0 for success, 1 for error)
+        Exit code (0 success, 1 error, 2 refused: global write from a worktree)
     """
-    target = resolve_install_target(args.target)
+    target = _worktree_project_root(args.target, resolve_install_target(args.target))
+    if _refuse_global_in_worktree(args, target):
+        return EXIT_REFUSED
     resolution = resolve_format(getattr(args, "format", None), target)
     if resolution.format is None:
         print(f"[ERROR] {UNDETERMINED_FORMAT_ERROR}", file=sys.stderr)

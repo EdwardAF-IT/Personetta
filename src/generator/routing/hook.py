@@ -34,13 +34,24 @@ from generator.routing.engine import (
     DEFAULT_TIMEOUT,
     decide_and_apply,
 )
-from generator.routing.strategies import RoutingStrategy, get_routing_strategy
+from generator.routing.filepath import recipe_for_path
+from generator.routing.strategies import (
+    ClaudeRoutingStrategy,
+    RoutingStrategy,
+    get_routing_strategy,
+)
+from generator.worktree import git_context
 
 ENV_MODE = f"{ENV_PREFIX}_ROUTE_MODE"
 ENV_TIMEOUT = f"{ENV_PREFIX}_ROUTE_TIMEOUT"
 ENV_MIN_CONF = f"{ENV_PREFIX}_ROUTE_MIN_CONFIDENCE"
 ENV_FALLBACK = f"{ENV_PREFIX}_ROUTE_FALLBACK"
 ENV_DISABLED = f"{ENV_PREFIX}_ROUTE_DISABLED"
+ENV_LIFECYCLE = f"{ENV_PREFIX}_ROUTE_LIFECYCLE"
+
+EVENT_PROMPT = "UserPromptSubmit"
+EVENT_FILE = "PreToolUse"
+_FILE_KEYS = ("file_path", "notebook_path", "path")
 
 DEFAULT_FALLBACK = "general"
 
@@ -56,6 +67,7 @@ class HookResult:
     stdout: str
     stderr: str
     switched_to: Optional[str] = None
+    event: str = EVENT_PROMPT
 
 
 def _truthy(value: str) -> bool:
@@ -89,6 +101,15 @@ def run_hook(
     except json.JSONDecodeError:
         return HookResult(0, "", "")  # fail open
 
+    if not isinstance(payload, dict):
+        return HookResult(0, "", "")
+
+    file_path = _payload_file_path(payload)
+    if file_path:
+        return _route_by_file(
+            file_path, payload, base_dir=base_dir, fmt=fmt, env=env, strategy=strategy
+        )
+
     prompt = str(payload.get("prompt") or "").strip()
     if not prompt:
         return HookResult(0, "", "")
@@ -116,6 +137,80 @@ def run_hook(
         return HookResult(0, "", "personetta: routing skipped ({0})".format(exc))
 
     return _format(outcome, strategy, target)
+
+
+def _payload_file_path(payload: dict) -> str:
+    """File path a tool call is touching (PreToolUse payload), or ``""``."""
+    tool_input = payload.get("tool_input")
+    sources = [tool_input] if isinstance(tool_input, dict) else []
+    sources.append(payload)
+    for source in sources:
+        for key in _FILE_KEYS:
+            value = source.get(key)
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+    return ""
+
+
+def _file_strategy(fmt: str) -> RoutingStrategy:
+    """Strategy for file routing: a worktree falls back to the user-wide recipe cache."""
+    if fmt == "claude":
+        return ClaudeRoutingStrategy(user_cache_fallback=True)
+    return get_routing_strategy(fmt)
+
+
+def _route_by_file(
+    file_path: str,
+    payload: dict,
+    *,
+    base_dir: Path,
+    fmt: str,
+    env: Mapping[str, str],
+    strategy: Optional[RoutingStrategy],
+) -> HookResult:
+    """Switch the *worktree's own* active persona by the language of the file touched.
+
+    Cheap and idempotent: an unknown extension, a path outside git, an
+    uninstalled recipe, or an unchanged answer all return without writing.
+    """
+    if env.get(ENV_MODE, "prompt").strip().lower() == "off":
+        return HookResult(0, "", "")
+
+    recipe = recipe_for_path(Path(file_path), env.get(ENV_LIFECYCLE))
+    if recipe is None:
+        return HookResult(0, "", "")
+
+    path = Path(file_path)
+    if not path.is_absolute():
+        path = Path(str(payload.get("cwd") or ".")) / path
+    context = git_context(path)
+    if context is None:
+        return HookResult(0, "", "")  # never fall back to a machine-global write
+
+    strategy = strategy or _file_strategy(fmt)
+    root = context.root
+    active_file = strategy.active_file(root)
+    if strategy.current_active(root) == recipe and (
+        active_file is None or active_file.is_file()
+    ):
+        return HookResult(0, "", "")
+    if not strategy.is_cached(root, recipe):
+        return HookResult(0, "", "")
+
+    try:
+        strategy.switch(root, recipe, base_dir)
+    except Exception as exc:  # never break a tool call over routing
+        return HookResult(0, "", "personetta: file routing skipped ({0})".format(exc))
+
+    body = strategy.recipe_body(root, recipe)
+    notice = "personetta ▸ {0} → '{1}' (by file {2})".format(root.name, recipe, path.name)
+    ctx = (
+        "<personetta-auto-route>\n"
+        "This worktree's active role was switched to `{0}` for `{1}`. "
+        "Adopt the following persona while working on this file.\n\n{2}\n"
+        "</personetta-auto-route>"
+    ).format(recipe, path.name, body)
+    return HookResult(0, ctx, notice, switched_to=recipe, event=EVENT_FILE)
 
 
 def _format(outcome, strategy: RoutingStrategy, target: Path) -> HookResult:
@@ -176,7 +271,7 @@ def render_claude_output(result: HookResult) -> str:
         payload["systemMessage"] = result.stderr
     if result.stdout:
         payload["hookSpecificOutput"] = {
-            "hookEventName": "UserPromptSubmit",
+            "hookEventName": result.event,
             "additionalContext": result.stdout,
         }
     return json.dumps(payload) if payload else ""

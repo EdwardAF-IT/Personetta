@@ -181,17 +181,48 @@ def install_all_claude(
     )
 
 
-def set_active_claude(base_dir: Path, target_root: Path, recipe_name: str) -> Path:
+def find_cached_claude_recipe(
+    target_root: Path, recipe_name: str, *, user_cache_fallback: bool = False
+) -> Path | None:
+    """Cached recipe file under ``target_root``.
+
+    With ``user_cache_fallback`` the user-wide cache (``~/.personetta/claude-recipes``)
+    is searched next, so a worktree gets its own *active file* without a
+    per-worktree install. Off by default: callers that mean "installed here" stay strict.
+    """
+    roots = [target_root]
+    if user_cache_fallback:
+        roots.append(Path.home())
+    for root in roots:
+        candidate = claude_recipe_cache_dir(root) / (recipe_name + ".md")
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def set_active_claude(
+    base_dir: Path,
+    target_root: Path,
+    recipe_name: str,
+    *,
+    user_cache_fallback: bool = False,
+) -> Path:
     """Point active persona at a cached recipe. Raises FileNotFoundError if cache missing."""
-    cache_path = claude_recipe_cache_dir(target_root) / (recipe_name + ".md")
-    if not cache_path.is_file():
+    cache_path = find_cached_claude_recipe(
+        target_root, recipe_name, user_cache_fallback=user_cache_fallback
+    )
+    if cache_path is None:
+        missing = claude_recipe_cache_dir(target_root) / (recipe_name + ".md")
         msg = (
             "No cached Claude recipe '{0}' at {1}. "
             "Run: personetta install '*' --format claude"
-        ).format(recipe_name, cache_path)
+        ).format(recipe_name, missing)
         raise FileNotFoundError(msg)
 
-    dest = _claude_layout._write_active_from_cache(target_root, recipe_name, base_dir)
+    body = cache_path.read_text(encoding="utf-8")
+    dest = _claude_layout.rules_dir(target_root) / CLAUDE_ACTIVE_FILENAME
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(body, encoding="utf-8")
     _claude_layout.write_state(target_root, recipe_name)
     return dest
 

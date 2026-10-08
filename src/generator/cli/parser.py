@@ -132,7 +132,16 @@ def build_parser() -> argparse.ArgumentParser:
         "--target",
         "-t",
         nargs="+",
-        help="Install root: 'global' (default) or 'project [path]' — must match install target",
+        help="Install root: 'global' (default) or 'project [path]' — must match "
+        "install target. Inside a git worktree use 'project': it writes this "
+        "worktree's own .claude/rules (bare 'project' = the checkout root)",
+    )
+    set_active_parser.add_argument(
+        "--global",
+        dest="use_global",
+        action="store_true",
+        help="Allow writing the machine-global active file from inside a linked git "
+        "worktree (refused by default: all worktrees would share it)",
     )
     set_active_parser.add_argument(
         "--whatif",
