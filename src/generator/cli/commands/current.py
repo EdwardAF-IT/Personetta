@@ -14,6 +14,9 @@ from pathlib import Path
 from typing import Optional
 
 from generator.cli.commands._helpers import resolve_install_target
+from generator.cli.commands.set_active import (
+    _worktree_project_root as worktree_project_root,
+)
 from generator.format_resolver import (
     UNDETERMINED_FORMAT_ERROR,
     resolve_format,
@@ -45,7 +48,9 @@ def cmd_current(args: argparse.Namespace) -> int:
     Returns:
         Exit code (0 when an active recipe is reported, 1 otherwise).
     """
-    target = resolve_install_target(getattr(args, "target", None))
+    raw_target = getattr(args, "target", None)
+    # Same root set-active writes: bare 'project' means the checkout root
+    target = worktree_project_root(raw_target, resolve_install_target(raw_target))
     resolution = resolve_format(getattr(args, "format", None), target)
     if resolution.format is None:
         print(f"[ERROR] {UNDETERMINED_FORMAT_ERROR}", file=sys.stderr)

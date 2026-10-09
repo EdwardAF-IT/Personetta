@@ -193,6 +193,22 @@ def test_project_target_writes_only_the_worktree(
     assert not (fake_home / ACTIVE).exists()
 
 
+def test_current_reads_the_root_set_active_wrote(
+    monkeypatch, capsys, fake_home, worktree
+):
+    sub = worktree / "deep"
+    sub.mkdir()
+    code, _out, _err = _set_active(
+        monkeypatch, capsys, sub, "implement-csharp", "-f", "claude", "-t", "project"
+    )
+    assert code == 0
+    monkeypatch.setattr(
+        sys, "argv", ["personetta", "current", "-f", "claude", "-t", "project"]
+    )
+    assert main() == 0
+    assert "implement-csharp" in capsys.readouterr().out
+
+
 def test_two_worktrees_hold_different_active_files(
     monkeypatch, capsys, tmp_path, repo, worktree
 ):
