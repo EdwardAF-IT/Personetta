@@ -9,16 +9,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from generator.routing.context import DEFAULT_LIFECYCLE, LIFECYCLES, SOURCE_EXTENSIONS
-
-_EXTENSION_LANGUAGE = {
-    ext: lang for lang, exts in SOURCE_EXTENSIONS.items() for ext in exts
-}
+from generator.routing.context import DEFAULT_LIFECYCLE, LIFECYCLES, language_for_name
 
 
 def language_for_path(path: Path) -> str | None:
     """Canonical language of ``path`` by extension, or ``None`` if unknown."""
-    return _EXTENSION_LANGUAGE.get(path.suffix.lower())
+    return language_for_name(path.name)
 
 
 def recipe_for_path(path: Path, lifecycle: str | None = None) -> str | None:

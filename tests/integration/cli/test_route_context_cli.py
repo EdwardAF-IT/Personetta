@@ -186,7 +186,8 @@ def test_prompt_mode_still_requires_format(monkeypatch, capsys) -> None:
 
 def test_detection_skips_vendored_dirs_and_unknown_lifecycle(tmp_path) -> None:
     _touch(tmp_path, "node_modules/x/package.json", "deep/a/b/c/d/e/f.py", "a.sql")
-    assert detect_languages(tmp_path) == ["tsql"]
+    # Deep files count now; only vendored dirs are skipped.
+    assert detect_languages(tmp_path) == ["python", "tsql"]
     assert parse_languages("C#, ts,ts") == (["csharp", "javascript"], [])
 
 

@@ -163,6 +163,44 @@ committed snapshot (`.maestro/recipes/*.json`, regenerated from the export), the
 work the JSON export must be self-contained (no references back to the cache) and stable enough to commit, and the
 hash must let Maestro say "this snapshot is older than the installed recipe".
 
+## 6. Follow-ups from Maestro's first use (2026-10-08, round 2)
+
+Checked against Personetta 1.0.2 from Maestro's side. The export is right: `recipe implement-csharp --format json`
+carries version, hash, 73 guidelines with ids, CD-1 to CD-7 and the exact C# limits, and `route` and `recipe` each
+answer in 1-3 seconds, which is fine per dispatch. Three things to change:
+
+1. **`route` picks the wrong primary language on Maestro.** `route --json --repo C:\Code\maestro --lifecycle implement`
+   returns `implement-powershell` first, then javascript, then csharp. Maestro has 3,817 tracked `.cs` files, 321
+   JS/TS and 102 PowerShell. Cause, in `src/generator/routing/context.py` `detect_languages`:
+   - the walk visits dot-folders, and `.claude/worktrees` (dozens of agent checkouts) fills the 5,000-file cap
+     (`MAX_FILES`) before the real tree is counted;
+   - `MAX_DEPTH = 4` stops below `src/<Project>/<Folder>`, where most C# lives.
+
+   Fix: when the repo is a git checkout, count `git ls-files` (respects `.gitignore`, never sees worktrees or build
+   output, no depth or file cap needed); otherwise walk, skipping every dot-folder and anything `.gitignore` names.
+   Put the per-language counts in `reason` (e.g. `detected csharp 3817, javascript 321, powershell 102`) so a wrong
+   pick is visible.
+
+2. **Export several recipes in one call.** Maestro commits a snapshot of each recipe a repo uses, and ships bundled
+   defaults (one recipe per lifecycle and language) generated at its release time. Add
+   `personetta recipe --all --format json -o <dir>`, with optional `--language` and `--lifecycle` filters, writing
+   `<recipe>.json` per recipe plus an `index.json` of name, language, lifecycle, version and hash. The same bytes as
+   the single-recipe export, so a snapshot can be compared by hash.
+
+3. **A `route` answer for a path, not just a repo.** Maestro's builder for a row that touches `web/` (TypeScript)
+   inside a C# repo should get the JavaScript role. Add `route --json --repo <r> --paths <file>[,<file>...]`
+   that decides the language from those files (the same rule the file-routed hook uses), falling back to repo
+   detection when no path matches.
+
+Acceptance for this round:
+
+- `route --json --repo C:\Code\maestro --lifecycle implement` returns `implement-csharp` as primary, with counts in
+  `reason`; a test repo whose `.claude/worktrees` holds many PowerShell files still detects its real primary.
+- `recipe --all --format json -o <dir>` writes one file per recipe whose bytes equal the single export, plus
+  `index.json`; filters narrow it; tested through the CLI.
+- `route --json --paths web/src/App.tsx` in a C# repo returns the JavaScript recipe; a path matching no language
+  falls back to repo detection; tested through the CLI.
+
 ---
 
 ## Acceptance criteria

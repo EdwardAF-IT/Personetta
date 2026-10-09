@@ -602,6 +602,26 @@ bytes) and references nothing outside itself. `--install` is not supported
 with `json`; exit `1` on a merge conflict or a missing id. See
 [Ids, hashes and limits](concepts.md#ids-hashes-and-limits).
 
+**`--all`** exports many recipes in one call:
+
+```bash
+personetta recipe --all --format json -o .maestro/recipes [--language csharp] [--lifecycle review]
+```
+
+It writes `<recipe>.json` per recipe (byte-identical to the single-recipe
+export, so a snapshot compares by hash) plus `index.json`:
+`{ "recipes": [ { "name", "language", "lifecycle", "version", "hash" } ] }`,
+sorted by name, no timestamps or paths (schema:
+`data/schemas/recipe-index.schema.json`). `language` and `lifecycle` are set for
+the `<lifecycle>-<language>` families that `route` resolves to (lifecycle one of
+`implement`, `review`, `test`, `debug`, `design`; language one of `csharp`,
+`javascript`, `python`, `powershell`, `tsql`) and are `null` for every other
+recipe (`general`, `implement-csharp-backend`, `design-diagram` ...); the
+filters therefore select only those families. `--language` accepts the same
+aliases as `route`. `--all` needs `--format json` and `-o <dir>` and no recipe
+name or `--install` (exit `1`); a filter that matches no recipe exits `2` with a
+message and writes nothing.
+
 **Format headers:** the `claude`, `copilot`, `cursor` and `cline` outputs open
 with a line carrying the recipe name, version and content hash, and each
 guideline is prefixed with its id in brackets (`[CS-4] ...`). The ids and hash
@@ -675,13 +695,21 @@ personetta route --json --repo <path> [--language csharp,typescript] [--lifecycl
 - `--repo <path>` - Repo to detect languages from (default: current directory)
 - `--language <list>` - Comma list: `csharp`, `javascript` (alias `typescript`, `ts`, `js`), `python`, `powershell`, `tsql` (alias `sql`). Omit to detect from the repo (manifests and source files, most files first)
 - `--lifecycle <name>` - `implement` (default), `review`, `test`, `debug` or `design`
+- `--paths <file>[,<file>...]` - Decide the language from these files instead of the whole repo (relative paths are taken against `--repo`). Uses the file-routed hook's extension rule; the language with most matching paths is primary, the others go under `also`. If no path matches a language the repo is detected instead and `reason` says so. `--language` still wins
 - `--json` - Print JSON instead of one line
+
+Detection (no `--language`, no matching `--paths`): in a git checkout the
+languages are counted from `git ls-files` (tracked files only, any depth; an
+untracked `.claude/worktrees` is never seen). Otherwise (or if git is missing or
+the index is empty) the tree is walked, skipping every dot-folder, vendored
+folders and what the root `.gitignore` names. Counts appear in `reason`, e.g.
+`detected csharp 3817, javascript 321, powershell 102, lifecycle implement`.
 
 Output (the recipe is `<lifecycle>-<language>`):
 
 ```json
 { "recipe": "implement-csharp", "language": "csharp", "version": "1.1.2",
-  "hash": "sha256:...", "reason": "detected csharp,javascript, lifecycle implement",
+  "hash": "sha256:...", "reason": "detected csharp 12, javascript 3, lifecycle implement",
   "also": [ { "recipe": "implement-javascript", "language": "javascript", "version": "...", "hash": "..." } ] }
 ```
 

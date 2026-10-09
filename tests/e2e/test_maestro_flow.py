@@ -206,3 +206,41 @@ def test_route_nothing_fits_exits_2_with_json_reason(world):
     assert json.loads(result.stdout)["recipe"] is None
     assert "Traceback" not in result.stdout + result.stderr
     assert re.search(r"no supported language", result.stdout)
+
+
+def test_recipe_all_snapshot_matches_route_hash(world, tmp_path):
+    home, _main, wt = world
+    out = tmp_path / "snap"
+    done = _cli(
+        home,
+        wt,
+        "recipe",
+        "--all",
+        "--format",
+        "json",
+        "-o",
+        str(out),
+        "--language",
+        "csharp",
+    )
+    assert done.returncode == 0, done.stderr
+    index = json.loads((out / "index.json").read_text(encoding="utf-8"))
+    schema = json.loads(
+        (ROOT / "data/schemas/recipe-index.schema.json").read_text(encoding="utf-8")
+    )
+    jsonschema.Draft7Validator(schema).validate(index)
+    assert {r["name"] for r in index["recipes"]} == {
+        f"{lc}-csharp" for lc in ("implement", "review", "test", "debug", "design")
+    }
+
+    routed = _cli(home, wt, "route", "--json", "--repo", str(wt), "--lifecycle", "review")
+    route = json.loads(routed.stdout)
+    assert route["recipe"] == "review-csharp"
+    snap = out / "review-csharp.json"
+    assert json.loads(snap.read_text(encoding="utf-8"))["hash"] == route["hash"]
+    assert any(r["hash"] == route["hash"] for r in index["recipes"])
+
+    web = _cli(home, wt, "route", "--json", "--repo", str(wt), "--paths", "web/app.ts")
+    assert json.loads(web.stdout)["recipe"] == "implement-javascript"
+    miss = _cli(home, wt, "route", "--json", "--repo", str(wt), "--paths", "docs/x.md")
+    assert "no --paths entry matched" in json.loads(miss.stdout)["reason"]

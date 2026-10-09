@@ -14,7 +14,10 @@ from generator.cli.commands._helpers import (
 from generator.loader import load_merge_config, load_recipe, load_recipe_roles
 from generator.merger import compose_recipe
 from generator.output_formats import format_role
+from generator.exceptions import LoadError
+from generator.recipe_bundle import INDEX_NAME, export_all, render_index
 from generator.recipe_export import export_recipe, render_export
+from generator.routing.context import normalize_language
 from generator.cursor_layout import install_single_cursor_recipe_to_cache
 from generator.copilot_layout import install_single_copilot_recipe_to_cache
 from generator.claude_layout import install_single_claude_recipe_to_cache
@@ -106,6 +109,45 @@ def _cmd_recipe_json(args: argparse.Namespace, base_dir: Path) -> int:
     return 0
 
 
+def _cmd_recipe_all(args: argparse.Namespace, base_dir: Path) -> int:
+    """Write every (filtered) recipe's JSON export plus index.json into ``-o <dir>``."""
+    if args.format != "json" or not args.output or args.install or args.name:
+        print(
+            "[ERROR] --all needs --format json and -o <dir> (no recipe name, no --install)",
+            file=sys.stderr,
+        )
+        return 1
+    language = None
+    if args.language:
+        language = normalize_language(args.language)
+        if language is None:
+            print(f"[ERROR] unsupported language: {args.language}", file=sys.stderr)
+            return 1
+    try:
+        documents, warnings = export_all(base_dir, language, args.lifecycle)
+    except LoadError as exc:
+        print(f"[ERROR] {exc}", file=sys.stderr)
+        return 1
+    if _print_warnings(warnings) > 0:
+        print("Conflict(s) detected. Fix before exporting.", file=sys.stderr)
+        return 1
+    if not documents:
+        print("No recipe matches the --language/--lifecycle filter", file=sys.stderr)
+        return 2
+    out_dir = Path(args.output)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for document in documents:
+        text = render_export(document)
+        (out_dir / f"{document['recipe']}.json").write_text(
+            text, encoding="utf-8", newline="\n"
+        )
+    (out_dir / INDEX_NAME).write_text(
+        render_index(documents), encoding="utf-8", newline="\n"
+    )
+    print(f"Written {len(documents)} recipes and {INDEX_NAME} to {out_dir}")
+    return 0
+
+
 def cmd_recipe(args: argparse.Namespace) -> int:
     """Generate recipe output in specified format.
 
@@ -122,6 +164,14 @@ def cmd_recipe(args: argparse.Namespace) -> int:
     """
     base_dir = get_base_dir()
 
+    if getattr(args, "all", False):
+        return _cmd_recipe_all(args, base_dir)
+    if not args.name:
+        print("[ERROR] a recipe name is required (or use --all)", file=sys.stderr)
+        return 1
+    if getattr(args, "language", None) or getattr(args, "lifecycle", None):
+        print("[ERROR] --language/--lifecycle need --all", file=sys.stderr)
+        return 1
     if args.format == "json":
         return _cmd_recipe_json(args, base_dir)
 

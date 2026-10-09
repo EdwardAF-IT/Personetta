@@ -65,7 +65,7 @@ def _is_context_mode(args: argparse.Namespace) -> bool:
     """True when the caller asked for language/lifecycle resolution."""
     return any(
         getattr(args, name, None) is not None
-        for name in ("repo", "language", "lifecycle")
+        for name in ("repo", "language", "lifecycle", "paths")
     )
 
 
@@ -79,6 +79,7 @@ def _cmd_route_context(args: argparse.Namespace) -> int:
             lifecycle=args.lifecycle or DEFAULT_LIFECYCLE,
             recipe_names={r["name"] for r in list_recipes(base_dir)},
             base_dir=base_dir,
+            paths=[p for p in (args.paths or "").split(",") if p.strip()],
         )
     except Exception as exc:  # noqa: BLE001 - contract: never a traceback on stdout
         result = ContextResult(False, f"route failed: {exc}")
@@ -156,6 +157,12 @@ def add_route_parser(subparsers: argparse._SubParsersAction) -> None:
         default=None,
         help="Context mode: comma list (csharp,typescript,python,powershell,tsql); "
         "omit to detect from --repo",
+    )
+    parser.add_argument(
+        "--paths",
+        default=None,
+        help="Context mode: comma list of files (relative to --repo); the language "
+        "comes from their extensions, falling back to repo detection",
     )
     parser.add_argument(
         "--lifecycle",

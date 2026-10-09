@@ -228,7 +228,26 @@ def build_parser() -> argparse.ArgumentParser:
     )
     recipe_parser.add_argument(
         "name",
-        help="Recipe name (e.g., 'design-python-backend-perf')",
+        nargs="?",
+        default=None,
+        help="Recipe name (e.g., 'design-python-backend-perf'); omit with --all",
+    )
+    recipe_parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Export every recipe (needs --format json and -o <dir>): "
+        "<recipe>.json each plus index.json",
+    )
+    recipe_parser.add_argument(
+        "--language",
+        default=None,
+        help="With --all: only this language (csharp, javascript, python, powershell, tsql)",
+    )
+    recipe_parser.add_argument(
+        "--lifecycle",
+        default=None,
+        choices=["implement", "review", "test", "debug", "design"],
+        help="With --all: only this lifecycle",
     )
     recipe_parser.add_argument(
         "--format",

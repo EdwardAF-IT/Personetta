@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Recipe Export Index",
+  "description": "Index written beside the per-recipe exports by personetta recipe --all --format json -o <dir>. Sorted by name; no timestamps or paths. language and lifecycle are null for recipes outside the <lifecycle>-<language> families that route resolves.",
+  "type": "object",
+  "required": ["recipes"],
+  "additionalProperties": false,
+  "properties": {
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "language", "lifecycle", "version", "hash"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "language": { "enum": ["csharp", "javascript", "python", "powershell", "tsql", null] },
+          "lifecycle": { "enum": ["implement", "review", "test", "debug", "design", null] },
+          "version": { "type": "string", "minLength": 1 },
+          "hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+        }
+      }
+    }
+  }
+}
