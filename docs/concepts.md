@@ -587,6 +587,10 @@ reordering, is unique across all roles, and is never reused or renumbered. `pers
 fails on a missing, malformed or duplicate id. The `claude`, `copilot`, `cursor` and `cline`
 outputs show each id in brackets (`[CS-4] ...`).
 
+When several composed roles carry the same wording, the merge keeps one copy under the first
+role's id; the JSON export lists the other roles' ids for it under `aliases`, so no role's id
+disappears from the export.
+
 ### Content hash
 
 `personetta recipe <name> --format json` reports a `sha256:` hash of the recipe's composed content.

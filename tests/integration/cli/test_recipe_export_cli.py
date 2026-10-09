@@ -135,6 +135,46 @@ def test_hash_changes_when_one_guideline_text_changes(
     assert changed[0]["source"] == "csharp-developer"
 
 
+def _all_ids(items: list[dict]) -> set[str]:
+    return {i for item in items for i in [item["id"], *item.get("aliases", [])]}
+
+
+def test_every_role_id_survives_the_merge_dedup(
+    real_project: Path, monkeypatch, tmp_path: Path
+) -> None:
+    """Wording shared by several roles is merged once; no role's id may vanish."""
+    monkeypatch.setenv("PERSONETTA_BASE", str(real_project))
+    doc = _export(monkeypatch, tmp_path)
+    import yaml
+
+    role = yaml.safe_load((real_project / CSHARP_DEV).read_text(encoding="utf-8"))
+    # CS-1 and CS-V2 repeat wording an earlier composed role already carries
+    for gid in [g["id"] for g in role["guidelines"]]:
+        assert gid in _all_ids(doc["guidelines"])
+    for vid in [v["id"] for v in role["verification"]]:
+        assert vid in _all_ids(doc["verification"])
+    schema = json.loads((real_project / SCHEMA).read_text(encoding="utf-8"))
+    jsonschema.Draft7Validator(schema).validate(doc)
+
+
+def test_contract_cd_id_survives_an_earlier_duplicate_wording(
+    data_copy: Path, monkeypatch, tmp_path: Path
+) -> None:
+    """A compose role copying CD-1's wording must not silently drop CD-1."""
+    import yaml
+
+    mixin = data_copy / "data/base/mixins/class-design.yaml"
+    cd1 = yaml.safe_load(mixin.read_text(encoding="utf-8"))["guidelines"][0]
+    path = data_copy / CSHARP_DEV
+    role = yaml.safe_load(path.read_text(encoding="utf-8"))
+    role["guidelines"].append({"id": "CS-999", "text": cd1["text"]})
+    path.write_text(yaml.safe_dump(role, sort_keys=False), encoding="utf-8")
+    doc = _export(monkeypatch, tmp_path)
+    kept = [g for g in doc["guidelines"] if g["text"] == cd1["text"]]
+    assert len(kept) == 1 and kept[0]["id"] == "CS-999"
+    assert kept[0]["aliases"] == ["CD-1"]
+
+
 def test_install_with_json_is_rejected(real_project: Path, monkeypatch, capsys) -> None:
     monkeypatch.setenv("PERSONETTA_BASE", str(real_project))
     assert _run(monkeypatch, "recipe", "implement-csharp", "-f", "json", "--install") == 1

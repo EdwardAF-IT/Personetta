@@ -47,7 +47,38 @@ def _guideline_sources(roles: list[dict]) -> dict[str, str]:
     return sources
 
 
-def _guidelines(composed: dict, sources: dict[str, str], recipe: str) -> list[dict]:
+def _ids_by_text(
+    roles: list[dict], section: str, key: str | None
+) -> dict[str, list[str]]:
+    """Every id each wording carries across the roles, in compose order.
+
+    The merge keeps one copy of a repeated wording, so the other roles' ids for
+    it would otherwise vanish from the export; they are reported as aliases.
+    """
+    found: dict[str, list[str]] = {}
+    for role in roles:
+        for item in role.get(section) or []:
+            if key is None:
+                text, ident = str(item), guideline_id(item)
+            elif isinstance(item, dict):
+                text, ident = str(item.get(key, "")), item.get("id")
+            else:
+                continue
+            if isinstance(ident, str) and ident not in found.setdefault(text, []):
+                found[text].append(ident)
+    return found
+
+
+def _with_aliases(entry: dict, ident: str, text: str, ids: dict[str, list[str]]) -> dict:
+    aliases = [other for other in ids.get(text, []) if other != ident]
+    if aliases:
+        entry["aliases"] = aliases
+    return entry
+
+
+def _guidelines(composed: dict, roles: list[dict], recipe: str) -> list[dict]:
+    sources = _guideline_sources(roles)
+    ids = _ids_by_text(roles, "guidelines", None)
     result = []
     for item in composed.get("guidelines") or []:
         gid = guideline_id(item)
@@ -55,11 +86,13 @@ def _guidelines(composed: dict, sources: dict[str, str], recipe: str) -> list[di
             raise LoadError(
                 f"Recipe '{recipe}' has a guideline without an id: {item!s:.60}"
             )
-        result.append({"id": gid, "text": str(item), "source": sources.get(gid, "?")})
+        entry = {"id": gid, "text": str(item), "source": sources.get(gid, "?")}
+        result.append(_with_aliases(entry, gid, str(item), ids))
     return result
 
 
-def _verification(composed: dict, recipe: str) -> list[dict]:
+def _verification(composed: dict, roles: list[dict], recipe: str) -> list[dict]:
+    ids = _ids_by_text(roles, "verification", "check")
     result = []
     for item in composed.get("verification") or []:
         if not item.get("id"):
@@ -67,7 +100,7 @@ def _verification(composed: dict, recipe: str) -> list[dict]:
         entry = {"id": item["id"], "check": item["check"]}
         if item.get("command"):
             entry["command"] = item["command"]
-        result.append(entry)
+        result.append(_with_aliases(entry, item["id"], str(item["check"]), ids))
     return result
 
 
@@ -89,8 +122,8 @@ def _export_content(composed: dict, roles: list[dict]) -> dict:
         "recipe": name,
         "composed_from": list(composed.get("_source_roles") or []),
         "model_recommendation": _model_recommendation(composed),
-        "guidelines": _guidelines(composed, _guideline_sources(roles), name),
-        "verification": _verification(composed, name),
+        "guidelines": _guidelines(composed, roles, name),
+        "verification": _verification(composed, roles, name),
         "tone": composed.get("tone", ""),
         "output_format": composed.get("output_format", ""),
     }
