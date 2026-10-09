@@ -48,6 +48,28 @@ CD_TEXT = {
         "Methods take 3-4 arguments at most; wider inputs become a record or options type "
         "(records may carry more positional parameters, see the language limits)."
     ),
+    "CD-6": (
+        "**Readable expressions: name each decision, don't stack syntax.** A condition "
+        "joins at most two simple terms (a direct predicate, comparison or null check). "
+        "When `&&`/`||` is mixed with a pattern match, an out-variable, a query or a call "
+        "chain, extract a named helper even at two terms. Nested decisions become several "
+        "helpers, one decision each. A long query chain, or an expression-bodied member "
+        "hiding several steps, becomes named steps."
+    ),
+    "CD-7": (
+        "**Named constants, one home each.** Inline literals are allowed only when the "
+        "literal is the meaning: `0`, `1`, `-1`, the empty string, `true`/`false`, or a "
+        "one-use self-describing local literal (e.g. a one-off display format). "
+        "Everything else gets a name in the narrowest shared home all callers can reach, "
+        "and every use references that one definition: domain terms, protocol tokens and "
+        "wire values in a constants type beside the domain; configuration defaults and "
+        "limits in the owning options type; file, folder and marker names in the owning "
+        "layout type; reused UI copy in the owning presentation type; test literals "
+        "shared across tests in a test constants helper. Two unrelated concepts that "
+        "happen to share a value keep two names. Host-rendered line breaks use the "
+        "platform newline; a line ending with protocol meaning (CSV's CRLF) is a named "
+        "wire constant."
+    ),
 }
 
 # Fixed by the contract; Maestro's size guard enforces exactly these.
@@ -180,6 +202,36 @@ def test_claude_output_carries_class_design_rules(
     text = out.read_text(encoding="utf-8")
     assert "A size limit means a redesign, not a workaround." in text
     assert "200 code lines" in text
+
+
+def test_rules_run_cd_1_to_cd_7_in_order(real_project: Path) -> None:
+    role = yaml.safe_load((real_project / MIXIN).read_text(encoding="utf-8"))
+    assert [g["id"] for g in role["guidelines"]] == [f"CD-{n}" for n in range(1, 8)]
+
+
+@pytest.mark.parametrize("fmt", ["claude", "copilot", "cursor"])
+def test_csharp_worked_examples_appear_in_formatted_output(
+    fmt: str, real_project: Path, monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.setenv("PERSONETTA_BASE", str(real_project))
+    out = tmp_path / "x.md"
+    argv = ("recipe", "implement-csharp", "-f", fmt, "-o", str(out))
+    assert _run(monkeypatch, *argv) == 0
+    text = out.read_text(encoding="utf-8")
+    assert "TryGetCitedPaths" in text
+    assert "IsWithinHeadroom" in text
+    assert "Rfc4180Csv.RowTerminator" in text
+    assert "CD-6: " in text and "CD-7: " in text
+
+
+def test_other_languages_carry_no_csharp_examples(
+    real_project: Path, monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.setenv("PERSONETTA_BASE", str(real_project))
+    out = tmp_path / "p.md"
+    argv = ("recipe", "implement-python", "-f", "claude", "-o", str(out))
+    assert _run(monkeypatch, *argv) == 0
+    assert "TryGetCitedPaths" not in out.read_text(encoding="utf-8")
 
 
 def test_validate_passes_with_new_roles(real_project, monkeypatch, capsys) -> None:

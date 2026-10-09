@@ -1,6 +1,6 @@
 name: csharp-class-design
 description: >
-  C# size limits for the class-design rules (CD-1 to CD-5). Unit kinds: type
+  C# size limits for the class-design rules (CD-1 to CD-7). Unit kinds: type
   (class, record, struct, interface), member, method, record, file.
   Source: these are the settled calibration numbers from Maestro's size guard
   (tests/Maestro.QualityTests/file-size-guard/thresholds.json), worked out over
@@ -43,6 +43,48 @@ guidelines:
 verification:
   - id: CSCD-V1
     check: No C# type, method, record or file exceeds its limit in the csharp limits block
+
+examples:
+  - scenario: "CD-6: a condition mixes && with an out-variable (Maestro class design standard)"
+    input: |-
+      var cited = evidence.MetAcs.Contains(number) && evidence.EvidencePaths.TryGetValue(number, out var paths) && paths.Count > 0
+          ? paths
+          : null;
+    output: |-
+      var cited = TryGetCitedPaths(evidence, number);
+
+      static IReadOnlyList<string>? TryGetCitedPaths(FollowUpAcEvidence evidence, int number)
+      {
+          if (!evidence.MetAcs.Contains(number))
+          {
+              return null;
+          }
+
+          if (!evidence.EvidencePaths.TryGetValue(number, out var paths))
+          {
+              return null;
+          }
+
+          return paths.Count > 0 ? paths : null;
+      }
+  - scenario: "CD-6: a pattern match inside a condition, and a long query chain"
+    input: |-
+      bool? within = forecast.ForecastCostUnits is { } cost && forecast.HeadroomCostUnits is { } headroom
+          ? cost <= headroom
+          : null;
+
+      return row.Relations.Where(r => r.Rel == rel).Select(r => r.TargetId).OfType<int>().Distinct().ToList();
+    output: |-
+      bool? within = IsWithinHeadroom(forecast);   // one helper named for the decision
+
+      var matchingRelations = row.Relations.Where(r => r.Rel == rel);
+      var targetIds = matchingRelations.Select(r => r.TargetId);
+      return targetIds.OfType<int>().Distinct().ToList();
+  - scenario: "CD-7: literals with a meaning beyond themselves (Maestro class design standard)"
+    input: |-
+      Inline a CRLF string at each CSV call site; marker and summary file names repeated as string literals in guards and tests; a hard-coded newline string for host-rendered text.
+    output: |-
+      Keep CRLF as the named wire constant Rfc4180Csv.RowTerminator; keep generated marker and summary file names in one owner (OrchestraSettings.DefaultMarkerNames, FlatFilePrPackEngine.PrSummaryFileName) and reference them from guards and tests; use Environment.NewLine for host-rendered text with no wire meaning.
 
 tags:
   - csharp

@@ -99,6 +99,25 @@ The mixin's rule text (one copy, these are the ids Maestro will cite):
   joined lines, raised baselines.
 - `CD-5` Methods take 3-4 arguments at most; wider inputs become a record or options type (records may carry more
   positional parameters, see the language limits).
+- `CD-6` **Readable expressions: name each decision, don't stack syntax.** A condition joins at most two simple terms
+  (a direct predicate, comparison or null check). When `&&`/`||` is mixed with a pattern match, an out-variable, a
+  query or a call chain, extract a named helper even at two terms. Nested decisions become several helpers, one
+  decision each. A long query chain, or an expression-bodied member hiding several steps, becomes named steps.
+- `CD-7` **Named constants, one home each.** Inline literals are allowed only when the literal is the meaning: `0`,
+  `1`, `-1`, the empty string, `true`/`false`, or a one-use self-describing local literal (e.g. a one-off display
+  format). Everything else gets a name in the narrowest shared home all callers can reach, and every use references
+  that one definition: domain terms, protocol tokens and wire values in a constants type beside the domain;
+  configuration defaults and limits in the owning options type; file, folder and marker names in the owning layout
+  type; reused UI copy in the owning presentation type; test literals shared across tests in a test constants
+  helper. Two unrelated concepts that happen to share a value keep two names. Host-rendered line breaks use the
+  platform newline; a line ending with protocol meaning (CSV's CRLF) is a named wire constant.
+
+CD-6 and CD-7 came from Maestro rows #6433 and #6443 (2026-10-08), which first wrote them into Maestro's own class
+design standard; Edward moved them here so the rule text has one home. Their worked C# examples are on Maestro
+branches `fix/6433-copilot` and `fix/6443-copilot` (`docs/design/class-design-standard.md`) - use them as the C#
+role's examples. Enforcement stays in each repo: Maestro plans shrink-only QualityTests guards for both (the
+size-guard pattern: new violations refused, existing debt baselined once and ratcheted down, debt paid off in
+touched files).
 
 ### Starting thresholds
 
@@ -155,7 +174,7 @@ hash must let Maestro say "this snapshot is older than the installed recipe".
    is unchanged by reordering keys or editing a YAML comment and changed by editing one guideline's text.
 3. Every role YAML guideline and verification item has an id; `personetta validate` fails on a missing or
    duplicate id.
-4. A `class-design` mixin exists with CD-1 to CD-5 above, and a `<lang>-class-design` role with a `limits` block
+4. A `class-design` mixin exists with CD-1 to CD-7 above, and a `<lang>-class-design` role with a `limits` block
    exists for csharp, javascript (covering TypeScript), python, powershell and tsql; each number has its source and
    reasoning in the role description; all recipe families for those languages compose both.
 5. `set-active` has a per-worktree mode and refuses to write the global file from inside a worktree without

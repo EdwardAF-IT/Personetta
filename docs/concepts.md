@@ -612,9 +612,10 @@ and `cline` files.
 
 Size and shape limits are data, not prose:
 
-- The language-neutral `class-design` mixin carries the rule text, ids `CD-1` to `CD-5`: one
+- The language-neutral `class-design` mixin carries the rule text, ids `CD-1` to `CD-7`: one
   purpose per unit, one reason to change, top-down reading, **a size limit means a redesign, not a
-  workaround**, and 3-4 arguments per method.
+  workaround**, 3-4 arguments per method, readable expressions (name each decision) and named
+  constants with one home each. The C# role also carries worked C# examples for CD-6 and CD-7.
 - A `<lang>-class-design` role (csharp, javascript covering TypeScript, python, powershell, tsql)
   holds a `limits` block with that language's numbers and its own unit kinds. Each number's
   source and reasoning is in the role's description. C# is the calibration point: 200 code lines

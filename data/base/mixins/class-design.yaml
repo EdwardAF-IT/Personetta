@@ -2,9 +2,9 @@ name: class-design
 description: >
   Language-neutral class and unit design rules: one purpose per unit, one
   reason to change, top-down reading order, size limits treated as a redesign
-  signal, and narrow argument lists. The numbers live in the matching
+  signal, narrow argument lists, readable expressions and named constants. The numbers live in the matching
   <lang>-class-design role's limits block; this mixin carries the rule text
-  (ids CD-1 to CD-5) that Maestro cites in briefs and review findings.
+  (ids CD-1 to CD-7) that Maestro cites in briefs and review findings.
 version: "1.0.0"
 type: mixin
 
@@ -12,6 +12,7 @@ responsibilities:
   - Keep every unit (type, module, function) focused on one purpose and one reason to change
   - Treat a unit approaching its language's size limit as a signal to redesign, not to work around the limit
   - Keep argument lists narrow, moving wider inputs into a record or options type
+  - Name each decision instead of stacking syntax, and give every non-trivial literal one named home
 
 guidelines:
   - id: CD-1
@@ -31,6 +32,25 @@ guidelines:
     text: >-
       Methods take 3-4 arguments at most; wider inputs become a record or options type (records may
       carry more positional parameters, see the language limits).
+  - id: CD-6
+    text: >-
+      **Readable expressions: name each decision, don't stack syntax.** A condition joins at most two
+      simple terms (a direct predicate, comparison or null check). When `&&`/`||` is mixed with a
+      pattern match, an out-variable, a query or a call chain, extract a named helper even at two
+      terms. Nested decisions become several helpers, one decision each. A long query chain, or an
+      expression-bodied member hiding several steps, becomes named steps.
+  - id: CD-7
+    text: >-
+      **Named constants, one home each.** Inline literals are allowed only when the literal is the
+      meaning: `0`, `1`, `-1`, the empty string, `true`/`false`, or a one-use self-describing local
+      literal (e.g. a one-off display format). Everything else gets a name in the narrowest shared
+      home all callers can reach, and every use references that one definition: domain terms,
+      protocol tokens and wire values in a constants type beside the domain; configuration defaults
+      and limits in the owning options type; file, folder and marker names in the owning layout
+      type; reused UI copy in the owning presentation type; test literals shared across tests in a
+      test constants helper. Two unrelated concepts that happen to share a value keep two names.
+      Host-rendered line breaks use the platform newline; a line ending with protocol meaning (CSV's
+      CRLF) is a named wire constant.
 
 verification:
   - id: CD-V1
