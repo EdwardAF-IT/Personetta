@@ -1,7 +1,7 @@
 name: javascript-class-design
 description: >
   JavaScript and TypeScript size limits for the class-design rules (CD-1 to
-  CD-5). Unit kinds: module (one file), class, function (including methods,
+  CD-7). Unit kinds: module (one file), class, function (including methods,
   arrow functions and React function components). Calibrated against the C#
   set (30-line method, 10 branch points); code lines exclude blank and
   comment-only lines (ESLint skipBlankLines and skipComments true).

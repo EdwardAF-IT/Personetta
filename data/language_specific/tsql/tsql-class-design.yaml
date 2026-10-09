@@ -1,6 +1,6 @@
 name: tsql-class-design
 description: >
-  T-SQL size limits for the class-design rules (CD-1 to CD-5). Unit kinds:
+  T-SQL size limits for the class-design rules (CD-1 to CD-7). Unit kinds:
   stored procedure, function (inline table-valued or scalar), view, script file
   (one database object or one migration). Calibrated against the C# set
   (30-line method, 10 branch points); code lines exclude blank lines, comments

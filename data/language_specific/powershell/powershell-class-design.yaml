@@ -1,6 +1,6 @@
 name: powershell-class-design
 description: >
-  PowerShell size limits for the class-design rules (CD-1 to CD-5). Unit kinds:
+  PowerShell size limits for the class-design rules (CD-1 to CD-7). Unit kinds:
   function (advanced function or cmdlet), script file (.ps1), module (.psm1 and
   the files it dot-sources). Calibrated against the C# set (30-line method, 10
   branch points); code lines exclude blank lines and comment-based help.

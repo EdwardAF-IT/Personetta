@@ -1,6 +1,6 @@
 name: python-class-design
 description: >
-  Python size limits for the class-design rules (CD-1 to CD-5). Unit kinds:
+  Python size limits for the class-design rules (CD-1 to CD-7). Unit kinds:
   module (one .py file), class, dataclass, function (including methods).
   Calibrated against the C# set (30-line method, 10 branch points); code lines
   exclude blank lines, comments and docstrings.
