@@ -152,6 +152,15 @@ def _payload_file_path(payload: dict) -> str:
     return ""
 
 
+def _is_within(path: Path, root: Path) -> bool:
+    """True when ``path`` lies inside ``root`` (both resolved)."""
+    try:
+        path.resolve().relative_to(root.resolve())
+    except ValueError:
+        return False
+    return True
+
+
 def _file_strategy(fmt: str) -> RoutingStrategy:
     """Strategy for file routing: a worktree falls back to the user-wide recipe cache."""
     if fmt == "claude":
@@ -180,12 +189,17 @@ def _route_by_file(
     if recipe is None:
         return HookResult(0, "", "")
 
+    cwd = str(payload.get("cwd") or "")
     path = Path(file_path)
     if not path.is_absolute():
-        path = Path(str(payload.get("cwd") or ".")) / path
-    context = git_context(path)
-    if context is None:
+        path = Path(cwd or ".") / path
+    # The session loads rules from its own checkout (cwd), so only that checkout's
+    # active file may change; a file in another repo must not flip that repo's role.
+    context = git_context(Path(cwd) if cwd else path)
+    if context is None or not _is_within(path, context.root):
         return HookResult(0, "", "")  # never fall back to a machine-global write
+    if context.root.resolve() == Path.home().resolve():
+        return HookResult(0, "", "")  # a git-tracked home holds the global rules
 
     strategy = strategy or _file_strategy(fmt)
     root = context.root

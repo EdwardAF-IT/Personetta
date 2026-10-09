@@ -122,6 +122,28 @@ def test_outside_git_never_switches(monkeypatch, tmp_path):
     assert strategy.switched == []
 
 
+def test_file_in_another_checkout_leaves_both_roles_alone(monkeypatch, tmp_path):
+    session, other = tmp_path / "session", tmp_path / "other"
+
+    def by_location(path):
+        inside = path.resolve().is_relative_to(session.resolve())
+        return GitContext(root=session if inside else other, is_linked_worktree=True)
+
+    monkeypatch.setattr(hook, "git_context", by_location)
+    strategy = FakeStrategy()
+    res = _run(_edit(str(other / "a.cs"), cwd=str(session)), strategy)
+    assert strategy.switched == [] and res.switched_to is None
+    _run(_edit(str(session / "a.cs"), cwd=str(session)), strategy)
+    assert strategy.switched == ["implement-csharp"]
+
+
+def test_checkout_at_home_never_switches(monkeypatch, in_git):
+    monkeypatch.setattr(hook.Path, "home", classmethod(lambda cls: in_git))
+    strategy = FakeStrategy()
+    _run(_edit(str(in_git / "a.cs")), strategy)
+    assert strategy.switched == []
+
+
 def test_switch_failure_is_reported_not_raised(in_git):
     res = _run(_edit(str(in_git / "a.cs")), FakeStrategy(fail=True))
     assert res.exit_code == 0 and "file routing skipped" in res.stderr
